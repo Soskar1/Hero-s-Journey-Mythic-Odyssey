@@ -6,7 +6,6 @@ namespace HerosJourney.Core
     {
         [SerializeField] private float _turnSmoothTime;
         private float _turnSmoothVelocity = 1f;
-
         
         private Transform _transform;
 
