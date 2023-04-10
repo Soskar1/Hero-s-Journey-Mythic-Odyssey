@@ -13,7 +13,6 @@ namespace HerosJourney.Core.Entities
 
         private Vector2 _movementInput;
         private Vector3 _targetDirection;
-        private float _targetRotation;
 
         private void Awake()
         {
@@ -30,10 +29,10 @@ namespace HerosJourney.Core.Entities
         private void Update()
         {
             _movementInput = _input.GetMovementDirection();
-            _targetRotation = Mathf.Atan2(_movementInput.x, _movementInput.y) * Mathf.Rad2Deg + _camera.transform.eulerAngles.y;
-            _thirdPerson.Rotate(_targetRotation);
+            float targetRotation = Mathf.Atan2(_movementInput.x, _movementInput.y) * Mathf.Rad2Deg + _camera.transform.eulerAngles.y;
+            _thirdPerson.Rotate(targetRotation);
 
-            _targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            _targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
         }
 
         private void FixedUpdate()
