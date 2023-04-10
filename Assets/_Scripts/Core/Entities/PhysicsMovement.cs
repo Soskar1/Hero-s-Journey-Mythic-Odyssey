@@ -13,10 +13,10 @@ namespace HerosJourney.Core.Entities
 
         private const float EPSILON = 0.01f;
 
-        public void Move(Vector2 direction)
+        public void Move(Vector3 direction)
         {
-            Vector3 transformedDirection = _body.TransformDirection(new Vector3(direction.x, 0f, direction.y));
-            Vector3 targetVelocity = new Vector3(transformedDirection.x * _speed, 0f, transformedDirection.z * _speed);
+            //Vector3 transformedDirection = _body.TransformDirection(new Vector3(direction.x, 0f, direction.y));
+            Vector3 targetVelocity = new Vector3(direction.x * _speed, 0f, direction.z * _speed);
             Vector3 velocityDifference = targetVelocity - _rigidbody.velocity;
             float accelerationRate = (Mathf.Abs(targetVelocity.magnitude) > EPSILON) ? _acceleration : _decceleration;
             float movementX = Mathf.Pow(Mathf.Abs(velocityDifference.x) * accelerationRate, _velocityPower) * Mathf.Sign(velocityDifference.x);
