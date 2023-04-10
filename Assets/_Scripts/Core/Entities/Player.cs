@@ -1,13 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace HerosJourney.Core.Entities
 {
     [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(ThirdPersonLook))]
+    [RequireComponent(typeof(GroundCheck))]
+    [RequireComponent(typeof(Jumping))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private PlayerInput _input;
         [SerializeField] private ThirdPersonLook _thirdPerson;
+        [SerializeField] private GroundCheck _groundCheck;
+        [SerializeField] private Jumping _jumping;
         private IMovement _movement;
         private Camera _camera;
 
@@ -24,6 +29,14 @@ namespace HerosJourney.Core.Entities
         {
             _input.Initialize();
             _input.Enable();
+
+            _input.Controls.Player.Jump.performed += Jump;
+        }
+
+        private void OnDisable()
+        {
+            _input.Controls.Player.Jump.performed -= Jump;
+            _input.Disable();
         }
 
         private void Update()
@@ -41,6 +54,13 @@ namespace HerosJourney.Core.Entities
                 _movement.Move(_targetDirection);
             else 
                 _movement.Move(Vector3.zero);
+        }
+
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+                if (_groundCheck.CheckForGround())
+                    _jumping.Jump();
         }
     }
 }
