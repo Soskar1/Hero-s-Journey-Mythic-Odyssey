@@ -41,6 +41,8 @@ namespace HerosJourney.Core.Entities
         {
             if (_movementInput.magnitude > 0)
                 _movement.Move(_targetDirection);
+            else 
+                _movement.Move(Vector3.zero);
         }
     }
 }
