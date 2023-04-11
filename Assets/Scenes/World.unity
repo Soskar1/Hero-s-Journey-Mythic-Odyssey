@@ -134,9 +134,10 @@ GameObject:
   - component: {fileID: 388986770}
   - component: {fileID: 388986772}
   - component: {fileID: 388986771}
+  - component: {fileID: 388986774}
   - component: {fileID: 388986773}
   m_Layer: 0
-  m_Name: Terrain
+  m_Name: Chunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -216,10 +217,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 388986769}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fbbf89df6a2dd4fa982815a4c37776, type: 3}
+  m_Script: {fileID: 11500000, guid: 70b268fbef82df5448b1efa4385b4e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshFilter: {fileID: 388986772}
+  _meshFilter: {fileID: 388986772}
+--- !u!114 &388986774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388986769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c7ae98d6fe8c4438e911205e1c498c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &603878333
 GameObject:
   m_ObjectHideFlags: 0
