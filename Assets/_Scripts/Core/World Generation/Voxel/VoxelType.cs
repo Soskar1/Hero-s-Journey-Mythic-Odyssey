@@ -4,6 +4,6 @@ namespace HerosJourney.Core.WorldGeneration
     {
         Air,
         Water,
-        Block
+        Solid
     }
 }
