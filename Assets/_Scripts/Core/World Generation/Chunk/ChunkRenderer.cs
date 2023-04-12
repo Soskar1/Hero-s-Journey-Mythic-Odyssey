@@ -7,14 +7,20 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private MeshFilter _meshFilter;
         private Mesh _mesh;
 
+        public ChunkData ChunkData { get; private set; }
+
         private void Awake() => _mesh = _meshFilter.mesh;
 
+        public void InitializeChunk(ChunkData data) => ChunkData = data;
+
+        public void UpdateChunk() => RenderMesh(ChunkVoxelData.GetChunkMeshData(ChunkData));
         public void UpdateChunk(MeshData data) => RenderMesh(data);
 
         private void RenderMesh(MeshData meshData)
         {
             _mesh.Clear();
 
+            _mesh.subMeshCount = 2;
             _mesh.SetVertices(meshData.Vertices);
             _mesh.SetTriangles(meshData.Triangles, 0);
 

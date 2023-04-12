@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public static class VoxelHandler
+    public static class VoxelFaceGeneration
     {
         private const float VERTEX_OFFSET = 0.5f;
         private static Direction[] _directions = {
@@ -14,18 +14,25 @@ namespace HerosJourney.Core.WorldGeneration
             Direction.back
         };
 
-        public static MeshData GenerateVoxel(ChunkData chunkData, MeshData data, Vector3Int position)
+        public static MeshData GenerateVoxel(ChunkData chunkData, MeshData meshData, Vector3Int position, VoxelType voxelType)
         {
+            if (voxelType == VoxelType.Air || voxelType == VoxelType.Nothing)
+                return meshData;
+
             foreach (var direction in _directions)
             {
                 Vector3Int neighbourVoxelCoordinates = position + direction.ToVector3Int();
-                VoxelType neighbourVoxelType = ChunkVoxelData.GetVoxelDataAt(chunkData, neighbourVoxelCoordinates).type;
+                Voxel neighbourVoxel = ChunkVoxelData.GetVoxelDataAt(chunkData, neighbourVoxelCoordinates);
+                VoxelType neighbourVoxelType = VoxelType.Nothing;
+
+                if (neighbourVoxel != null)
+                    neighbourVoxelType = neighbourVoxel.type;
                 
                 if (neighbourVoxelType == VoxelType.Air)
-                    RenderVoxelFace(data, position, direction);
+                    RenderVoxelFace(meshData, position, direction);
             }
 
-            return data;
+            return meshData;
         }
 
         private static MeshData RenderVoxelFace(MeshData data, Vector3Int position, Direction direction)
@@ -41,17 +48,17 @@ namespace HerosJourney.Core.WorldGeneration
             switch (direction)
             {
                 case Direction.up:
-                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z - VERTEX_OFFSET));
                     meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z + VERTEX_OFFSET));
                     meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z + VERTEX_OFFSET));
                     meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z - VERTEX_OFFSET));
+                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z - VERTEX_OFFSET));
                     break;
 
                 case Direction.down:
                     meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z - VERTEX_OFFSET));
-                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
-                    meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
                     meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z - VERTEX_OFFSET));
+                    meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
+                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
                     break;
 
                 case Direction.right:
@@ -70,9 +77,9 @@ namespace HerosJourney.Core.WorldGeneration
 
                 case Direction.forward:
                     meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
-                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
-                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z + VERTEX_OFFSET));
                     meshData.AddVertex(new Vector3(position.x + VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z + VERTEX_OFFSET));
+                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y + VERTEX_OFFSET, position.z + VERTEX_OFFSET));
+                    meshData.AddVertex(new Vector3(position.x - VERTEX_OFFSET, position.y - VERTEX_OFFSET, position.z + VERTEX_OFFSET));
                     break;
 
                 case Direction.back:

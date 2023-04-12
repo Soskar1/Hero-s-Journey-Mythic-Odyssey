@@ -11,6 +11,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         public int ChunkSize => _chunkSize;
         public int ChunkHeight => _chunkHeight;
+        public Vector3Int WorldPosition => _worldPosition;
 
         public ChunkData (int chunkSize, int chunkHeight, Vector3Int worldPosition)
         {
