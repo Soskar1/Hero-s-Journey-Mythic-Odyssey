@@ -22,7 +22,7 @@ namespace HerosJourney.Core.WorldGeneration
             foreach (var direction in _directions)
             {
                 Vector3Int neighbourVoxelCoordinates = position + direction.ToVector3Int();
-                Voxel neighbourVoxel = ChunkVoxelData.GetVoxelDataAt(chunkData, neighbourVoxelCoordinates);
+                Voxel neighbourVoxel = ChunkVoxelData.GetVoxelAt(chunkData, neighbourVoxelCoordinates);
                 VoxelType neighbourVoxelType = VoxelType.Nothing;
 
                 if (neighbourVoxel != null)

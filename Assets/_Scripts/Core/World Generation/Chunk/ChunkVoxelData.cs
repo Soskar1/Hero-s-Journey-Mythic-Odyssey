@@ -22,12 +22,12 @@ namespace HerosJourney.Core.WorldGeneration
                 chunkData.voxels[localPosition.x, localPosition.y, localPosition.z] = voxel;
         }
 
-        public static Voxel GetVoxelDataAt(ChunkData chunkData, Vector3Int localPosition)
+        public static Voxel GetVoxelAt(ChunkData chunkData, Vector3Int localPosition)
         {
             if (IsInBounds(chunkData, localPosition))
                 return chunkData.voxels[localPosition.x, localPosition.y, localPosition.z];
 
-            return null;
+            return chunkData.World.GetVoxelInWorld(chunkData.WorldPosition + localPosition);
         }
 
         public static bool IsInBounds(ChunkData chunkData, Vector3Int localPosition)
@@ -38,6 +38,16 @@ namespace HerosJourney.Core.WorldGeneration
                 return false;
 
             return true;
+        }
+
+        public static Vector3Int WorldToLocalPosition(ChunkData chunk, Vector3Int worldPosition)
+        {
+            return new Vector3Int
+            {
+                x = worldPosition.x - chunk.WorldPosition.x,
+                y = worldPosition.y - chunk.WorldPosition.y,
+                z = worldPosition.z - chunk.WorldPosition.z
+            };
         }
     }
 }

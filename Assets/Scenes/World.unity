@@ -331,8 +331,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chunkSize: 16
-  _chunkHeight: 32
-  _noiseScale: 0.02
+  _chunkHeight: 128
+  _worldSizeInChunks: 10
+  _noiseScale: 0.01
   _chunkPrefab: {fileID: 9212265846582118791, guid: fbd0fe1fb5acaf747a8ed3f3bff5a672, type: 3}
 --- !u!4 &1530814504
 Transform:

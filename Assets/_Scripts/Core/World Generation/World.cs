@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration
@@ -6,22 +7,36 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkSize = 16;
         [SerializeField] private int _chunkHeight = 128;
+        [SerializeField] private int _worldSizeInChunks;
         [SerializeField] private float _noiseScale;
 
         [SerializeField] private GameObject _chunkPrefab;
+
+        private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
 
         private void Start() => GenerateWorld();
 
         public void GenerateWorld()
         {
-            ChunkData chunkData = new ChunkData(_chunkSize, _chunkHeight, Vector3Int.zero);
-            GenerateVoxels(chunkData);
-
-            MeshData meshData = ChunkVoxelData.GetChunkMeshData(chunkData);
-            GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
-            ChunkRenderer chunkRenderer = chunkInstance.GetComponent<ChunkRenderer>();
-            chunkRenderer.InitializeChunk(chunkData);
-            chunkRenderer.UpdateChunk(meshData);
+            for (int x = 0; x < _worldSizeInChunks; ++x)
+            {
+                for (int z = 0; z < _worldSizeInChunks; ++z)
+                {
+                    Vector3Int position = new Vector3Int(x * _chunkSize, 0, z * _chunkSize);
+                    ChunkData chunkData = new ChunkData(_chunkSize, _chunkHeight, position, this);
+                    GenerateVoxels(chunkData);
+                    _chunks.Add(position, chunkData);
+                }
+            }
+            
+            foreach (ChunkData chunkData in _chunks.Values)
+            {
+                MeshData meshData = ChunkVoxelData.GetChunkMeshData(chunkData);
+                GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
+                ChunkRenderer chunkRenderer = chunkInstance.GetComponent<ChunkRenderer>();
+                chunkRenderer.InitializeChunk(chunkData);
+                chunkRenderer.UpdateChunk(meshData);
+            }
         }
 
         private void GenerateVoxels(ChunkData data)
@@ -44,6 +59,27 @@ namespace HerosJourney.Core.WorldGeneration
                     }
                 }
             }
+        }
+
+        public Voxel GetVoxelInWorld(Vector3Int worldPosition)
+        {
+            Vector3Int chunkPosition = GetChunkPosition(worldPosition);
+            ChunkData chunk = null;
+
+            if (_chunks.TryGetValue(chunkPosition, out chunk))
+                return ChunkVoxelData.GetVoxelAt(chunk, ChunkVoxelData.WorldToLocalPosition(chunk, worldPosition));
+
+            return null;
+        }
+
+        private Vector3Int GetChunkPosition(Vector3Int worldPosition)
+        {
+            return new Vector3Int
+            {
+                x = Mathf.FloorToInt(worldPosition.x / (float)_chunkSize) * _chunkSize,
+                y = Mathf.FloorToInt(worldPosition.y / (float)_chunkHeight) * _chunkHeight,
+                z = Mathf.FloorToInt(worldPosition.z / (float)_chunkSize) * _chunkSize
+            };
         }
     }
 }
