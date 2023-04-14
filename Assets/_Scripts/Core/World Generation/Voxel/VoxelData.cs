@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Voxels
@@ -6,5 +7,15 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
     public class VoxelData : ScriptableObject
     {
         public VoxelType type;
+        public TextureData textureData;
+        public int blockID;
+    }
+
+    [Serializable]
+    public struct TextureData
+    {
+        public Vector2Int up;
+        public Vector2Int down;
+        public Vector2Int side;
     }
 }
