@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47104f5307ace1c44a05a2639f419ddd, type: 3}
   m_Name: Test Noise
   m_EditorClassIdentifier: 
-  octaves: 6
-  amplitude: 128
-  frequency: 4
-  persistence: 0.5
-  size: 0.01
-  offset: {x: 1000, y: 3000}
+  octaves: 5
+  persistence: 0.25
+  noiseZoom: 0.01
+  offset: {x: 2500, y: 1000}

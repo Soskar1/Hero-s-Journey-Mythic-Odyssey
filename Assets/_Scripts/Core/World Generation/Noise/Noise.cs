@@ -6,21 +6,24 @@ namespace HerosJourney.Core.WorldGeneration.Noises
     {
         public static float OctavePerlinNoise(float x, float y, NoiseSettings noiseSettings)
         {
+            x *= noiseSettings.noiseZoom;
+            y *= noiseSettings.noiseZoom;
+
             float total = 0;
             float maxValue = 0;
 
-            float currentAmplitude = noiseSettings.amplitude;
-            float currentFrequency = noiseSettings.frequency;
+            float amplitude = 1;
+            float frequency = 1;
 
             for (int i = 0; i < noiseSettings.octaves; ++i)
             {
                 //TODO: Add seed
-                total += Mathf.PerlinNoise((x + noiseSettings.offset.x) * currentFrequency * noiseSettings.size, (y + noiseSettings.offset.y) * currentFrequency * noiseSettings.size) * currentAmplitude;
+                total += Mathf.PerlinNoise((x + noiseSettings.offset.x) * frequency, (y + noiseSettings.offset.y) * frequency) * amplitude;
 
-                maxValue += noiseSettings.amplitude;
+                maxValue += amplitude;
 
-                currentAmplitude *= noiseSettings.persistence;
-                currentFrequency *= 2;
+                amplitude *= noiseSettings.persistence;
+                frequency *= 2;
             }
 
             return total / maxValue;
