@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
+using HerosJourney.Core.WorldGeneration.Noises;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +11,9 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private int _chunkSize = 16;
         [SerializeField] private int _chunkHeight = 128;
         [SerializeField] private int _worldSizeInChunks;
-        [SerializeField] private float _noiseScale;
 
         [SerializeField] private GameObject _chunkPrefab;
+        [SerializeField] private NoiseSettings _noiseSettings;
 
         private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
         private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
@@ -68,7 +69,7 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 for (int z = 0; z < _chunkSize; ++z)
                 {
-                    float noise = Mathf.PerlinNoise((data.WorldPosition.x + x) * _noiseScale, (data.WorldPosition.z + z) * _noiseScale);
+                    float noise = Noise.OctavePerlinNoise(x + data.WorldPosition.x, z + data.WorldPosition.z, _noiseSettings);
                     int groundPosition = Mathf.RoundToInt(noise * _chunkHeight);
 
                     for (int y = 0; y < _chunkHeight; ++y)
