@@ -1,6 +1,7 @@
+using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Voxels
 {
     public static class VoxelFaceGeneration
     {
@@ -38,7 +39,7 @@ namespace HerosJourney.Core.WorldGeneration
         private static MeshData RenderVoxelFace(MeshData data, Vector3Int position, Direction direction)
         {
             GenerateVoxelFace(data, position, direction);
-            //TODO: Generate UVs
+            GenerateUVs();
 
             return data;
         }
@@ -91,6 +92,11 @@ namespace HerosJourney.Core.WorldGeneration
             }
 
             meshData.CreateQuad();
+        }
+
+        private static void GenerateUVs()
+        {
+
         }
     }
 }

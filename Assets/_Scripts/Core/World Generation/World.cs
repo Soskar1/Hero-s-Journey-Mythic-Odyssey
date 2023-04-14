@@ -1,3 +1,5 @@
+using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,13 +19,23 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateWorld()
         {
+            ClearAllChunks();
+            GenerateChunkData();
+            RenderChunks();
+        }
+
+        private void ClearAllChunks()
+        {
             _chunks.Clear();
 
             foreach (var chunk in _chunkRenderers.Values)
                 Destroy(chunk.gameObject);
 
             _chunkRenderers.Clear();
+        }
 
+        private void GenerateChunkData()
+        {
             for (int x = 0; x < _worldSizeInChunks; ++x)
             {
                 for (int z = 0; z < _worldSizeInChunks; ++z)
@@ -34,7 +46,10 @@ namespace HerosJourney.Core.WorldGeneration
                     _chunks.Add(position, chunkData);
                 }
             }
-            
+        }
+
+        private void RenderChunks()
+        {
             foreach (ChunkData chunkData in _chunks.Values)
             {
                 MeshData meshData = ChunkVoxelData.GetChunkMeshData(chunkData);

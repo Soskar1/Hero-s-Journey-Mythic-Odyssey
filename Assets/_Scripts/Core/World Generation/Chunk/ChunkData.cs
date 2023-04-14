@@ -1,6 +1,7 @@
+using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
     {

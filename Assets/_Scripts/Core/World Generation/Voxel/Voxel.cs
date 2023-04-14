@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Voxels
 {
     public class Voxel
     {
