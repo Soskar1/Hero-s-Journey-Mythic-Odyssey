@@ -13,11 +13,17 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private GameObject _chunkPrefab;
 
         private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
-
-        private void Start() => GenerateWorld();
+        private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
         public void GenerateWorld()
         {
+            _chunks.Clear();
+
+            foreach (var chunk in _chunkRenderers.Values)
+                Destroy(chunk.gameObject);
+
+            _chunkRenderers.Clear();
+
             for (int x = 0; x < _worldSizeInChunks; ++x)
             {
                 for (int z = 0; z < _worldSizeInChunks; ++z)
@@ -36,6 +42,8 @@ namespace HerosJourney.Core.WorldGeneration
                 ChunkRenderer chunkRenderer = chunkInstance.GetComponent<ChunkRenderer>();
                 chunkRenderer.InitializeChunk(chunkData);
                 chunkRenderer.UpdateChunk(meshData);
+
+                _chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
             }
         }
 
