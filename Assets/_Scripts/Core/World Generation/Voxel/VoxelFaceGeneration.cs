@@ -27,7 +27,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
                 VoxelType neighbourVoxelType = VoxelType.Nothing;
 
                 if (neighbourVoxel != null)
-                    neighbourVoxelType = neighbourVoxel.type;
+                    neighbourVoxelType = neighbourVoxel.GetType();
                 
                 if (neighbourVoxelType == VoxelType.Air)
                     RenderVoxelFace(meshData, position, direction);

@@ -1,17 +1,13 @@
-using HerosJourney.Core.Databases;
 using System;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Voxels
 {
     [CreateAssetMenu(fileName = "Voxel", menuName = "World Generation/Voxel")]
-    public class VoxelData : ScriptableObject, IIdentifiable
+    public class VoxelData : ScriptableObject
     {
         public VoxelType type;
         public TextureData textureData;
-        public int blockID;
-
-        public int Id => blockID;
     }
 
     [Serializable]
