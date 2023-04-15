@@ -15,4 +15,4 @@ MonoBehaviour:
   octaves: 5
   persistence: 0.25
   noiseZoom: 0.01
-  offset: {x: 2500, y: 1000}
+  offset: {x: 500, y: 2500}

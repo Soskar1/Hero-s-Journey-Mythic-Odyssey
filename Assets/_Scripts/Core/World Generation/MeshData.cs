@@ -25,5 +25,7 @@ namespace HerosJourney.Core.WorldGeneration
             _triangles.Add(_vertices.Count - 2);
             _triangles.Add(_vertices.Count - 1);
         }
+
+        public void AddUVCoordinates(Vector3 uvCoordinates) => _uvs.Add(uvCoordinates);
     }
 }

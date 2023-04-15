@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   textureData:
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
-  blockID: 2
+    up: {x: 0, y: 2}
+    down: {x: 0, y: 2}
+    side: {x: 0, y: 2}

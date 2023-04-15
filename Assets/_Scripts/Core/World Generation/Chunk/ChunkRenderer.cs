@@ -23,6 +23,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _mesh.subMeshCount = 2;
             _mesh.SetVertices(meshData.Vertices);
             _mesh.SetTriangles(meshData.Triangles, 0);
+            _mesh.SetUVs(0, meshData.UVs);
 
             _mesh.RecalculateNormals();
         }

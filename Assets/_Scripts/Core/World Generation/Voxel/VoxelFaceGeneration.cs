@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Utils;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Voxels
@@ -15,9 +16,9 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             Direction.back
         };
 
-        public static MeshData GenerateVoxel(ChunkData chunkData, MeshData meshData, Vector3Int position, VoxelType voxelType)
+        public static MeshData GenerateVoxel(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
         {
-            if (voxelType == VoxelType.Air || voxelType == VoxelType.Nothing)
+            if (voxelData.type == VoxelType.Air || voxelData.type == VoxelType.Nothing)
                 return meshData;
 
             foreach (var direction in _directions)
@@ -30,18 +31,16 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
                     neighbourVoxelType = neighbourVoxel.GetType();
                 
                 if (neighbourVoxelType == VoxelType.Air)
-                    RenderVoxelFace(meshData, position, direction);
+                    RenderVoxelFace(meshData, voxelData, position, direction);
             }
 
             return meshData;
         }
 
-        private static MeshData RenderVoxelFace(MeshData data, Vector3Int position, Direction direction)
+        private static void RenderVoxelFace(MeshData meshData, VoxelData voxelData, Vector3Int position, Direction direction)
         {
-            GenerateVoxelFace(data, position, direction);
-            GenerateUVs();
-
-            return data;
+            GenerateVoxelFace(meshData, position, direction);
+            AssignUVCoordinates(meshData, voxelData, direction);
         }
 
         private static void GenerateVoxelFace(MeshData meshData, Vector3 position, Direction direction)
@@ -94,9 +93,32 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             meshData.CreateQuad();
         }
 
-        private static void GenerateUVs()
+        private static void AssignUVCoordinates(MeshData meshData, VoxelData voxelData, Direction direction)
         {
+            if (voxelData.type == VoxelType.Air)
+                return;
 
+            Vector2[] uvs = new Vector2[4];
+
+            switch (direction)
+            {
+                case Direction.up:
+                    uvs = UVMapping.GetUVCoordinates(voxelData.textureData.up);
+                    break;
+
+                case Direction.down:
+                    uvs = UVMapping.GetUVCoordinates(voxelData.textureData.down);
+                    break;
+
+                default:
+                    uvs = UVMapping.GetUVCoordinates(voxelData.textureData.side);
+                    break;
+            }
+
+            meshData.AddUVCoordinates(uvs[0]);
+            meshData.AddUVCoordinates(uvs[1]);
+            meshData.AddUVCoordinates(uvs[2]);
+            meshData.AddUVCoordinates(uvs[3]);
         }
     }
 }
