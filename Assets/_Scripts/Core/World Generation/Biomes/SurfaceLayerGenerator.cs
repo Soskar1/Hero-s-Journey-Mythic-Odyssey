@@ -5,11 +5,11 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
 {
     public class SurfaceLayerGenerator : LayerGenerator
     {
-        protected override bool TryGenerateVoxels(ChunkData chunkData, Vector3Int position, int surfaceHeightNoise, Vector2Int offset)
+        protected override bool TryGenerateVoxels(ChunkData chunkData, Vector3Int position, int surfaceHeightNoise)
         {
             if (position.y == surfaceHeightNoise)
             {
-                ChunkVoxelData.SetVoxelAt(chunkData, Voxel, position);
+                ChunkVoxelData.SetVoxelAt(ref chunkData, Voxel, position);
                 return true;
             }
 

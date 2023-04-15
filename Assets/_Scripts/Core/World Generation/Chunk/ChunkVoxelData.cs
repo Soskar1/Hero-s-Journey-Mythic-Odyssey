@@ -17,7 +17,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             return meshData;
         }
 
-        public static void SetVoxelAt(ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
+        public static void SetVoxelAt(ref ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
         {
             if (IsInBounds(chunkData, localPosition))
                 chunkData.voxels[localPosition.x, localPosition.y, localPosition.z] = voxel;

@@ -5,8 +5,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
     {
-        private int _chunkSize = 16;
-        private int _chunkHeight = 128;
+        private int _chunkSize;
+        private int _chunkHeight;
         public Voxel[,,] voxels;
         private Vector3Int _worldPosition;
         private World _world;
