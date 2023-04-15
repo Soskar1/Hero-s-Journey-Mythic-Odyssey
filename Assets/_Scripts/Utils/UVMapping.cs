@@ -8,6 +8,7 @@ namespace HerosJourney.Utils
         [SerializeField] private int _tileSize = 16;
         [SerializeField] private Texture2D _atlas;
 
+        private static float _offset = 0.001f;
         private static float _xStep;
         private static float _yStep;
 
@@ -33,10 +34,10 @@ namespace HerosJourney.Utils
 
             Vector2[] uvCoordinates = new Vector2[4];
 
-            uvCoordinates[0] = new Vector2(_xStep * textureCoordinates.x, _yStep * textureCoordinates.y);
-            uvCoordinates[1] = new Vector2(_xStep * textureCoordinates.x, _yStep * textureCoordinates.y + _yStep);
-            uvCoordinates[2] = new Vector2(_xStep * textureCoordinates.x + _xStep, _yStep * textureCoordinates.y + _yStep);
-            uvCoordinates[3] = new Vector2(_xStep * textureCoordinates.x + _xStep, _yStep * textureCoordinates.y);
+            uvCoordinates[0] = new Vector2(_xStep * textureCoordinates.x + _offset, _yStep * textureCoordinates.y + _offset);
+            uvCoordinates[1] = new Vector2(_xStep * textureCoordinates.x + _offset, _yStep * textureCoordinates.y + _yStep - _offset);
+            uvCoordinates[2] = new Vector2(_xStep * textureCoordinates.x + _xStep - _offset, _yStep * textureCoordinates.y + _yStep - _offset);
+            uvCoordinates[3] = new Vector2(_xStep * textureCoordinates.x + _xStep - _offset, _yStep * textureCoordinates.y + _offset);
 
             return uvCoordinates;
         }

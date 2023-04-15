@@ -25,6 +25,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _mesh.SetTriangles(meshData.Triangles, 0);
             _mesh.SetUVs(0, meshData.UVs);
 
+            GetComponent<MeshCollider>().sharedMesh = _mesh;
+
             _mesh.RecalculateNormals();
         }
     }
