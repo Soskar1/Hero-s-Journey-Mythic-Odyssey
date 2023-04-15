@@ -43,7 +43,7 @@ namespace HerosJourney.Core.WorldGeneration
                 {
                     Vector3Int position = new Vector3Int(x * _chunkSize, 0, z * _chunkSize);
                     ChunkData chunkData = new ChunkData(_chunkSize, _chunkHeight, position, this);
-                    GenerateVoxels(chunkData);
+                    //GenerateVoxels(chunkData);
                     _chunks.Add(position, chunkData);
                 }
             }
@@ -63,27 +63,27 @@ namespace HerosJourney.Core.WorldGeneration
             }
         }
 
-        private void GenerateVoxels(ChunkData data)
-        {
-            for (int x = 0; x < _chunkSize; ++x)
-            {
-                for (int z = 0; z < _chunkSize; ++z)
-                {
-                    float noise = Noise.OctavePerlinNoise(x + data.WorldPosition.x, z + data.WorldPosition.z, _noiseSettings);
-                    int groundPosition = Mathf.RoundToInt(noise * _chunkHeight);
+        //private void GenerateVoxels(ChunkData data)
+        //{
+        //    for (int x = 0; x < _chunkSize; ++x)
+        //    {
+        //        for (int z = 0; z < _chunkSize; ++z)
+        //        {
+        //            float noise = Noise.OctavePerlinNoise(x + data.WorldPosition.x, z + data.WorldPosition.z, _noiseSettings);
+        //            int groundPosition = Mathf.RoundToInt(noise * _chunkHeight);
 
-                    for (int y = 0; y < _chunkHeight; ++y)
-                    {
-                        VoxelType voxelType = VoxelType.Solid;
+        //            for (int y = 0; y < _chunkHeight; ++y)
+        //            {
+        //                VoxelType voxelType = VoxelType.Solid;
 
-                        if (y > groundPosition)
-                            voxelType = VoxelType.Air;
+        //                if (y > groundPosition)
+        //                    voxelType = VoxelType.Air;
 
-                        ChunkVoxelData.SetVoxelAt(data, new Voxel(voxelType), new Vector3Int(x, y, z));
-                    }
-                }
-            }
-        }
+        //                ChunkVoxelData.SetVoxelAt(data, new Voxel(voxelType), new Vector3Int(x, y, z));
+        //            }
+        //        }
+        //    }
+        //}
 
         public Voxel GetVoxelInWorld(Vector3Int worldPosition)
         {

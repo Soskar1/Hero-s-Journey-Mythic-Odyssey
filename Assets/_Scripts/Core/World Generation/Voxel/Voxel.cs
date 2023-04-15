@@ -2,12 +2,13 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
 {
     public class Voxel
     {
-        //public VoxelData data;
-        public VoxelType type;
+        public VoxelData data;
 
-        public Voxel(VoxelType type)
+        public Voxel(VoxelData data)
         {
-            this.type = type;
+            this.data = data;
         }
+
+        new public VoxelType GetType() => data.type;
     }
 }

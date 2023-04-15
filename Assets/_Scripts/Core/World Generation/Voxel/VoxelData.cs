@@ -8,7 +8,6 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
     {
         public VoxelType type;
         public TextureData textureData;
-        public int blockID;
     }
 
     [Serializable]
