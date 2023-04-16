@@ -2,6 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -14,6 +15,8 @@ namespace HerosJourney.Core.WorldGeneration
 
         [SerializeField] private TerrainGenerator _terrainGenerator;
 
+        public Action OnWorldGenerated;
+
         private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
         private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
@@ -22,6 +25,8 @@ namespace HerosJourney.Core.WorldGeneration
             ClearAllChunks();
             GenerateChunkData();
             InitializeChunks();
+
+            OnWorldGenerated?.Invoke();
         }
 
         private void ClearAllChunks()
