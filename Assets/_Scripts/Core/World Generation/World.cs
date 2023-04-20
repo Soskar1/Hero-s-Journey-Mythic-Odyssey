@@ -3,6 +3,7 @@ using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using HerosJourney.Utils;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -20,10 +21,12 @@ namespace HerosJourney.Core.WorldGeneration
         private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
         private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
-        public void GenerateWorld()
+        public void GenerateWorld() => GenerateWorld(Vector3Int.zero);
+
+        public void GenerateWorld(Vector3Int worldPosition)
         {
             ClearAllChunks();
-            GenerateChunkData();
+            GenerateChunkData(worldPosition);
             InitializeChunks();
 
             OnWorldGenerated?.Invoke();
@@ -39,13 +42,16 @@ namespace HerosJourney.Core.WorldGeneration
             _chunkRenderers.Clear();
         }
 
-        private void GenerateChunkData()
+        private void GenerateChunkData(Vector3Int worldPosition)
         {
+            Vector3Int startingPoint = new Vector3Int(worldPosition.x - (_worldSizeInChunks * _chunkLength) / 2, 0,
+                worldPosition.z - (_worldSizeInChunks * _chunkLength) / 2);
+
             for (int x = 0; x < _worldSizeInChunks; ++x)
             {
                 for (int z = 0; z < _worldSizeInChunks; ++z)
                 {
-                    Vector3Int position = new Vector3Int(x * _chunkLength, 0, z * _chunkLength);
+                    Vector3Int position = new Vector3Int(startingPoint.x + x * _chunkLength, 0, startingPoint.z + z * _chunkLength);
 
                     ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
                     _terrainGenerator.GenerateChunkData(chunkData);

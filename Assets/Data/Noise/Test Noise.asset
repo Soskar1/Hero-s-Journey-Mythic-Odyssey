@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Test Noise
   m_EditorClassIdentifier: 
   octaves: 5
-  persistence: 0.25
-  noiseZoom: 0.01
+  persistence: 0.5
+  noiseZoom: 0.005
   offset: {x: 500, y: 2500}
