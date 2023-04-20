@@ -3,7 +3,6 @@ using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using HerosJourney.Utils;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -11,19 +10,22 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
-        [SerializeField] private int _worldSizeInChunks;
+        [SerializeField] private int _renderDistance;
         [SerializeField] private GameObject _chunkPrefab;
 
         [SerializeField] private TerrainGenerator _terrainGenerator;
 
         public Action OnWorldGenerated;
+        public Action OnNewChunksGenerated;
 
         private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
         private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
 
-        public void GenerateWorld() => GenerateWorld(Vector3Int.zero);
+        public int ChunkLength => _chunkLength;
 
-        public void GenerateWorld(Vector3Int worldPosition)
+        public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
+
+        public void GenerateChunks(Vector3Int worldPosition)
         {
             ClearAllChunks();
             GenerateChunkData(worldPosition);
@@ -44,12 +46,12 @@ namespace HerosJourney.Core.WorldGeneration
 
         private void GenerateChunkData(Vector3Int worldPosition)
         {
-            Vector3Int startingPoint = new Vector3Int(worldPosition.x - (_worldSizeInChunks * _chunkLength) / 2, 0,
-                worldPosition.z - (_worldSizeInChunks * _chunkLength) / 2);
+            Vector3Int startingPoint = new Vector3Int(worldPosition.x - (_renderDistance * _chunkLength) / 2, 0,
+                worldPosition.z - (_renderDistance * _chunkLength) / 2);
 
-            for (int x = 0; x < _worldSizeInChunks; ++x)
+            for (int x = 0; x < _renderDistance; ++x)
             {
-                for (int z = 0; z < _worldSizeInChunks; ++z)
+                for (int z = 0; z < _renderDistance; ++z)
                 {
                     Vector3Int position = new Vector3Int(startingPoint.x + x * _chunkLength, 0, startingPoint.z + z * _chunkLength);
 
@@ -76,6 +78,12 @@ namespace HerosJourney.Core.WorldGeneration
             }
         }
 
+        public void GenerateNewChunksRequest(Vector3Int position)
+        {
+            GenerateChunks(position);
+            OnNewChunksGenerated?.Invoke();
+        }
+
         public Voxel GetVoxelInWorld(Vector3Int worldPosition)
         {
             Vector3Int chunkPosition = GetChunkPosition(worldPosition);
@@ -87,7 +95,7 @@ namespace HerosJourney.Core.WorldGeneration
             return null;
         }
 
-        private Vector3Int GetChunkPosition(Vector3Int worldPosition)
+        public Vector3Int GetChunkPosition(Vector3Int worldPosition)
         {
             return new Vector3Int
             {
