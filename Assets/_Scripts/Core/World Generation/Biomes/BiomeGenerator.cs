@@ -9,15 +9,15 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
         [SerializeField] private LayerGenerator _startingLayer;
         [SerializeField] private NoiseSettings _noiseSettings;
 
-        public ChunkData GenerateChunk(ref ChunkData data, int x, int z)
+        public ChunkData GenerateChunkColumn(ChunkData chunkData, int x, int z)
         {
-            float noise = Noise.OctavePerlinNoise(x + data.WorldPosition.x, z + data.WorldPosition.z, _noiseSettings);
-            int groundPosition = Mathf.RoundToInt(noise * data.ChunkHeight);
+            float noise = Noise.OctavePerlinNoise(x + chunkData.WorldPosition.x, z + chunkData.WorldPosition.z, _noiseSettings);
+            int groundPosition = Mathf.RoundToInt(noise * chunkData.ChunkHeight);
 
-            for (int y = data.WorldPosition.y; y < data.WorldPosition.y + data.ChunkHeight; ++y)
-                _startingLayer.TryGenerateLayer(data, new Vector3Int(x, y, z), groundPosition);
+            for (int y = chunkData.WorldPosition.y; y < chunkData.WorldPosition.y + chunkData.ChunkHeight; ++y)
+                _startingLayer.TryGenerateLayer(chunkData, new Vector3Int(x, y, z), groundPosition);
 
-            return data;
+            return chunkData;
         }
     }
 }

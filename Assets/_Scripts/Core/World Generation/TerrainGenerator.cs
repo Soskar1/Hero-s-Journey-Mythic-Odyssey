@@ -8,11 +8,11 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private BiomeGenerator _biomeGenerator;
 
-        public void GenerateChunkData(ref ChunkData data)
+        public void GenerateChunkData(ChunkData chunkData)
         {
-            for (int x = 0; x < data.ChunkSize; ++x)
-                for (int z = 0; z < data.ChunkSize; ++z)
-                    _biomeGenerator.GenerateChunk(ref data, x, z);
+            for (int x = 0; x < chunkData.ChunkLength; ++x)
+                for (int z = 0; z < chunkData.ChunkLength; ++z)
+                    _biomeGenerator.GenerateChunkColumn(chunkData, x, z);
         }
     }
 }

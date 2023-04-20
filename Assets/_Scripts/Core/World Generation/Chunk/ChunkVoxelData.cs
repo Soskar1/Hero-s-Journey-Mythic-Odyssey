@@ -5,19 +5,19 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkVoxelData
     {
-        public static MeshData GetChunkMeshData(ChunkData chunkData)
+        public static MeshData GenerateMeshData(ChunkData chunkData)
         {
             MeshData meshData = new MeshData();
 
-            for (int x = 0; x < chunkData.ChunkSize; ++x)
+            for (int x = 0; x < chunkData.ChunkLength; ++x)
                 for (int y = 0; y < chunkData.ChunkHeight; ++y)
-                    for (int z = 0; z < chunkData.ChunkSize; ++z)
+                    for (int z = 0; z < chunkData.ChunkLength; ++z)
                         meshData = VoxelFaceGeneration.GenerateVoxel(chunkData, meshData, chunkData.voxels[x, y, z].data, new Vector3Int(x, y, z));
 
             return meshData;
         }
 
-        public static void SetVoxelAt(ref ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
+        public static void SetVoxelAt(ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
         {
             if (IsInBounds(chunkData, localPosition))
                 chunkData.voxels[localPosition.x, localPosition.y, localPosition.z] = voxel;
@@ -33,9 +33,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public static bool IsInBounds(ChunkData chunkData, Vector3Int localPosition)
         {
-            if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkSize ||
+            if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkLength ||
                 localPosition.y < 0 || localPosition.y >= chunkData.ChunkHeight ||
-                localPosition.z < 0 || localPosition.z >= chunkData.ChunkSize)
+                localPosition.z < 0 || localPosition.z >= chunkData.ChunkLength)
                 return false;
 
             return true;

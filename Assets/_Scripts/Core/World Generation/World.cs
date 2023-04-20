@@ -8,7 +8,7 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
-        [SerializeField] private int _chunkSize = 16;
+        [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
         [SerializeField] private int _worldSizeInChunks;
         [SerializeField] private GameObject _chunkPrefab;
@@ -45,10 +45,10 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 for (int z = 0; z < _worldSizeInChunks; ++z)
                 {
-                    Vector3Int position = new Vector3Int(x * _chunkSize, 0, z * _chunkSize);
+                    Vector3Int position = new Vector3Int(x * _chunkLength, 0, z * _chunkLength);
 
-                    ChunkData chunkData = new ChunkData(_chunkSize, _chunkHeight, position, this);
-                    _terrainGenerator.GenerateChunkData(ref chunkData);
+                    ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
+                    _terrainGenerator.GenerateChunkData(chunkData);
 
                     _chunks.Add(position, chunkData);
                 }
@@ -59,7 +59,7 @@ namespace HerosJourney.Core.WorldGeneration
         {
             foreach (ChunkData chunkData in _chunks.Values)
             {
-                MeshData meshData = ChunkVoxelData.GetChunkMeshData(chunkData);
+                MeshData meshData = ChunkVoxelData.GenerateMeshData(chunkData);
                 GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
 
                 ChunkRenderer chunkRenderer = chunkInstance.GetComponent<ChunkRenderer>();
@@ -85,9 +85,9 @@ namespace HerosJourney.Core.WorldGeneration
         {
             return new Vector3Int
             {
-                x = Mathf.FloorToInt(worldPosition.x / (float)_chunkSize) * _chunkSize,
+                x = Mathf.FloorToInt(worldPosition.x / (float)_chunkLength) * _chunkLength,
                 y = Mathf.FloorToInt(worldPosition.y / (float)_chunkHeight) * _chunkHeight,
-                z = Mathf.FloorToInt(worldPosition.z / (float)_chunkSize) * _chunkSize
+                z = Mathf.FloorToInt(worldPosition.z / (float)_chunkLength) * _chunkLength
             };
         }
     }

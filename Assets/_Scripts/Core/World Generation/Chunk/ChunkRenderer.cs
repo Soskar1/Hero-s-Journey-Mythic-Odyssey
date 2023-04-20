@@ -13,7 +13,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void InitializeChunk(ChunkData data) => ChunkData = data;
 
-        public void UpdateChunk() => RenderMesh(ChunkVoxelData.GetChunkMeshData(ChunkData));
+        public void UpdateChunk() => RenderMesh(ChunkVoxelData.GenerateMeshData(ChunkData));
         public void UpdateChunk(MeshData data) => RenderMesh(data);
 
         private void RenderMesh(MeshData meshData)
