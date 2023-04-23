@@ -23,6 +23,7 @@ namespace HerosJourney.Core.WorldGeneration
         public Action OnNewChunksGenerated;
 
         public int ChunkLength => _chunkLength;
+        public WorldData WorldData => _worldData;
 
         private struct WorldRendererData
         {
@@ -39,21 +40,18 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(Vector3Int worldPosition)
         {
-            ClearAllChunks();
+            RemoveDistantChunks();
             GenerateChunkData(worldPosition);
             InitializeChunks();
 
             OnWorldGenerated?.Invoke();
         }
 
-        private void ClearAllChunks()
+        private void RemoveDistantChunks()
         {
-            //_chunks.Clear();
+            //TODO: Get List<ChunkData> chunkData and List<ChunkRenderer> chunkRenderers that need to be removed
 
-            //foreach (var chunk in _chunkRenderers.Values)
-            //    Destroy(chunk.gameObject);
-
-            //_chunkRenderers.Clear();
+            //TODO: Turn off chunk objects from List<ChunkRenderer> chunkRenderers
         }
 
         private void GenerateChunkData(Vector3Int worldPosition)
@@ -79,7 +77,7 @@ namespace HerosJourney.Core.WorldGeneration
         {
             foreach (ChunkData chunkData in _worldData.chunks.Values)
             {
-                MeshData meshData = ChunkVoxelData.GenerateMeshData(chunkData);
+                MeshData meshData = ChunkDataHandler.GenerateMeshData(chunkData);
                 GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
 
                 ChunkRenderer chunkRenderer = chunkInstance.GetComponent<ChunkRenderer>();
@@ -94,27 +92,6 @@ namespace HerosJourney.Core.WorldGeneration
         {
             GenerateChunks(position);
             OnNewChunksGenerated?.Invoke();
-        }
-
-        public Voxel GetVoxelInWorld(Vector3Int worldPosition)
-        {
-            Vector3Int chunkPosition = GetChunkPosition(worldPosition);
-            ChunkData chunk = null;
-
-            if (_worldData.chunks.TryGetValue(chunkPosition, out chunk))
-                return ChunkVoxelData.GetVoxelAt(chunk, ChunkVoxelData.WorldToLocalPosition(chunk, worldPosition));
-
-            return null;
-        }
-
-        public Vector3Int GetChunkPosition(Vector3Int worldPosition)
-        {
-            return new Vector3Int
-            {
-                x = Mathf.FloorToInt(worldPosition.x / (float)_chunkLength) * _chunkLength,
-                y = Mathf.FloorToInt(worldPosition.y / (float)_chunkHeight) * _chunkHeight,
-                z = Mathf.FloorToInt(worldPosition.z / (float)_chunkLength) * _chunkLength
-            };
         }
     }
 }

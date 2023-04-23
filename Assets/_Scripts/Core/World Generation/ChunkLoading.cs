@@ -37,7 +37,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         private void SetCurrentChunkCoordinates()
         {
-            _currentPlayerChunkPosition = _world.GetChunkPosition(Vector3Int.RoundToInt(_player.position));
+            _currentPlayerChunkPosition = WorldDataHandler.GetChunkPosition(_world.WorldData, Vector3Int.RoundToInt(_player.position));
             _currentChunkCenter.x = _currentPlayerChunkPosition.x + _world.ChunkLength / 2;
             _currentChunkCenter.z = _currentPlayerChunkPosition.z + _world.ChunkLength / 2;
         }

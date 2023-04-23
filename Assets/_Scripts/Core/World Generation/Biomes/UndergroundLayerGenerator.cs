@@ -9,7 +9,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
         {
             if (position.y < surfaceHeightNoise)
             {
-                ChunkVoxelData.SetVoxelAt(chunkData, Voxel, position);
+                ChunkDataHandler.SetVoxelAt(chunkData, Voxel, position);
                 return true;
             }
 

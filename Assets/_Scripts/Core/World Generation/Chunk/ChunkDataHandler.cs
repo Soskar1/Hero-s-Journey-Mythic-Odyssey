@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
-    public static class ChunkVoxelData
+    public static class ChunkDataHandler
     {
         public static MeshData GenerateMeshData(ChunkData chunkData)
         {
@@ -28,7 +28,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             if (IsInBounds(chunkData, localPosition))
                 return chunkData.voxels[localPosition.x, localPosition.y, localPosition.z];
 
-            return chunkData.World.GetVoxelInWorld(chunkData.WorldPosition + localPosition);
+            return WorldDataHandler.GetVoxelInWorld(chunkData.World.WorldData, chunkData.WorldPosition + localPosition);
         }
 
         public static bool IsInBounds(ChunkData chunkData, Vector3Int localPosition)

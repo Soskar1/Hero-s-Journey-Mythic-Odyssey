@@ -24,7 +24,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             foreach (var direction in _directions)
             {
                 Vector3Int neighbourVoxelCoordinates = position + direction.ToVector3Int();
-                Voxel neighbourVoxel = ChunkVoxelData.GetVoxelAt(chunkData, neighbourVoxelCoordinates);
+                Voxel neighbourVoxel = ChunkDataHandler.GetVoxelAt(chunkData, neighbourVoxelCoordinates);
                 VoxelType neighbourVoxelType = VoxelType.Nothing;
 
                 if (neighbourVoxel != null)
