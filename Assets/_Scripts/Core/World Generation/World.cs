@@ -10,7 +10,11 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
-        [SerializeField] private int _renderDistance;
+        private WorldData _worldData;
+
+        [SerializeField] [Range(0, 16)] 
+        private int _renderDistance = 8;
+
         [SerializeField] private GameObject _chunkPrefab;
 
         [SerializeField] private TerrainGenerator _terrainGenerator;
@@ -18,10 +22,18 @@ namespace HerosJourney.Core.WorldGeneration
         public Action OnWorldGenerated;
         public Action OnNewChunksGenerated;
 
-        private Dictionary<Vector3Int, ChunkData> _chunks = new Dictionary<Vector3Int, ChunkData>();
-        private Dictionary<Vector3Int, ChunkRenderer> _chunkRenderers = new Dictionary<Vector3Int, ChunkRenderer>();
-
         public int ChunkLength => _chunkLength;
+
+        private struct WorldRendererData
+        {
+            public List<ChunkData> chunkDataToCreate;
+            public List<ChunkRenderer> chunkRenderersToCreate;
+
+            public List<ChunkData> chunkDataToRemove;
+            public List<ChunkRenderer> chunkRenderersToRemove;
+        }
+
+        private void Awake() => _worldData = new WorldData(_chunkLength, _chunkHeight);
 
         public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
 
@@ -36,12 +48,12 @@ namespace HerosJourney.Core.WorldGeneration
 
         private void ClearAllChunks()
         {
-            _chunks.Clear();
+            //_chunks.Clear();
 
-            foreach (var chunk in _chunkRenderers.Values)
-                Destroy(chunk.gameObject);
+            //foreach (var chunk in _chunkRenderers.Values)
+            //    Destroy(chunk.gameObject);
 
-            _chunkRenderers.Clear();
+            //_chunkRenderers.Clear();
         }
 
         private void GenerateChunkData(Vector3Int worldPosition)
@@ -58,14 +70,14 @@ namespace HerosJourney.Core.WorldGeneration
                     ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
                     _terrainGenerator.GenerateChunkData(chunkData);
 
-                    _chunks.Add(position, chunkData);
+                    _worldData.chunks.Add(position, chunkData);
                 }
             }
         }
 
         private void InitializeChunks()
         {
-            foreach (ChunkData chunkData in _chunks.Values)
+            foreach (ChunkData chunkData in _worldData.chunks.Values)
             {
                 MeshData meshData = ChunkVoxelData.GenerateMeshData(chunkData);
                 GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
@@ -74,7 +86,7 @@ namespace HerosJourney.Core.WorldGeneration
                 chunkRenderer.InitializeChunk(chunkData);
                 chunkRenderer.UpdateChunk(meshData);
 
-                _chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
+                _worldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
             }
         }
 
@@ -89,7 +101,7 @@ namespace HerosJourney.Core.WorldGeneration
             Vector3Int chunkPosition = GetChunkPosition(worldPosition);
             ChunkData chunk = null;
 
-            if (_chunks.TryGetValue(chunkPosition, out chunk))
+            if (_worldData.chunks.TryGetValue(chunkPosition, out chunk))
                 return ChunkVoxelData.GetVoxelAt(chunk, ChunkVoxelData.WorldToLocalPosition(chunk, worldPosition));
 
             return null;
