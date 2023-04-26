@@ -1,5 +1,4 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
-using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -12,26 +11,22 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private int _chunkHeight = 128;
         private WorldData _worldData;
 
-        [SerializeField] [Range(0, 16)] 
+        [SerializeField] [Range(4, 16)] 
         private int _renderDistance = 8;
 
         [SerializeField] private GameObject _chunkPrefab;
 
         [SerializeField] private TerrainGenerator _terrainGenerator;
 
-        public Action OnWorldGenerated;
         public Action OnNewChunksGenerated;
 
         public int ChunkLength => _chunkLength;
         public WorldData WorldData => _worldData;
 
-        private struct WorldRendererData
+        private struct WorldGenerationData
         {
-            public List<ChunkData> chunkDataToCreate;
-            public List<ChunkRenderer> chunkRenderersToCreate;
-
-            public List<ChunkData> chunkDataToRemove;
-            public List<ChunkRenderer> chunkRenderersToRemove;
+            public List<Vector3Int> chunkPositionsToCreate;
+            public List<Vector3Int> chunkPositionsToRemove;
         }
 
         private void Awake() => _worldData = new WorldData(_chunkLength, _chunkHeight);
@@ -40,43 +35,60 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(Vector3Int worldPosition)
         {
-            RemoveDistantChunks();
-            GenerateChunkData(worldPosition);
-            InitializeChunks();
+            WorldGenerationData worldGenerationData = GetWorldGenerationData(worldPosition);
 
-            OnWorldGenerated?.Invoke();
+            RemoveDistantChunks(worldGenerationData.chunkPositionsToRemove);
+            GenerateChunkData(worldGenerationData.chunkPositionsToCreate);
+            InitializeChunks(worldGenerationData.chunkPositionsToCreate);
+
+            OnNewChunksGenerated?.Invoke();
         }
 
-        private void RemoveDistantChunks()
+        private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
         {
-            //TODO: Get List<ChunkData> chunkData and List<ChunkRenderer> chunkRenderers that need to be removed
+            List<Vector3Int> nearestChunkPositions = WorldDataHandler.GetChunksAroundPoint(_worldData, worldPosition, _renderDistance);
+            List<Vector3Int> chunkPositionsToCreate = WorldDataHandler.SelectPositionsToCreate(_worldData, nearestChunkPositions, worldPosition);
+            List<Vector3Int> chunkPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkPositions(_worldData, nearestChunkPositions);
 
-            //TODO: Turn off chunk objects from List<ChunkRenderer> chunkRenderers
-        }
-
-        private void GenerateChunkData(Vector3Int worldPosition)
-        {
-            Vector3Int startingPoint = new Vector3Int(worldPosition.x - (_renderDistance * _chunkLength) / 2, 0,
-                worldPosition.z - (_renderDistance * _chunkLength) / 2);
-
-            for (int x = 0; x < _renderDistance; ++x)
+            WorldGenerationData worldGenerationData = new WorldGenerationData
             {
-                for (int z = 0; z < _renderDistance; ++z)
+                chunkPositionsToCreate = chunkPositionsToCreate,
+                chunkPositionsToRemove = chunkPositionsToRemove
+            };
+
+            return worldGenerationData;
+        }
+
+        private void RemoveDistantChunks(List<Vector3Int> chunkPositionsToRemove)
+        {
+            foreach (Vector3Int position in chunkPositionsToRemove)
+            {
+                _worldData.chunks.Remove(position);
+
+                if (_worldData.chunkRenderers.TryGetValue(position, out ChunkRenderer chunkRenderer))
                 {
-                    Vector3Int position = new Vector3Int(startingPoint.x + x * _chunkLength, 0, startingPoint.z + z * _chunkLength);
-
-                    ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
-                    _terrainGenerator.GenerateChunkData(chunkData);
-
-                    _worldData.chunks.Add(position, chunkData);
+                    Destroy(chunkRenderer.gameObject);
+                    _worldData.chunkRenderers.Remove(position);
                 }
             }
         }
 
-        private void InitializeChunks()
+        private void GenerateChunkData(List<Vector3Int> chunkPositionsToCreate)
         {
-            foreach (ChunkData chunkData in _worldData.chunks.Values)
+            foreach (Vector3Int position in chunkPositionsToCreate)
             {
+                ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
+                _terrainGenerator.GenerateChunkData(chunkData);
+
+                _worldData.chunks.Add(position, chunkData);
+            }
+        }
+
+        private void InitializeChunks(List<Vector3Int> chunkPositionsToCreate)
+        {
+            foreach(Vector3Int position in chunkPositionsToCreate)
+            {
+                ChunkData chunkData = _worldData.chunks[position];
                 MeshData meshData = ChunkDataHandler.GenerateMeshData(chunkData);
                 GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
 
@@ -86,12 +98,6 @@ namespace HerosJourney.Core.WorldGeneration
 
                 _worldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
             }
-        }
-
-        public void GenerateNewChunksRequest(Vector3Int position)
-        {
-            GenerateChunks(position);
-            OnNewChunksGenerated?.Invoke();
         }
     }
 }

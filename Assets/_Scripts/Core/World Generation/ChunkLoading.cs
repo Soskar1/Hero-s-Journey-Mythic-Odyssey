@@ -27,7 +27,7 @@ namespace HerosJourney.Core.WorldGeneration
             if (Mathf.Abs(_currentChunkCenter.x - _player.position.x) > _world.ChunkLength ||
                 Mathf.Abs(_currentChunkCenter.z - _player.position.z) > _world.ChunkLength)
             {
-                _world.GenerateNewChunksRequest(Vector3Int.RoundToInt(_player.position));
+                _world.GenerateChunks(Vector3Int.RoundToInt(_player.position));
             }
             else
             {
