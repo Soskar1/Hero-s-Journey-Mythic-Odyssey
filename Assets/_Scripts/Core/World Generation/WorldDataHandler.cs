@@ -8,7 +8,28 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public static class WorldDataHandler
     {
-        public static List<Vector3Int> GetChunksAroundPoint(WorldData worldData, Vector3Int worldPosition, int distance)
+        public static List<Vector3Int> GetChunkDataAroundPoint(WorldData worldData, Vector3Int worldPosition, int distance)
+        {
+            List<Vector3Int> chunksAroundPoint = new List<Vector3Int>();
+
+            int xStart = worldPosition.x - worldData.chunkLength * (distance + 1);
+            int xEnd = worldPosition.x + worldData.chunkLength * (distance + 1);
+            int zStart = worldPosition.z - worldData.chunkLength * (distance + 1);
+            int zEnd = worldPosition.z + worldData.chunkLength * (distance + 1);
+
+            for (int x = xStart; x <= xEnd; x += worldData.chunkLength)
+            {
+                for (int z = zStart; z <= zEnd; z += worldData.chunkLength)
+                {
+                    Vector3Int chunkPosition = GetChunkPosition(worldData, new Vector3Int(x, worldPosition.y, z));
+                    chunksAroundPoint.Add(chunkPosition);
+                }
+            }
+
+            return chunksAroundPoint;
+        }
+
+        public static List<Vector3Int> GetChunkRenderersAroundPoint(WorldData worldData, Vector3Int worldPosition, int distance)
         {
             List<Vector3Int> chunksAroundPoint = new List<Vector3Int>();
 
@@ -34,7 +55,7 @@ namespace HerosJourney.Core.WorldGeneration
             Vector3Int chunkPosition = GetChunkPosition(worldData, worldPosition);
             ChunkData chunk = null;
 
-            if (worldData.chunks.TryGetValue(chunkPosition, out chunk))
+            if (worldData.chunkData.TryGetValue(chunkPosition, out chunk))
                 return ChunkDataHandler.GetVoxelAt(chunk, ChunkDataHandler.WorldToLocalPosition(chunk, worldPosition));
 
             return null;
@@ -50,17 +71,32 @@ namespace HerosJourney.Core.WorldGeneration
             };
         }
 
-        public static List<Vector3Int> ExcludeMatchingChunkPositions(WorldData worldData, List<Vector3Int> chunkPositions)
+        public static List<Vector3Int> ExcludeMatchingChunkDataPositions(WorldData worldData, List<Vector3Int> chunkPositions)
         {
-            return worldData.chunks.Keys
+            return worldData.chunkData.Keys
                 .Where(pos => chunkPositions.Contains(pos) == false)
                 .ToList();
         }
 
-        public static List<Vector3Int> SelectPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions, Vector3Int worldPosition)
+        public static List<Vector3Int> SelectChunkDataPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions, Vector3Int worldPosition)
         {
             return chunkPositions
-                .Where(pos => worldData.chunks.ContainsKey(pos) == false)
+                .Where(pos => worldData.chunkData.ContainsKey(pos) == false)
+                .OrderBy(pos => Vector3.Distance(worldPosition, pos))
+                .ToList();
+        }
+
+        public static List<Vector3Int> ExcludeMatchingChunkRendererPositions(WorldData worldData, List<Vector3Int> chunkPositions)
+        {
+            return worldData.chunkRenderers.Keys
+                .Where(pos => chunkPositions.Contains(pos) == false)
+                .ToList();
+        }
+
+        public static List<Vector3Int> SelectChunkRendererPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions, Vector3Int worldPosition)
+        {
+            return chunkPositions
+                .Where(pos => worldData.chunkRenderers.ContainsKey(pos) == false)
                 .OrderBy(pos => Vector3.Distance(worldPosition, pos))
                 .ToList();
         }
