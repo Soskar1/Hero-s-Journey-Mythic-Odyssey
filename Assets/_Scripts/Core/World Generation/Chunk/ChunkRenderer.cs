@@ -4,6 +4,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkRenderer : MonoBehaviour
     {
+        [SerializeField] private MeshCollider _meshCollider;
         [SerializeField] private MeshFilter _meshFilter;
         private Mesh _mesh;
 
@@ -25,7 +26,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _mesh.SetTriangles(meshData.Triangles, 0);
             _mesh.SetUVs(0, meshData.UVs);
 
-            GetComponent<MeshCollider>().sharedMesh = _mesh;
+            _meshCollider.sharedMesh = _mesh;
 
             _mesh.RecalculateNormals();
         }

@@ -9,19 +9,16 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
-        private WorldData _worldData;
-
         [SerializeField] [Range(4, 16)] 
         private int _renderDistance = 8;
 
-        [SerializeField] private GameObject _chunkPrefab;
-
+        [SerializeField] private ChunkRenderer _chunkPrefab;
         [SerializeField] private TerrainGenerator _terrainGenerator;
 
         public Action OnNewChunksGenerated;
 
         public int ChunkLength => _chunkLength;
-        public WorldData WorldData => _worldData;
+        public WorldData WorldData { get; private set; }
 
         private struct WorldGenerationData
         {
@@ -32,7 +29,7 @@ namespace HerosJourney.Core.WorldGeneration
             public List<Vector3Int> chunkRendererPositionsToRemove;
         }
 
-        private void Awake() => _worldData = new WorldData(_chunkLength, _chunkHeight);
+        private void Awake() => WorldData = new WorldData(_chunkLength, _chunkHeight);
 
         public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
 
@@ -49,14 +46,14 @@ namespace HerosJourney.Core.WorldGeneration
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
         {
-            List<Vector3Int> nearestChunkDataPositions = WorldDataHandler.GetChunkDataAroundPoint(_worldData, worldPosition, _renderDistance);
-            List<Vector3Int> nearestChunkRendererPositions = WorldDataHandler.GetChunkRenderersAroundPoint(_worldData, worldPosition, _renderDistance);
+            List<Vector3Int> nearestChunkDataPositions = WorldDataHandler.GetChunkDataAroundPoint(WorldData, worldPosition, _renderDistance);
+            List<Vector3Int> nearestChunkRendererPositions = WorldDataHandler.GetChunkRenderersAroundPoint(WorldData, worldPosition, _renderDistance);
 
-            List<Vector3Int> chunkDataPositionsToCreate = WorldDataHandler.SelectChunkDataPositionsToCreate(_worldData, nearestChunkDataPositions, worldPosition);
-            List<Vector3Int> chunkRendererPositionsToCreate = WorldDataHandler.SelectChunkRendererPositionsToCreate(_worldData, nearestChunkRendererPositions, worldPosition);
+            List<Vector3Int> chunkDataPositionsToCreate = WorldDataHandler.SelectChunkDataPositionsToCreate(WorldData, nearestChunkDataPositions, worldPosition);
+            List<Vector3Int> chunkRendererPositionsToCreate = WorldDataHandler.SelectChunkRendererPositionsToCreate(WorldData, nearestChunkRendererPositions, worldPosition);
 
-            List<Vector3Int> chunkDataPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkDataPositions(_worldData, nearestChunkDataPositions);
-            List<Vector3Int> chunkRendererPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkRendererPositions(_worldData, nearestChunkRendererPositions);
+            List<Vector3Int> chunkDataPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkDataPositions(WorldData, nearestChunkDataPositions);
+            List<Vector3Int> chunkRendererPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkRendererPositions(WorldData, nearestChunkRendererPositions);
 
             WorldGenerationData worldGenerationData = new WorldGenerationData
             {
@@ -73,12 +70,12 @@ namespace HerosJourney.Core.WorldGeneration
         private void RemoveDistantChunks(WorldGenerationData worldGenerationData)
         {
             foreach (Vector3Int position in worldGenerationData.chunkDataPositionsToRemove)
-                _worldData.chunkData.Remove(position);
+                WorldData.chunkData.Remove(position);
 
             foreach (Vector3Int position in worldGenerationData.chunkRendererPositionsToRemove)
             {
-                Destroy(_worldData.chunkRenderers[position].gameObject);
-                _worldData.chunkRenderers.Remove(position);
+                Destroy(WorldData.chunkRenderers[position].gameObject);
+                WorldData.chunkRenderers.Remove(position);
             }
         }
 
@@ -89,7 +86,7 @@ namespace HerosJourney.Core.WorldGeneration
                 ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
                 _terrainGenerator.GenerateChunkData(chunkData);
 
-                _worldData.chunkData.Add(position, chunkData);
+                WorldData.chunkData.Add(position, chunkData);
             }
         }
 
@@ -97,15 +94,14 @@ namespace HerosJourney.Core.WorldGeneration
         {
             foreach(Vector3Int position in chunkRendererPositionsToCreate)
             {
-                ChunkData chunkData = _worldData.chunkData[position];
+                ChunkData chunkData = WorldData.chunkData[position];
                 MeshData meshData = ChunkDataHandler.GenerateMeshData(chunkData);
-                GameObject chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
+                ChunkRenderer chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
 
-                ChunkRenderer chunkRenderer = chunkInstance.GetComponent<ChunkRenderer>();
-                chunkRenderer.InitializeChunk(chunkData);
-                chunkRenderer.UpdateChunk(meshData);
+                chunkInstance.InitializeChunk(chunkData);
+                chunkInstance.UpdateChunk(meshData);
 
-                _worldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
+                WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkInstance);
             }
         }
     }

@@ -5,24 +5,20 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
     {
-        private int _chunkLength;
-        private int _chunkHeight;
         public Voxel[,,] voxels;
-        private Vector3Int _worldPosition;
-        private World _world;
 
-        public int ChunkLength => _chunkLength;
-        public int ChunkHeight => _chunkHeight;
-        public Vector3Int WorldPosition => _worldPosition;
-        public World World => _world;
+        public int ChunkLength { get; private set; }
+        public int ChunkHeight { get; private set; }
+        public Vector3Int WorldPosition { get; private set; }
+        public World World { get; private set; }
 
         public ChunkData (int chunkLength, int chunkHeight, Vector3Int worldPosition, World worldReference)
         {
-            _chunkLength = chunkLength;
-            _chunkHeight = chunkHeight;
+            ChunkLength = chunkLength;
+            ChunkHeight = chunkHeight;
             voxels = new Voxel[chunkLength, chunkHeight, chunkLength];
-            _worldPosition = worldPosition;
-            _world = worldReference;
+            WorldPosition = worldPosition;
+            World = worldReference;
         }
     }
 }
