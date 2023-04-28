@@ -15,12 +15,12 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] [Range(4, 16)] 
         private int _renderDistance = 8;
 
-        [SerializeField] private ChunkRenderer _chunkPrefab;
+        [SerializeField] private WorldRenderer _worldRenderer;
         [SerializeField] private TerrainGenerator _terrainGenerator;
 
-        public Action OnNewChunksGenerated;
-
         private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
+
+        public Action OnNewChunksGenerated;
 
         public int ChunkLength => _chunkLength;
         public WorldData WorldData { get; private set; }
@@ -89,7 +89,8 @@ namespace HerosJourney.Core.WorldGeneration
 
             foreach (Vector3Int position in worldGenerationData.chunkRendererPositionsToRemove)
             {
-                Destroy(WorldData.chunkRenderers[position].gameObject);
+                _worldRenderer.UnloadChunk(WorldData.chunkRenderers[position]);
+
                 WorldData.chunkRenderers.Remove(position);
                 yield return new WaitForEndOfFrame();
             }
@@ -118,12 +119,9 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 ChunkData chunkData = WorldData.chunkData[position];
                 MeshData meshData = ChunkDataHandler.GenerateMeshData(chunkData);
-                ChunkRenderer chunkInstance = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
+                ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(chunkData, meshData);
 
-                chunkInstance.InitializeChunk(chunkData);
-                chunkInstance.UpdateChunk(meshData);
-
-                WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkInstance);
+                WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
                 yield return new WaitForEndOfFrame();
             }
         }
