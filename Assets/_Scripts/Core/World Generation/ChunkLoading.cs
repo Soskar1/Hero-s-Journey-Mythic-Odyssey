@@ -10,28 +10,42 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private int _updateTime;
         private Vector3Int _currentPlayerChunkPosition;
         private Vector3Int _currentChunkCenter;
+        
+        private bool _requestIsProcessed = false;
 
-        private void OnEnable() => _world.OnNewChunksGenerated += StartCheckingMap;
-        private void OnDisable() => _world.OnNewChunksGenerated -= StartCheckingMap;
+        private void OnEnable()
+        {
+            _world.OnNewChunksInitialized += StartCheckingMap;
+            _world.OnNewChunksInitialized += ChangeRequestStatus;
+        }
+        private void OnDisable()
+        {
+            _world.OnNewChunksInitialized -= StartCheckingMap;
+            _world.OnNewChunksInitialized -= ChangeRequestStatus;
+        }
 
         public void StartCheckingMap()
         {
             SetCurrentChunkCoordinates();
             StopAllCoroutines();
-            StartCoroutine(TryLoadNewChunks());
+            StartCoroutine(TryRequestNewChunks());
         }
 
-        private IEnumerator TryLoadNewChunks()
+        private IEnumerator TryRequestNewChunks()
         {
             yield return new WaitForSeconds(_updateTime);
             if (Mathf.Abs(_currentChunkCenter.x - _player.position.x) > _world.ChunkLength ||
                 Mathf.Abs(_currentChunkCenter.z - _player.position.z) > _world.ChunkLength)
             {
-                _world.GenerateChunks(Vector3Int.RoundToInt(_player.position));
+                if (!_requestIsProcessed)
+                {
+                    _world.GenerateChunks(Vector3Int.RoundToInt(_player.position));
+                    _requestIsProcessed = true;
+                }
             }
             else
             {
-                StartCoroutine(TryLoadNewChunks());
+                StartCoroutine(TryRequestNewChunks());
             }
         }
 
@@ -41,5 +55,7 @@ namespace HerosJourney.Core.WorldGeneration
             _currentChunkCenter.x = _currentPlayerChunkPosition.x + _world.ChunkLength / 2;
             _currentChunkCenter.z = _currentPlayerChunkPosition.z + _world.ChunkLength / 2;
         }
+
+        private void ChangeRequestStatus() => _requestIsProcessed = false;
     }
 }

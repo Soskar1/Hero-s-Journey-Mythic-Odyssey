@@ -12,7 +12,7 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
-        [SerializeField] [Range(4, 16)] 
+        [SerializeField] [Range(4, 32)] 
         private int _renderDistance = 8;
 
         [SerializeField] private WorldRenderer _worldRenderer;
@@ -20,7 +20,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
 
-        public Action OnNewChunksGenerated;
+        public Action OnNewChunksInitialized;
 
         public int ChunkLength => _chunkLength;
         public WorldData WorldData { get; private set; }
@@ -55,8 +55,6 @@ namespace HerosJourney.Core.WorldGeneration
             }
             
             StartCoroutine(InitializeChunks(worldGenerationData.chunkRendererPositionsToCreate));
-
-            OnNewChunksGenerated?.Invoke();
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
@@ -115,7 +113,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         private IEnumerator InitializeChunks(List<Vector3Int> chunkRendererPositionsToCreate)
         {
-            foreach(Vector3Int position in chunkRendererPositionsToCreate)
+            foreach (Vector3Int position in chunkRendererPositionsToCreate)
             {
                 ChunkData chunkData = WorldData.chunkData[position];
                 MeshData meshData = ChunkDataHandler.GenerateMeshData(chunkData);
@@ -124,6 +122,8 @@ namespace HerosJourney.Core.WorldGeneration
                 WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
                 yield return new WaitForEndOfFrame();
             }
+
+            OnNewChunksInitialized?.Invoke();
         }
     }
 }
