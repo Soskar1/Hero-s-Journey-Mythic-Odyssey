@@ -16,10 +16,10 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             Direction.back
         };
 
-        public static MeshData GenerateVoxel(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
+        public static void GenerateVoxel(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
         {
             if (voxelData.type == VoxelType.Air || voxelData.type == VoxelType.Nothing)
-                return meshData;
+                return;
 
             foreach (var direction in _directions)
             {
@@ -30,11 +30,9 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
                 if (neighbourVoxel != null)
                     neighbourVoxelType = neighbourVoxel.GetType();
                 
-                if (neighbourVoxelType == VoxelType.Air)
+                if (neighbourVoxelType == VoxelType.Air || neighbourVoxelType == VoxelType.Transparent)
                     RenderVoxelFace(meshData, voxelData, position, direction);
             }
-
-            return meshData;
         }
 
         private static void RenderVoxelFace(MeshData meshData, VoxelData voxelData, Vector3Int position, Direction direction)
