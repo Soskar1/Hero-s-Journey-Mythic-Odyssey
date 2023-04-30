@@ -7,7 +7,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         public static MeshData GenerateMeshData(ChunkData chunkData)
         {
-            MeshData meshData = new MeshData();
+            MeshData meshData = new MeshData(true);
 
             for (int x = 0; x < chunkData.ChunkLength; ++x)
                 for (int y = 0; y < chunkData.ChunkHeight; ++y)

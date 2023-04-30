@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
@@ -22,11 +23,16 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _mesh.Clear();
 
             _mesh.subMeshCount = 2;
-            _mesh.SetVertices(meshData.Vertices);
+            _mesh.SetVertices(meshData.Vertices.Concat(meshData.WaterMeshData.Vertices).ToArray());
             _mesh.SetTriangles(meshData.Triangles, 0);
-            _mesh.SetUVs(0, meshData.UVs);
+            _mesh.SetTriangles(meshData.WaterMeshData.Triangles.Select(val => val + meshData.Vertices.Count).ToArray(), 1);
+            _mesh.SetUVs(0, meshData.UVs.Concat(meshData.WaterMeshData.UVs).ToArray());
 
-            _meshCollider.sharedMesh = _mesh;
+            Mesh colliderMesh = new Mesh();
+            colliderMesh.SetVertices(meshData.ColliderVertices);
+            colliderMesh.SetTriangles(meshData.ColliderTriangles, 0);
+
+            _meshCollider.sharedMesh = colliderMesh;
 
             _mesh.RecalculateNormals();
         }

@@ -17,3 +17,4 @@ MonoBehaviour:
     up: {x: 0, y: 0}
     down: {x: 0, y: 2}
     side: {x: 0, y: 1}
+  generatesCollider: 1
