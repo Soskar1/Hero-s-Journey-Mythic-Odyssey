@@ -29,8 +29,16 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
 
                 if (neighbourVoxel != null)
                     neighbourVoxelType = neighbourVoxel.GetType();
+
+                if (voxelData.type == VoxelType.Water)
+                {
+                    if (neighbourVoxelType == VoxelType.Air)
+                        RenderVoxelFace(meshData, voxelData, position, Direction.up);
+                    
+                    return;
+                }
                 
-                if (neighbourVoxelType == VoxelType.Air || neighbourVoxelType == VoxelType.Transparent)
+                if (neighbourVoxelType == VoxelType.Air || neighbourVoxelType == VoxelType.Water)
                     RenderVoxelFace(meshData, voxelData, position, direction);
             }
         }

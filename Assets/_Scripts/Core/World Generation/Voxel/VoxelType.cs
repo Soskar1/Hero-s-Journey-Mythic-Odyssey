@@ -3,7 +3,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
     public enum VoxelType
     {
         Air,
-        Transparent,
+        Water,
         Solid,
         Nothing
     }
