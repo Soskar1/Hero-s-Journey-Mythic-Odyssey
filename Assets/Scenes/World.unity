@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.4936842, z: -3.069035}
+  m_FollowOffset: {x: 0, y: -0.4993757, z: -3.006976}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -575,7 +575,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 336289396}
-  m_LocalRotation: {x: 0.10649047, y: 0.000000013042229, z: -0.0000000013968154, w: 0.9943138}
+  m_LocalRotation: {x: 0.106490485, y: 0.000000007408213, z: -7.934157e-10, w: 0.9943138}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -995,7 +995,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791969268}
-  m_LocalRotation: {x: 0.124511264, y: 0.000000025655098, z: -0.0000000032194016, w: 0.9922182}
+  m_LocalRotation: {x: 0.12451126, y: -0.000000027338084, z: 0.0000000034305954, w: 0.9922182}
   m_LocalPosition: {x: 0, y: 71, z: -8.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.4936842, z: -3.069035}
+  m_FollowOffset: {x: 0, y: -0.4993757, z: -3.006976}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1694,7 +1694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.4936842, z: -3.069035}
+  m_FollowOffset: {x: 0, y: -0.4993757, z: -3.006976}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1857,7 +1857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 8
+  _renderDistance: 16
   _worldRenderer: {fileID: 1530814505}
   _terrainGenerator: {fileID: 1025008824}
 --- !u!4 &1530814504
@@ -1887,7 +1887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0896e872849e7054981aef8ef2499def, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunkPrefab: {fileID: 9212265846582118787, guid: fbd0fe1fb5acaf747a8ed3f3bff5a672, type: 3}
+  _chunkPrefab: {fileID: 9212265846582118787, guid: 785bc7c26a3a38d4bb9c394f7385600f, type: 3}
   _initialPoolCapacity: 4096
 --- !u!1 &1574429500
 GameObject:
@@ -2333,7 +2333,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005423851}
-  m_LocalRotation: {x: 0.12451127, y: 0.0000000128968605, z: -0.0000000016183986, w: 0.9922182}
+  m_LocalRotation: {x: 0.12451126, y: -0.00000001598486, z: 0.0000000020059046, w: 0.9922182}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
