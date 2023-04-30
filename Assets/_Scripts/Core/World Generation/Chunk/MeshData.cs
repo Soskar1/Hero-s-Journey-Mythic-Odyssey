@@ -7,6 +7,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         public List<Vector3> Vertices { get; private set; }
         public List<int> Triangles { get; private set; }
+        public List<Vector3> Normals { get; private set; }
         public List<Vector3> UVs { get; private set; }
 
         public List<Vector3> ColliderVertices { get; private set; }
@@ -17,6 +18,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public MeshData(bool isMainMesh) {
             Vertices = new List<Vector3>();
             Triangles = new List<int>();
+            Normals = new List<Vector3>();
             UVs = new List<Vector3>();
 
             ColliderVertices = new List<Vector3>();
@@ -32,6 +34,11 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
             if (generatesCollider)
                 ColliderVertices.Add(position);
+        }
+
+        public void AddNormal(Vector3 normal)
+        {
+            Normals.Add(normal);
         }
 
         public void CreateQuad(bool generateCollider)
