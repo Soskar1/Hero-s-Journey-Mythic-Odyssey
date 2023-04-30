@@ -7,12 +7,12 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         public static MeshData GenerateMeshData(ChunkData chunkData)
         {
-            MeshData meshData = new MeshData();
+            MeshData meshData = new MeshData(true);
 
             for (int x = 0; x < chunkData.ChunkLength; ++x)
                 for (int y = 0; y < chunkData.ChunkHeight; ++y)
                     for (int z = 0; z < chunkData.ChunkLength; ++z)
-                        meshData = VoxelFaceGeneration.GenerateVoxel(chunkData, meshData, chunkData.voxels[x, y, z].data, new Vector3Int(x, y, z));
+                        VoxelFaceGeneration.GenerateVoxel(chunkData, meshData, chunkData.voxels[x, y, z].data, new Vector3Int(x, y, z));
 
             return meshData;
         }

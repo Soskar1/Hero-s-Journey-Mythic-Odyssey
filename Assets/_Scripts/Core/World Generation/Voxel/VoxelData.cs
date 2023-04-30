@@ -8,6 +8,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
     {
         public VoxelType type;
         public TextureData textureData;
+        public bool generatesCollider;
     }
 
     [Serializable]

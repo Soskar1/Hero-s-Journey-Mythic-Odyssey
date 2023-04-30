@@ -9,15 +9,32 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public List<int> Triangles { get; private set; }
         public List<Vector3> UVs { get; private set; }
 
-        public MeshData() {
+        public List<Vector3> ColliderVertices { get; private set; }
+        public List<int> ColliderTriangles { get; private set; }
+
+        public MeshData WaterMeshData { get; private set; }
+
+        public MeshData(bool isMainMesh) {
             Vertices = new List<Vector3>();
             Triangles = new List<int>();
             UVs = new List<Vector3>();
+
+            ColliderVertices = new List<Vector3>();
+            ColliderTriangles = new List<int>();
+
+            if (isMainMesh)
+                WaterMeshData = new MeshData(false);
         }
 
-        public void AddVertex(Vector3 position) => Vertices.Add(position);
+        public void AddVertex(Vector3 position, bool generatesCollider)
+        {
+            Vertices.Add(position);
 
-        public void CreateQuad()
+            if (generatesCollider)
+                ColliderVertices.Add(position);
+        }
+
+        public void CreateQuad(bool generateCollider)
         {
             Triangles.Add(Vertices.Count - 4);
             Triangles.Add(Vertices.Count - 3);
@@ -26,6 +43,17 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             Triangles.Add(Vertices.Count - 4);
             Triangles.Add(Vertices.Count - 2);
             Triangles.Add(Vertices.Count - 1);
+
+            if (generateCollider)
+            {
+                ColliderTriangles.Add(ColliderVertices.Count - 4);
+                ColliderTriangles.Add(ColliderVertices.Count - 3);
+                ColliderTriangles.Add(ColliderVertices.Count - 2);
+
+                ColliderTriangles.Add(ColliderVertices.Count - 4);
+                ColliderTriangles.Add(ColliderVertices.Count - 2);
+                ColliderTriangles.Add(ColliderVertices.Count - 1);
+            }
         }
 
         public void AddUVCoordinates(Vector3 uvCoordinates) => UVs.Add(uvCoordinates);
