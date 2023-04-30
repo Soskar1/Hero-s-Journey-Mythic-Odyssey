@@ -50,6 +50,9 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
 
         private static void GenerateVoxelFace(MeshData meshData, Vector3 position, Direction direction, bool generatesCollider)
         {
+            for(int i = 0; i < 4; ++i) 
+                meshData.AddNormal(direction.ToVector3Int());
+
             switch (direction)
             {
                 case Direction.up:
