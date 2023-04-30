@@ -36,10 +36,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 ColliderVertices.Add(position);
         }
 
-        public void AddNormal(Vector3 normal)
-        {
-            Normals.Add(normal);
-        }
+        public void AddNormal(Vector3 normal) => Normals.Add(normal);
 
         public void CreateQuad(bool generateCollider)
         {
