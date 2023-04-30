@@ -7,11 +7,13 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         [SerializeField] private MeshCollider _meshCollider;
         [SerializeField] private MeshFilter _meshFilter;
+        [SerializeField] private Animator _animator;
         private Mesh _mesh;
 
         public ChunkData ChunkData { get; private set; }
 
         private void Awake() => _mesh = _meshFilter.mesh;
+        private void OnEnable() => _animator.enabled = true;
 
         public void InitializeChunk(ChunkData data) => ChunkData = data;
 
@@ -36,5 +38,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
             _mesh.RecalculateNormals();
         }
+
+        public void StopAnimation() => _animator.enabled = false;
     }
 }
