@@ -5,11 +5,13 @@ using System;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
+using UnityEngine.UI;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
+        [SerializeField] private Slider _renderDistanceSlider;
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
         [SerializeField] [Range(4, 32)] 
@@ -37,7 +39,11 @@ namespace HerosJourney.Core.WorldGeneration
         private void OnDisable() => _taskTokenSource.Cancel();
         private void Awake() => WorldData = new WorldData(_chunkLength, _chunkHeight);
 
-        public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
+        public void GenerateChunks() 
+        {
+            _renderDistance = (int)_renderDistanceSlider.value;
+            GenerateChunks(Vector3Int.zero);
+        }
 
         public async void GenerateChunks(Vector3Int worldPosition)
         {
