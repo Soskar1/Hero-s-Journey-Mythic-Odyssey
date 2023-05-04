@@ -8,6 +8,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         [SerializeField] private MeshCollider _meshCollider;
         [SerializeField] private MeshFilter _meshFilter;
         [SerializeField] private Animator _animator;
+        [SerializeField] private Transform _visual;
         private Mesh _mesh;
 
         public ChunkData ChunkData { get; private set; }
@@ -37,6 +38,10 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
             _meshCollider.sharedMesh = colliderMesh;
         }
-        public void StopAnimation() => _animator.enabled = false;
+        public void StopAnimation()
+        {
+            _animator.enabled = false;
+            _visual.position = new Vector3(_visual.position.x, 0, _visual.position.z);
+        }
     }
 }
