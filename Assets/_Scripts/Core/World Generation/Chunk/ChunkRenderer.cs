@@ -9,6 +9,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         [SerializeField] private MeshCollider _meshCollider;
         [SerializeField] private MeshFilter _meshFilter;
         [SerializeField] private Animator _animator;
+        [SerializeField] private Transform _visual;
         private Mesh _mesh;
         private Mesh _colliderMesh;
 
@@ -24,8 +25,13 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void InitializeChunk(ChunkData data) => ChunkData = data;
 
-        public void UpdateChunk() => RenderMesh(ChunkDataHandler.GenerateMeshData(ChunkData));
-        public void UpdateChunk(MeshData data) => RenderMesh(data);
+        public void UpdateChunk() => UpdateChunk(ChunkDataHandler.GenerateMeshData(ChunkData));
+        
+        public void UpdateChunk(MeshData meshData)
+        {
+            RenderMesh(meshData);
+            SetCollider(meshData);
+        }
 
         private void RenderMesh(MeshData meshData)
         {
@@ -42,12 +48,18 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _mesh.SetUVs(0, meshData.UVs.Concat(meshData.WaterMeshData.UVs).ToArray());
 
             _mesh.RecalculateNormals();
+        }
 
+        private void SetCollider(MeshData meshData)
+        {
             _colliderMesh.SetVertices(meshData.ColliderVertices);
             _colliderMesh.SetTriangles(meshData.ColliderTriangles, 0);
 
             _meshCollider.sharedMesh = _colliderMesh;
         }
+
         public void StopAnimation() => _animator.enabled = false;
+
+        public void ResetYPosition() => _visual.position = new Vector3(_visual.position.x, 0, _visual.position.z);
     }
 }
