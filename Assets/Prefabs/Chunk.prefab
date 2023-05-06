@@ -147,6 +147,7 @@ MonoBehaviour:
   _meshCollider: {fileID: 998452346496697578}
   _meshFilter: {fileID: 2299700878474219645}
   _animator: {fileID: 4261299080314147853}
+  _visual: {fileID: 7452009889661444905}
 --- !u!95 &4261299080314147853
 Animator:
   serializedVersion: 5
