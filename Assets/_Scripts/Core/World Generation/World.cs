@@ -43,7 +43,7 @@ namespace HerosJourney.Core.WorldGeneration
         {
             WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
 
-            StartCoroutine(RemoveDistantChunks(worldGenerationData));
+            RemoveDistantChunks(worldGenerationData);
 
             try
             {
@@ -80,7 +80,7 @@ namespace HerosJourney.Core.WorldGeneration
             return worldGenerationData;
         }
 
-        private IEnumerator RemoveDistantChunks(WorldGenerationData worldGenerationData)
+        private void RemoveDistantChunks(WorldGenerationData worldGenerationData)
         {
             foreach (Vector3Int position in worldGenerationData.chunkDataPositionsToRemove)
                 WorldData.chunkData.Remove(position);
@@ -90,7 +90,6 @@ namespace HerosJourney.Core.WorldGeneration
                 _worldRenderer.UnloadChunk(WorldData.chunkRenderers[position]);
 
                 WorldData.chunkRenderers.Remove(position);
-                yield return new WaitForEndOfFrame();
             }
         }
 
