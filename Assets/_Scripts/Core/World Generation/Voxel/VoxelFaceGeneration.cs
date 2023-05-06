@@ -16,7 +16,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             Direction.back
         };
 
-        public static void GenerateVoxel(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
+        public static void GenerateVoxelFaces(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
         {
             if (voxelData.type == VoxelType.Air || voxelData.type == VoxelType.Nothing)
                 return;
@@ -30,23 +30,16 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
                 if (neighbourVoxel != null)
                     neighbourVoxelType = neighbourVoxel.GetType();
 
-                if (voxelData.type == VoxelType.Water)
-                {
-                    if (neighbourVoxelType == VoxelType.Air)
-                        RenderVoxelFace(meshData, voxelData, position, direction);
-                }
-                else if (neighbourVoxelType == VoxelType.Air || neighbourVoxelType == VoxelType.Water)
-                {
-                    RenderVoxelFace(meshData, voxelData, position, direction);
-                }
+                if (voxelData.type == VoxelType.Liquid && neighbourVoxelType != VoxelType.Air)
+                    continue;
+                
+                if (neighbourVoxelType == VoxelType.Air || neighbourVoxelType == VoxelType.Liquid)
+                    SetVoxelFace(meshData, voxelData, position, direction);
             }
         }
 
-        private static void RenderVoxelFace(MeshData meshData, VoxelData voxelData, Vector3Int position, Direction direction)
+        private static void SetVoxelFace(MeshData meshData, VoxelData voxelData, Vector3Int position, Direction direction)
         {
-            for (int i = 0; i < 4; ++i)
-                meshData.AddNormal(direction.ToVector3Int());
-
             GenerateVoxelFace(meshData, position, direction, voxelData.generatesCollider);
             AssignUVCoordinates(meshData, voxelData, direction);
         }
@@ -99,6 +92,9 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             }
 
             meshData.CreateQuad(generatesCollider);
+
+            for (int i = 0; i < 4; ++i)
+                meshData.AddNormal(direction.ToVector3Int());
         }
 
         private static void AssignUVCoordinates(MeshData meshData, VoxelData voxelData, Direction direction)
