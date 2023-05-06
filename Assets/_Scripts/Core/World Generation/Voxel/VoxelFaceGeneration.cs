@@ -44,15 +44,15 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
 
         private static void RenderVoxelFace(MeshData meshData, VoxelData voxelData, Vector3Int position, Direction direction)
         {
+            for (int i = 0; i < 4; ++i)
+                meshData.AddNormal(direction.ToVector3Int());
+
             GenerateVoxelFace(meshData, position, direction, voxelData.generatesCollider);
             AssignUVCoordinates(meshData, voxelData, direction);
         }
 
         private static void GenerateVoxelFace(MeshData meshData, Vector3 position, Direction direction, bool generatesCollider)
         {
-            for(int i = 0; i < 4; ++i) 
-                meshData.AddNormal(direction.ToVector3Int());
-
             switch (direction)
             {
                 case Direction.up:
