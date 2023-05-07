@@ -12,7 +12,7 @@ GameObject:
   m_Layer: 0
   m_Name: Front_Upper
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -43,7 +43,7 @@ GameObject:
   m_Layer: 0
   m_Name: Front_Lower
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7212298302820510924}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8, z: 0.45}
+  m_LocalPosition: {x: 0, y: -1, z: 0.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -187,7 +187,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7791523650516324595}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f799c1692db4fc84dbf080561c91ee76, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -267,6 +267,7 @@ MonoBehaviour:
   _groundCheck: {fileID: 7791523651829349518}
   _jumping: {fileID: 7791523651829349513}
   _collisionClimbing: {fileID: 7083377027461605819}
+  _rigidbody: {fileID: 7791523651829349516}
 --- !u!114 &7791523651829349506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +359,13 @@ MonoBehaviour:
   _collisionLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  _stepSmooth: 0.1
-  _stepHeight: 1
-  _lowerRaycastLength: 0.1
-  _upperRaycastLength: 0.2
+  _stepOffset: 0.01
+  _maxStepHeight: 1.5
+  _lowerRaycastMaxLength: 0.35
+  _upperRaycastMaxLength: 0.35
+  _angles:
+  - 0
+  - 45
+  - -45
+  - 22.25
+  - -22.25

@@ -15,11 +15,13 @@ namespace HerosJourney.Core.Entities
         [SerializeField] private GroundCheck _groundCheck;
         [SerializeField] private Jumping _jumping;
         [SerializeField] private CollisionClimbing _collisionClimbing;
+        [SerializeField] private Rigidbody _rigidbody;
         private IMovement _movement;
         private Camera _camera;
 
         private Vector2 _movementInput;
         private Vector3 _targetDirection;
+        private Vector3 _lastVelocity;
 
         private void Awake()
         {
@@ -56,15 +58,14 @@ namespace HerosJourney.Core.Entities
             {
                 _movement.Move(_targetDirection);
 
-                if (_groundCheck.CheckForGround())
-                {
-                    _collisionClimbing.StepClimb();
-                }
+                _collisionClimbing.StepClimb(_lastVelocity);
             }
             else
             {
                 _movement.Move(Vector3.zero);
             }
+
+            _lastVelocity = _rigidbody.velocity;
         }
 
         private void Jump(InputAction.CallbackContext context)
