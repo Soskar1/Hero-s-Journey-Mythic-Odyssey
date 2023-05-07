@@ -55,7 +55,11 @@ namespace HerosJourney.Core.Entities
             if (_movementInput.magnitude > 0)
             {
                 _movement.Move(_targetDirection);
-                _collisionClimbing.StepClimb();
+
+                if (_groundCheck.CheckForGround())
+                {
+                    _collisionClimbing.StepClimb();
+                }
             }
             else
             {
