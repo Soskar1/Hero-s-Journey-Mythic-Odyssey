@@ -57,7 +57,6 @@ namespace HerosJourney.Core.Entities
             if (_movementInput.magnitude > 0)
             {
                 _movement.Move(_targetDirection);
-
                 _collisionClimbing.StepClimb(_lastVelocity);
             }
             else

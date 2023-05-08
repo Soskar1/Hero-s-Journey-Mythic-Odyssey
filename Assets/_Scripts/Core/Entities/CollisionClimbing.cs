@@ -22,11 +22,11 @@ namespace HerosJourney.Core.Entities
         {
             for (int index = 0; index < _angles.Count; ++index)
             {
-                float heightDifference;
-                if (CheckForCollision(_angles[index], out heightDifference))
+                if (CheckForCollision(_angles[index], out float heightDifference))
                 {
                     _rigidbody.position += new Vector3(0f, heightDifference + _stepOffset, 0f);
                     _rigidbody.velocity = lastVelocity;
+
                     return;
                 }
             }
