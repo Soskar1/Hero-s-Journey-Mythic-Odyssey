@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Linq;
-using UnityEditor;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
@@ -25,7 +24,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void InitializeChunk(ChunkData data) => ChunkData = data;
 
-        public void UpdateChunk() => UpdateChunk(ChunkDataHandler.GenerateMeshData(ChunkData));
+        public void UpdateChunk() => UpdateChunk(MeshBuilder.GenerateMeshData(ChunkData));
         
         public void UpdateChunk(MeshData meshData)
         {

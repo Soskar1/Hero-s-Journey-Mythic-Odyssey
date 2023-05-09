@@ -5,18 +5,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkDataHandler
     {
-        public static MeshData GenerateMeshData(ChunkData chunkData)
-        {
-            MeshData meshData = new MeshData(true);
-
-            for (int x = 0; x < chunkData.ChunkLength; ++x)
-                for (int y = 0; y < chunkData.ChunkHeight; ++y)
-                    for (int z = 0; z < chunkData.ChunkLength; ++z)
-                        VoxelFaceGeneration.GenerateVoxelFaces(chunkData, meshData, chunkData.voxels[x, y, z].data, new Vector3Int(x, y, z));
-
-            return meshData;
-        }
-
         public static void SetVoxelAt(ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
         {
             if (IsInBounds(chunkData, localPosition))

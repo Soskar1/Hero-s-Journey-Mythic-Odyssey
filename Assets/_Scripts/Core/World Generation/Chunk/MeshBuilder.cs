@@ -1,10 +1,10 @@
-using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Utils;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration.Voxels
+namespace HerosJourney.Core.WorldGeneration.Chunks
 {
-    public static class VoxelFaceGeneration
+    public static class MeshBuilder
     {
         private const float VERTEX_OFFSET = 0.5f;
         private static Direction[] _directions = {
@@ -16,7 +16,19 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             Direction.back
         };
 
-        public static void GenerateVoxelFaces(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
+        public static MeshData GenerateMeshData(ChunkData chunkData)
+        {
+            MeshData meshData = new MeshData(true);
+
+            for (int x = 0; x < chunkData.ChunkLength; ++x)
+                for (int y = 0; y < chunkData.ChunkHeight; ++y)
+                    for (int z = 0; z < chunkData.ChunkLength; ++z)
+                        GenerateVoxelFaces(chunkData, meshData, chunkData.voxels[x, y, z].data, new Vector3Int(x, y, z));
+
+            return meshData;
+        }
+
+        private static void GenerateVoxelFaces(ChunkData chunkData, MeshData meshData, VoxelData voxelData, Vector3Int position)
         {
             if (voxelData.type == VoxelType.Air || voxelData.type == VoxelType.Nothing)
                 return;
@@ -40,11 +52,11 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
 
         private static void SetVoxelFace(MeshData meshData, VoxelData voxelData, Vector3Int position, Direction direction)
         {
-            GenerateVoxelFace(meshData, position, direction, voxelData.generatesCollider);
+            AddVerticies(meshData, position, direction, voxelData.generatesCollider);
             AssignUVCoordinates(meshData, voxelData, direction);
         }
 
-        private static void GenerateVoxelFace(MeshData meshData, Vector3 position, Direction direction, bool generatesCollider)
+        private static void AddVerticies(MeshData meshData, Vector3 position, Direction direction, bool generatesCollider)
         {
             switch (direction)
             {
