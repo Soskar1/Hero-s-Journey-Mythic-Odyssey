@@ -28,17 +28,11 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 WaterMeshData = new MeshData(false);
         }
 
-        public void AddVertex(Vector3 position, bool generatesCollider)
-        {
-            Vertices.Add(position);
-
-            if (generatesCollider)
-                ColliderVertices.Add(position);
-        }
+        public void AddVertex(Vector3 position) => Vertices.Add(position);
 
         public void AddNormal(Vector3 normal) => Normals.Add(normal);
 
-        public void CreateQuad(bool generateCollider)
+        public void CreateQuad()
         {
             Triangles.Add(Vertices.Count - 4);
             Triangles.Add(Vertices.Count - 3);
@@ -47,17 +41,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             Triangles.Add(Vertices.Count - 4);
             Triangles.Add(Vertices.Count - 2);
             Triangles.Add(Vertices.Count - 1);
-
-            if (generateCollider)
-            {
-                ColliderTriangles.Add(ColliderVertices.Count - 4);
-                ColliderTriangles.Add(ColliderVertices.Count - 3);
-                ColliderTriangles.Add(ColliderVertices.Count - 2);
-
-                ColliderTriangles.Add(ColliderVertices.Count - 4);
-                ColliderTriangles.Add(ColliderVertices.Count - 2);
-                ColliderTriangles.Add(ColliderVertices.Count - 1);
-            }
         }
 
         public void AddUVCoordinates(Vector3 uvCoordinates) => UVs.Add(uvCoordinates);
