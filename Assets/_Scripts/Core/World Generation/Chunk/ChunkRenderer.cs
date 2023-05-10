@@ -50,7 +50,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         private void SetCollider(MeshData meshData)
         {
-            _colliderMesh.SetVertices(meshData.ColliderVertices);
+            _colliderMesh.SetVertices(meshData.ColliderVerticesTriangles.Keys.ToArray());
             _colliderMesh.SetTriangles(meshData.ColliderTriangles, 0);
 
             _meshCollider.sharedMesh = _colliderMesh;
