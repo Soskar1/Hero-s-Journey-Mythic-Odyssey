@@ -24,7 +24,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void InitializeChunk(ChunkData data) => ChunkData = data;
 
-        public void UpdateChunk() => UpdateChunk(MeshBuilder.GenerateMeshData(ChunkData));
+        public void UpdateChunk() => UpdateChunk(MeshDataBuilder.GenerateMeshData(ChunkData));
         
         public void UpdateChunk(MeshData meshData)
         {
@@ -39,12 +39,11 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
             _mesh.subMeshCount = 2;
 
-            _mesh.SetVertices(meshData.Vertices.Concat(meshData.WaterMeshData.Vertices).ToArray());
-            _mesh.SetTriangles(meshData.WaterMeshData.Triangles.Select(val => val + meshData.Vertices.Count).ToArray(), 1);
+            _mesh.SetVertices(meshData.VerticesTriangles.Keys.Concat(meshData.WaterMeshData.VerticesTriangles.Keys).ToArray());
+            _mesh.SetTriangles(meshData.WaterMeshData.Triangles.Select(val => val + meshData.VerticesTriangles.Count).ToArray(), 1);
 
             _mesh.SetTriangles(meshData.Triangles, 0);
-            _mesh.SetNormals(meshData.Normals);
-            _mesh.SetUVs(0, meshData.UVs.Concat(meshData.WaterMeshData.UVs).ToArray());
+            //_mesh.SetUVs(0, meshData.UVs.Concat(meshData.WaterMeshData.UVs).ToArray());
 
             _mesh.RecalculateNormals();
         }

@@ -5,8 +5,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class MeshData
     {
-        public List<Vector3> Vertices { get; private set; }
         public List<int> Triangles { get; private set; }
+        public Dictionary<Vector3, int> VerticesTriangles { get; private set; }
         public List<Vector3> Normals { get; private set; }
         public List<Vector3> UVs { get; private set; }
 
@@ -16,8 +16,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public MeshData WaterMeshData { get; private set; }
 
         public MeshData(bool isMainMesh) {
-            Vertices = new List<Vector3>();
             Triangles = new List<int>();
+            VerticesTriangles = new Dictionary<Vector3, int>();
             Normals = new List<Vector3>();
             UVs = new List<Vector3>();
 
@@ -28,19 +28,36 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 WaterMeshData = new MeshData(false);
         }
 
-        public void AddVertex(Vector3 position) => Vertices.Add(position);
-
-        public void AddNormal(Vector3 normal) => Normals.Add(normal);
-
-        public void CreateQuad()
+        public void TryAddVertices(Vector3[] positions, bool generatesCollider)
         {
-            Triangles.Add(Vertices.Count - 4);
-            Triangles.Add(Vertices.Count - 3);
-            Triangles.Add(Vertices.Count - 2);
+            for (int index = 0; index < positions.Length; ++index)
+                if (VerticesTriangles.TryAdd(positions[index], VerticesTriangles.Count) && generatesCollider)
+                    ColliderVertices.Add(positions[index]);
+        }
 
-            Triangles.Add(Vertices.Count - 4);
-            Triangles.Add(Vertices.Count - 2);
-            Triangles.Add(Vertices.Count - 1);
+        public void CreateQuad(Vector3[] vertices, bool generatedCollider)
+        {
+            if (vertices.Length != 4)
+                throw new System.Exception("Vertices count must be equal to 4");
+
+            Triangles.Add(VerticesTriangles[vertices[0]]);
+            Triangles.Add(VerticesTriangles[vertices[1]]);
+            Triangles.Add(VerticesTriangles[vertices[2]]);
+
+            Triangles.Add(VerticesTriangles[vertices[0]]);
+            Triangles.Add(VerticesTriangles[vertices[2]]);
+            Triangles.Add(VerticesTriangles[vertices[3]]);
+
+            if (generatedCollider)
+            {
+                ColliderTriangles.Add(VerticesTriangles[vertices[0]]);
+                ColliderTriangles.Add(VerticesTriangles[vertices[1]]);
+                ColliderTriangles.Add(VerticesTriangles[vertices[2]]);
+
+                ColliderTriangles.Add(VerticesTriangles[vertices[0]]);
+                ColliderTriangles.Add(VerticesTriangles[vertices[2]]);
+                ColliderTriangles.Add(VerticesTriangles[vertices[3]]);
+            }
         }
 
         public void AddUVCoordinates(Vector3 uvCoordinates) => UVs.Add(uvCoordinates);

@@ -115,7 +115,7 @@ namespace HerosJourney.Core.WorldGeneration
             foreach (Vector3Int position in chunkRendererPositionsToCreate)
             {
                 ChunkData chunkData = WorldData.chunkData[position];
-                MeshData meshData = MeshBuilder.GenerateMeshData(chunkData);
+                MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
                 ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(chunkData, meshData);
 
                 WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
