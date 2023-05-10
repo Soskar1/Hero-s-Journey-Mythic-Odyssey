@@ -105,7 +105,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                     break;
             }
 
-            meshData.TryAddVertices(vertices, generatesCollider);
+            meshData.AddVertices(vertices, generatesCollider);
             meshData.CreateQuad(vertices, generatesCollider);
         }
 
@@ -131,10 +131,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                     break;
             }
 
-            meshData.AddUVCoordinates(uvs[0]);
-            meshData.AddUVCoordinates(uvs[1]);
-            meshData.AddUVCoordinates(uvs[2]);
-            meshData.AddUVCoordinates(uvs[3]);
+            meshData.AddUVCoordinates(uvs);
         }
     }
 }
