@@ -50,6 +50,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         private void SetCollider(MeshData meshData)
         {
+            if (meshData.ColliderVerticesTriangles.Count == 0)
+                return;
+
             _colliderMesh.SetVertices(meshData.ColliderVerticesTriangles.Keys.ToArray());
             _colliderMesh.SetTriangles(meshData.ColliderTriangles, 0);
 
@@ -58,6 +61,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void StopAnimation() => _animator.enabled = false;
 
-        public void ResetYPosition() => _visual.position = new Vector3(_visual.position.x, 0, _visual.position.z);
+        public void ResetYPosition() => _visual.position = new Vector3(_visual.position.x, ChunkData.WorldPosition.y, _visual.position.z);
     }
 }
