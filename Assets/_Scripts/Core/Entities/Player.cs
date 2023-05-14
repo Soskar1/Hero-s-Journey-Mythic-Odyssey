@@ -7,17 +7,21 @@ namespace HerosJourney.Core.Entities
     [RequireComponent(typeof(ThirdPersonLook))]
     [RequireComponent(typeof(GroundCheck))]
     [RequireComponent(typeof(Jumping))]
+    [RequireComponent(typeof(CollisionClimbing))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private PlayerInput _input;
         [SerializeField] private ThirdPersonLook _thirdPerson;
         [SerializeField] private GroundCheck _groundCheck;
         [SerializeField] private Jumping _jumping;
+        [SerializeField] private CollisionClimbing _collisionClimbing;
+        [SerializeField] private Rigidbody _rigidbody;
         private IMovement _movement;
         private Camera _camera;
 
         private Vector2 _movementInput;
         private Vector3 _targetDirection;
+        private Vector3 _lastVelocity;
 
         private void Awake()
         {
@@ -51,9 +55,16 @@ namespace HerosJourney.Core.Entities
         private void FixedUpdate()
         {
             if (_movementInput.magnitude > 0)
+            {
                 _movement.Move(_targetDirection);
+                _collisionClimbing.StepClimb(_lastVelocity);
+            }
             else
+            {
                 _movement.Move(Vector3.zero);
+            }
+
+            _lastVelocity = _rigidbody.velocity;
         }
 
         private void Jump(InputAction.CallbackContext context)
