@@ -40,7 +40,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 VoxelType neighbourVoxelType = VoxelType.Nothing;
 
                 if (neighbourVoxel != null)
-                    neighbourVoxelType = neighbourVoxel.GetType();
+                    neighbourVoxelType = neighbourVoxel.GetVoxelType();
 
                 if (voxelData.type == VoxelType.Liquid && neighbourVoxelType != VoxelType.Air)
                     continue;

@@ -38,9 +38,8 @@ namespace HerosJourney.Core.WorldGeneration
         public static Voxel GetVoxelInWorld(WorldData worldData, Vector3Int worldPosition)
         {
             Vector3Int chunkPosition = GetChunkPosition(worldData, worldPosition);
-            ChunkData chunk = null;
 
-            if (worldData.chunkData.TryGetValue(chunkPosition, out chunk))
+            if (worldData.chunkData.TryGetValue(chunkPosition, out ChunkData chunk))
                 return ChunkDataHandler.GetVoxelAt(chunk, ChunkDataHandler.WorldToLocalPosition(chunk, worldPosition));
 
             return null;
@@ -83,6 +82,13 @@ namespace HerosJourney.Core.WorldGeneration
             return chunkPositions
                 .Where(pos => worldData.chunkRenderers.ContainsKey(pos) == false)
                 .OrderBy(pos => Vector3.Distance(worldPosition, pos))
+                .ToList();
+        }
+
+        public static List<ChunkData> SelectNotAirChunks(WorldData worldData, List<Vector3Int> chunkPositions) {
+            return chunkPositions
+                .Where(pos => worldData.chunkData[pos].isAirChunk == false)
+                .Select(pos => worldData.chunkData[pos])
                 .ToList();
         }
     }

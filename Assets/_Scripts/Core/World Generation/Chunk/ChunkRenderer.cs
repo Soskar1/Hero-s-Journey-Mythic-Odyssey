@@ -35,8 +35,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         private void RenderMesh(MeshData meshData)
         {
             _mesh.Clear();
-            _colliderMesh.Clear();
-
             _mesh.subMeshCount = 2;
 
             _mesh.SetVertices(meshData.Vertices.Concat(meshData.WaterMeshData.Vertices).ToArray());
@@ -50,8 +48,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         private void SetCollider(MeshData meshData)
         {
-            if (meshData.ColliderVerticesTriangles.Count == 0)
-                return;
+            _colliderMesh.Clear();
 
             _colliderMesh.SetVertices(meshData.ColliderVerticesTriangles.Keys.ToArray());
             _colliderMesh.SetTriangles(meshData.ColliderTriangles, 0);

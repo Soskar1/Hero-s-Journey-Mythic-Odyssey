@@ -2,6 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
@@ -112,10 +113,14 @@ namespace HerosJourney.Core.WorldGeneration
 
         private IEnumerator InitializeChunks(List<Vector3Int> chunkRendererPositionsToCreate)
         {
-            foreach (Vector3Int position in chunkRendererPositionsToCreate)
+            List<ChunkData> notAirChunks = WorldDataHandler.SelectNotAirChunks(WorldData, chunkRendererPositionsToCreate);
+            
+            foreach (ChunkData chunkData in notAirChunks)
             {
-                ChunkData chunkData = WorldData.chunkData[position];
                 MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
+                if (meshData.ColliderTriangles.Count == 0)
+                    continue;
+
                 ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(chunkData, meshData);
 
                 WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
