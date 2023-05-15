@@ -17,8 +17,8 @@ namespace HerosJourney.Core.WorldGeneration
                 worldPosition.z - worldData.chunkLength * distance);
 
             Vector3Int end = new Vector3Int(worldPosition.x + worldData.chunkLength * distance,
-                worldPosition.z + worldData.chunkLength * distance,
-                worldPosition.y + worldData.chunkHeight * distance);
+                worldPosition.y + worldData.chunkHeight * distance,
+                worldPosition.z + worldData.chunkLength * distance);
 
             for (int x = start.x; x <= end.x; x += worldData.chunkLength)
             {
