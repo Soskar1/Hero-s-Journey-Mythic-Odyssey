@@ -9,6 +9,6 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             this.data = data;
         }
 
-        new public VoxelType GetType() => data.type;
+        public VoxelType GetVoxelType() => data.type;
     }
 }

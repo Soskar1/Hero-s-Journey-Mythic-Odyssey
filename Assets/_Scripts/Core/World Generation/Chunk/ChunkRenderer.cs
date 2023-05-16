@@ -35,8 +35,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         private void RenderMesh(MeshData meshData)
         {
             _mesh.Clear();
-            _colliderMesh.Clear();
-
             _mesh.subMeshCount = 2;
 
             _mesh.SetVertices(meshData.Vertices.Concat(meshData.WaterMeshData.Vertices).ToArray());
@@ -50,6 +48,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         private void SetCollider(MeshData meshData)
         {
+            _colliderMesh.Clear();
+
             _colliderMesh.SetVertices(meshData.ColliderVerticesTriangles.Keys.ToArray());
             _colliderMesh.SetTriangles(meshData.ColliderTriangles, 0);
 
@@ -58,6 +58,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void StopAnimation() => _animator.enabled = false;
 
-        public void ResetYPosition() => _visual.position = new Vector3(_visual.position.x, 0, _visual.position.z);
+        public void ResetYPosition() => _visual.position = new Vector3(_visual.position.x, ChunkData.WorldPosition.y, _visual.position.z);
     }
 }

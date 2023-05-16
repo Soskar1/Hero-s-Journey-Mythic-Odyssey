@@ -35,6 +35,7 @@ namespace HerosJourney.Core.WorldGeneration
         {
             yield return new WaitForSeconds(_updateTime);
             if (Mathf.Abs(_currentChunkCenter.x - _player.position.x) > _world.ChunkLength ||
+                Mathf.Abs(_currentChunkCenter.y - _player.position.y) > _world.ChunkHeight ||
                 Mathf.Abs(_currentChunkCenter.z - _player.position.z) > _world.ChunkLength)
             {
                 if (!_requestIsProcessed)
@@ -53,6 +54,7 @@ namespace HerosJourney.Core.WorldGeneration
         {
             _currentPlayerChunkPosition = WorldDataHandler.GetChunkPosition(_world.WorldData, Vector3Int.RoundToInt(_player.position));
             _currentChunkCenter.x = _currentPlayerChunkPosition.x + _world.ChunkLength / 2;
+            _currentChunkCenter.y = _currentPlayerChunkPosition.y + _world.ChunkHeight / 2;
             _currentChunkCenter.z = _currentPlayerChunkPosition.z + _world.ChunkLength / 2;
         }
 
