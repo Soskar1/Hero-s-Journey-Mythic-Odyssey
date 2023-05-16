@@ -24,7 +24,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
                     layerGenerator.TryGenerateLayer(chunkData, new Vector3Int(x, localY, z), groundPosition);
 
                     if (chunkData.voxels[x, localY - chunkData.WorldPosition.y, z].GetVoxelType() != VoxelType.Air)
-                        chunkData.isAirChunk = false;
+                        chunkData.isEmpty = false;
                 }
             }
 

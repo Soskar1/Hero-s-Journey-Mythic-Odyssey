@@ -114,16 +114,15 @@ namespace HerosJourney.Core.WorldGeneration
 
         private IEnumerator InitializeChunks(List<Vector3Int> chunkRendererPositionsToCreate)
         {
-            List<ChunkData> notAirChunks = WorldDataHandler.SelectNotAirChunks(WorldData, chunkRendererPositionsToCreate);
+            List<ChunkData> notEmptyChunks = WorldDataHandler.SelectNotEmptyChunks(WorldData, chunkRendererPositionsToCreate);
             
-            foreach (ChunkData chunkData in notAirChunks)
+            foreach (ChunkData chunkData in notEmptyChunks)
             {
                 MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
                 if (meshData.ColliderTriangles.Count == 0)
                     continue;
 
                 ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(chunkData, meshData);
-
                 WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
                 yield return new WaitForEndOfFrame();
             }

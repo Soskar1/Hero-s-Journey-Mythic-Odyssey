@@ -6,7 +6,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     public class ChunkData
     {
         public Voxel[,,] voxels;
-        public bool isAirChunk;
+        public bool isEmpty;
 
         public int ChunkLength { get; private set; }
         public int ChunkHeight { get; private set; }
@@ -20,7 +20,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             voxels = new Voxel[chunkLength, chunkHeight, chunkLength];
             WorldPosition = worldPosition;
             World = worldReference;
-            isAirChunk = true;
+            isEmpty = true;
         }
     }
 }

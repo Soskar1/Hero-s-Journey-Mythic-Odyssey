@@ -85,9 +85,9 @@ namespace HerosJourney.Core.WorldGeneration
                 .ToList();
         }
 
-        public static List<ChunkData> SelectNotAirChunks(WorldData worldData, List<Vector3Int> chunkPositions) {
+        public static List<ChunkData> SelectNotEmptyChunks(WorldData worldData, List<Vector3Int> chunkPositions) {
             return chunkPositions
-                .Where(pos => worldData.chunkData[pos].isAirChunk == false)
+                .Where(pos => worldData.chunkData[pos].isEmpty == false)
                 .Select(pos => worldData.chunkData[pos])
                 .ToList();
         }
