@@ -204,7 +204,6 @@ GameObject:
   - component: {fileID: 7791523651829349504}
   - component: {fileID: 7791523651829349516}
   - component: {fileID: 7791523651829349517}
-  - component: {fileID: 7791523651829349506}
   - component: {fileID: 7791523651829349507}
   - component: {fileID: 7791523651829349519}
   - component: {fileID: 7791523651829349513}
@@ -261,24 +260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dc0af8d8d18e8d4a88b87e393d9b42b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _input: {fileID: 7791523651829349506}
   _thirdPerson: {fileID: 7791523651829349519}
   _groundCheck: {fileID: 7791523651829349518}
   _jumping: {fileID: 7791523651829349513}
   _collisionClimbing: {fileID: 7083377027461605819}
   _rigidbody: {fileID: 7791523651829349516}
---- !u!114 &7791523651829349506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791523651829349505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0468495c90c44a140a8890922507f58b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7791523651829349507
 MonoBehaviour:
   m_ObjectHideFlags: 0
