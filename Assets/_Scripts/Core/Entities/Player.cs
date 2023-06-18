@@ -3,14 +3,13 @@ using UnityEngine.InputSystem;
 
 namespace HerosJourney.Core.Entities
 {
-    [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(ThirdPersonLook))]
     [RequireComponent(typeof(GroundCheck))]
     [RequireComponent(typeof(Jumping))]
     [RequireComponent(typeof(CollisionClimbing))]
     public class Player : MonoBehaviour
     {
-        [SerializeField] private PlayerInput _input;
+        private Input _input;
         [SerializeField] private ThirdPersonLook _thirdPerson;
         [SerializeField] private GroundCheck _groundCheck;
         [SerializeField] private Jumping _jumping;
@@ -31,7 +30,7 @@ namespace HerosJourney.Core.Entities
 
         private void OnEnable()
         {
-            _input.Initialize();
+            _input = new Input();
             _input.Enable();
 
             _input.Controls.Player.Jump.performed += Jump;

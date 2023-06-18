@@ -1,12 +1,13 @@
 using HerosJourney.Core.WorldGeneration.Biomes;
 using HerosJourney.Core.WorldGeneration.Chunks;
-using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public class TerrainGenerator : MonoBehaviour
+    public class TerrainGenerator
     {
-        [SerializeField] private BiomeGenerator _biomeGenerator;
+        private BiomeGenerator _biomeGenerator;
+
+        public TerrainGenerator(BiomeGenerator biomeGenerator) => _biomeGenerator = biomeGenerator;
 
         public void GenerateChunkData(ChunkData chunkData)
         {
