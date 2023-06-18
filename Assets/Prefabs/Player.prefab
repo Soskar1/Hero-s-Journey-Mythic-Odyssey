@@ -203,12 +203,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7791523651829349504}
   - component: {fileID: 7791523651829349516}
-  - component: {fileID: 7791523651829349517}
-  - component: {fileID: 7791523651829349507}
-  - component: {fileID: 7791523651829349519}
-  - component: {fileID: 7791523651829349513}
-  - component: {fileID: 7791523651829349518}
-  - component: {fileID: 7083377027461605819}
+  - component: {fileID: 5723975704415473709}
+  - component: {fileID: 7487959169341727282}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -248,7 +244,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
---- !u!114 &7791523651829349517
+--- !u!114 &5723975704415473709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,15 +253,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dc0af8d8d18e8d4a88b87e393d9b42b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bfb02dfd9c7e49428435269d425985e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _thirdPerson: {fileID: 7791523651829349519}
-  _groundCheck: {fileID: 7791523651829349518}
-  _jumping: {fileID: 7791523651829349513}
-  _collisionClimbing: {fileID: 7083377027461605819}
-  _rigidbody: {fileID: 7791523651829349516}
---- !u!114 &7791523651829349507
+--- !u!114 &7487959169341727282
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,90 +265,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0171a349e579014389ada3a1dcaaa76, type: 3}
+  m_Script: {fileID: 11500000, guid: 316d90d5f80680946a5db0665f9b41a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7791523651829349516}
-  _maxSpeed: 27
-  _acceleration: 10
-  _decceleration: 60
-  _velocityPower: 0.5
---- !u!114 &7791523651829349519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791523651829349505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8eebc0060a93104cb78884091d866bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _turnSmoothTime: 0.1
---- !u!114 &7791523651829349513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791523651829349505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aecc573378b76f40a7f240ae858f148, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 7791523651829349516}
-  _force: 5
---- !u!114 &7791523651829349518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791523651829349505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78deaf0798161ef4eac437c9daf857d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _groundCheckPoint: {fileID: 7791523650298689636}
-  _radius: 0.1
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
---- !u!114 &7083377027461605819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791523651829349505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1331f3220f0710439a9f75f9af6eaf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 7791523651829349516}
-  _upperStepRay: {fileID: 2963458234895240200}
-  _lowerStepRay: {fileID: 3286518569792126884}
-  _collisionLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
-  _stepOffset: 0.15
-  _maxStepHeight: 1.5
-  _raycastMaxLength: 0.5
-  _angles:
-  - 0
-  - 15
-  - -15
-  - 30
-  - -30
-  - 45
-  - -45
-  - 60
-  - -60
-  - 75
-  - -75
-  - 90
-  - -90
