@@ -1,8 +1,8 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Biomes;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
@@ -13,11 +13,11 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 16;
-        [SerializeField] [Range(4, 32)] 
-        private int _renderDistance = 8;
+        [SerializeField, Range(4, 32)] private int _renderDistance = 8;
 
         [SerializeField] private WorldRenderer _worldRenderer;
-        [SerializeField] private TerrainGenerator _terrainGenerator;
+        [SerializeField] private BiomeGenerator _biomeGenerator;
+        private TerrainGenerator _terrainGenerator;
 
         private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
 
@@ -37,7 +37,11 @@ namespace HerosJourney.Core.WorldGeneration
         }
 
         private void OnDisable() => _taskTokenSource.Cancel();
-        private void Awake() => WorldData = new WorldData(_chunkLength, _chunkHeight);
+        private void Awake()
+        {
+            _terrainGenerator = new TerrainGenerator(_biomeGenerator);
+            WorldData = new WorldData(_chunkLength, _chunkHeight);
+        }
 
         public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
 
