@@ -1,7 +1,6 @@
-using UnityEngine;
 using Zenject;
 
-namespace HerosJourney.Core.Entities
+namespace HerosJourney.Core.Entities.PlayableCharacters
 {
     public class PlayerRotationHandler : ITickable
     {

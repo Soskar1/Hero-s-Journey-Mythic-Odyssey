@@ -1,5 +1,6 @@
-using Cinemachine;
+using HerosJourney.Core.Entities.PlayableCharacters;
 using HerosJourney.Core.Entities;
+using Cinemachine;
 using UnityEngine;
 using Zenject;
 
@@ -17,18 +18,20 @@ namespace HerosJourney.Core.Installers
             BindInput();
             BindMovementHandler();
             BindRotationHandler();
+            BindJumpHandler();
         }
-      
+
         private void BindPlayer()
         {
             GameObject playerInstance = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
             IMovement movement = playerInstance.GetComponent<IMovement>();
             IRotation rotation = playerInstance.GetComponent<IRotation>();
+            IJump jump = playerInstance.GetComponent<IJump>();
 
             Container
                 .Bind<Player>()
                 .AsSingle()
-                .WithArguments(movement, rotation);
+                .WithArguments(movement, rotation, jump);
 
             _camera.Follow = playerInstance.transform;
             _camera.LookAt = playerInstance.transform;
@@ -57,6 +60,13 @@ namespace HerosJourney.Core.Installers
         {
             Container
                 .BindInterfacesTo<PlayerRotationHandler>()
+                .AsSingle();
+        }
+
+        private void BindJumpHandler()
+        {
+            Container
+                .BindInterfacesTo<PlayerJumpHandler>()
                 .AsSingle();
         }
     }
