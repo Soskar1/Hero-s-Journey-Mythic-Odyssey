@@ -3,6 +3,7 @@ using HerosJourney.Core.Entities;
 using Cinemachine;
 using UnityEngine;
 using Zenject;
+using System;
 
 namespace HerosJourney.Core.Installers
 {
@@ -11,6 +12,8 @@ namespace HerosJourney.Core.Installers
         [SerializeField] private CinemachineFreeLook _camera;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private Transform _spawnPoint;
+
+        private GameObject playerInstance;
 
         public override void InstallBindings()
         {
@@ -23,7 +26,7 @@ namespace HerosJourney.Core.Installers
 
         private void BindPlayer()
         {
-            GameObject playerInstance = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
+            playerInstance = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
             IMovement movement = playerInstance.GetComponent<IMovement>();
             IRotation rotation = playerInstance.GetComponent<IRotation>();
             IJump jump = playerInstance.GetComponent<IJump>();
@@ -67,7 +70,8 @@ namespace HerosJourney.Core.Installers
         {
             Container
                 .BindInterfacesTo<PlayerJumpHandler>()
-                .AsSingle();
+                .AsSingle()
+                .WithArguments((Func<bool>)playerInstance.GetComponent<GroundCheck>().CheckForGround);
         }
     }
 }

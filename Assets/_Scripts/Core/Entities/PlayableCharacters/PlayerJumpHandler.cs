@@ -8,16 +8,22 @@ namespace HerosJourney.Core.Entities.PlayableCharacters
     {
         private readonly Input _input;
         private readonly Player _player;
+        private readonly Func<bool> _groundCheck;
 
-        public PlayerJumpHandler(Input input, Player player)
+        public PlayerJumpHandler(Input input, Player player, Func<bool> groundCheck)
         {
             _input = input;
             _player = player;
+            _groundCheck = groundCheck;
         }
 
         public void Initialize() => _input.Controls.Player.Jump.performed += Jump;
         public void Dispose() => _input.Controls.Player.Jump.performed -= Jump;
 
-        private void Jump(InputAction.CallbackContext context) => _player.Jump();
+        private void Jump(InputAction.CallbackContext context)
+        {
+            if (_groundCheck.Invoke())
+                _player.Jump();
+        }
     }
 }
