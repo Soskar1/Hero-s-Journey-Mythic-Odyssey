@@ -204,14 +204,15 @@ GameObject:
   - component: {fileID: 7791523651829349504}
   - component: {fileID: 7791523651829349516}
   - component: {fileID: 5723975704415473709}
-  - component: {fileID: 7487959169341727282}
+  - component: {fileID: 109620568571331998}
+  - component: {fileID: -8864813594813836043}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7791523651829349504
 Transform:
   m_ObjectHideFlags: 0
@@ -256,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bfb02dfd9c7e49428435269d425985e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7487959169341727282
+--- !u!114 &109620568571331998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,7 +266,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 316d90d5f80680946a5db0665f9b41a2, type: 3}
+  m_Script: {fileID: 11500000, guid: e1f2e755587732f419b0fe2260b507de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _turnSmoothTime: 0.1
+--- !u!114 &-8864813594813836043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791523651829349505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0171a349e579014389ada3a1dcaaa76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7791523651829349516}
+  _maxSpeed: 22
+  _acceleration: 15
+  _decceleration: 15
+  _velocityPower: 0.5

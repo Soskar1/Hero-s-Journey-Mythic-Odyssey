@@ -16,6 +16,6 @@ namespace HerosJourney.Core
         public void Enable() => Controls.Enable();
         public void Disable() => Controls.Disable();
 
-        public Vector2 GetMovementDirection() => Controls.Player.Movement.ReadValue<Vector2>();
+        public Vector2 MovementInput => Controls.Player.Movement.ReadValue<Vector2>();
     }
 }

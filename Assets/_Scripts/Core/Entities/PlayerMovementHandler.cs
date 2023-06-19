@@ -5,24 +5,22 @@ namespace HerosJourney.Core.Entities
 {
     public class PlayerMovementHandler : ITickable, IFixedTickable
     {
-        private Input _input;
-        private Player _player;
-        private Vector2 _movementInput = Vector2.zero;
+        private readonly Player _player;
+        private readonly PlayerInputHandler _inputHandler;
+        private Vector3 _targetDirection;
 
-        public PlayerMovementHandler(Input input, Player player)
+        public PlayerMovementHandler(Player player, PlayerInputHandler inputHandler)
         {
-            _input = input;
             _player = player;
+            _inputHandler = inputHandler;
         }
 
-        public void Tick()
+        public void Tick() => _targetDirection = Quaternion.Euler(0.0f, _inputHandler.RotY, 0.0f) * Vector3.forward;
+
+        public void FixedTick()
         {
-            if (_input == null)
-                return;
-
-            _movementInput = _input.GetMovementDirection();
+            Vector3 movement = _inputHandler.MovementInput.magnitude == 0 ? Vector3.zero : _targetDirection;
+            _player.Move(movement);
         }
-
-        public void FixedTick() => _player.Move(_movementInput);
     }
 }

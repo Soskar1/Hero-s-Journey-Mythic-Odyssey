@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace HerosJourney.Core.Entities
 {
-    public class PhysicsMovement : IMovement
+    [RequireComponent(typeof(Rigidbody))]
+    public class PhysicsMovement : MonoBehaviour, IMovement
     {
-        private Rigidbody _rigidbody;
-        private float _maxSpeed;
-        private float _acceleration;
-        private float _decceleration;
-        private float _velocityPower;
-        private const float EPSILON = 0.01f;
+        [SerializeField] private Rigidbody _rigidbody;
+        [SerializeField] private float _maxSpeed;
+        [SerializeField] private float _acceleration;
+        [SerializeField] private float _decceleration;
+        [SerializeField] private float _velocityPower;
 
-        public PhysicsMovement(Rigidbody rigidbody) => _rigidbody = rigidbody;
+        private const float EPSILON = 0.01f;
 
         public void Move(Vector3 direction)
         {
