@@ -12,5 +12,7 @@ namespace HerosJourney.Core.Entities.PlayableCharacters
         {
             _player = player;
         }
+
+        public class Factory : PlaceholderFactory<PlayerFacade> { }
     }
 }

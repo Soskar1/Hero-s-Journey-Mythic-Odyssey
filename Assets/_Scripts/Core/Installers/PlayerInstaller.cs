@@ -1,43 +1,26 @@
 using HerosJourney.Core.Entities.PlayableCharacters;
 using HerosJourney.Core.Entities;
-using Cinemachine;
-using UnityEngine;
 using Zenject;
 using System;
 
 namespace HerosJourney.Core.Installers
 {
-    public class PlayerInstaller : MonoInstaller
+    public class PlayerInstaller : Installer<PlayerInstaller>
     {
-        [SerializeField] private CinemachineFreeLook _camera;
-        [SerializeField] private GameObject _playerPrefab;
-        [SerializeField] private Transform _spawnPoint;
-
-        private GameObject playerInstance;
-
         public override void InstallBindings()
         {
             BindPlayer();
             BindInput();
             BindMovementHandler();
             BindRotationHandler();
-            BindJumpHandler();
+            //BindJumpHandler();
         }
 
         private void BindPlayer()
         {
-            playerInstance = Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
-            IMovement movement = playerInstance.GetComponent<IMovement>();
-            IRotation rotation = playerInstance.GetComponent<IRotation>();
-            IJump jump = playerInstance.GetComponent<IJump>();
-
             Container
-                .Bind<Player>()
-                .AsSingle()
-                .WithArguments(movement, rotation, jump);
-
-            _camera.Follow = playerInstance.transform;
-            _camera.LookAt = playerInstance.transform;
+                .BindInterfacesAndSelfTo<Player>()
+                .AsSingle();
         }
 
         private void BindInput()
@@ -66,12 +49,12 @@ namespace HerosJourney.Core.Installers
                 .AsSingle();
         }
 
-        private void BindJumpHandler()
-        {
-            Container
-                .BindInterfacesTo<PlayerJumpHandler>()
-                .AsSingle()
-                .WithArguments((Func<bool>)playerInstance.GetComponent<GroundCheck>().CheckForGround);
-        }
+        //private void BindJumpHandler()
+        //{
+        //    Container
+        //        .BindInterfacesTo<PlayerJumpHandler>()
+        //        .AsSingle()
+        //        .WithArguments((Func<bool>)GetComponent<GroundCheck>().CheckForGround);
+        //}
     }
 }
