@@ -40,7 +40,7 @@ namespace HerosJourney.Core.WorldGeneration
             StartCheckingMap();
         }
 
-        public void StartCheckingMap()
+        private void StartCheckingMap()
         {
             if (_player == null)
                 return;
