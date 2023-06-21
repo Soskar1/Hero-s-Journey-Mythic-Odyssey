@@ -1,9 +1,9 @@
-using Cinemachine;
 using HerosJourney.Core.Entities.PlayableCharacters;
+using Cinemachine;
 using UnityEngine;
 using Zenject;
 
-namespace HerosJourney.Core
+namespace HerosJourney.Core.PlayerTestScene
 {
     public class PlayerTestSceneBootstrap : IInitializable
     {

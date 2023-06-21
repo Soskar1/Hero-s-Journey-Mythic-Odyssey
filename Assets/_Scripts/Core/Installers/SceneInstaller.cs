@@ -1,13 +1,11 @@
 using Cinemachine;
-using HerosJourney.Core.Entities;
 using HerosJourney.Core.Entities.PlayableCharacters;
-using System.ComponentModel;
 using UnityEngine;
 using Zenject;
 
 namespace HerosJourney.Core.Installers
 {
-    public class PlayerTestSceneInstaller : MonoInstaller
+    public class SceneInstaller : MonoInstaller
     {
         [SerializeField] private GameObject _playerFacade;
         [SerializeField] private Transform _spawnPoint;
@@ -44,9 +42,13 @@ namespace HerosJourney.Core.Installers
         private void BindSceneBootstrap()
         {
             Container
-                .BindInterfacesTo<PlayerTestSceneBootstrap>()
+                .Bind<PlayerSpawner>()
                 .AsSingle()
                 .WithArguments(_spawnPoint);
+
+            Container
+                .BindInterfacesTo<WorldSceneBootstrap>()
+                .AsSingle();
         }
     }
 }
