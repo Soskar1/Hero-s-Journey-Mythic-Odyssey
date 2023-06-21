@@ -16,17 +16,8 @@ namespace HerosJourney.Core.Installers
         public override void InstallBindings()
         {
             BindCameras();
-
-            Container
-                .BindFactory<PlayerFacade, PlayerFacade.Factory>()
-                .FromSubContainerResolve()
-                .ByNewPrefabInstaller<PlayerInstaller>(_playerFacade)
-;
-
-            Container
-                .BindInterfacesTo<PlayerTestSceneBootstrap>()
-                .AsSingle()
-                .WithArguments(_spawnPoint);
+            BindPlayerFacadeFactory();
+            BindSceneBootstrap();
         }
 
         private void BindCameras()
@@ -40,6 +31,22 @@ namespace HerosJourney.Core.Installers
                 .Bind<CinemachineFreeLook>()
                 .FromInstance(_camera)
                 .AsSingle();
+        }
+
+        private void BindPlayerFacadeFactory()
+        {
+            Container
+                .BindFactory<PlayerFacade, PlayerFacade.Factory>()
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<PlayerInstaller>(_playerFacade);
+        }
+
+        private void BindSceneBootstrap()
+        {
+            Container
+                .BindInterfacesTo<PlayerTestSceneBootstrap>()
+                .AsSingle()
+                .WithArguments(_spawnPoint);
         }
     }
 }

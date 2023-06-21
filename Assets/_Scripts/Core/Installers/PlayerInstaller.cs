@@ -13,7 +13,7 @@ namespace HerosJourney.Core.Installers
             BindInput();
             BindMovementHandler();
             BindRotationHandler();
-            //BindJumpHandler();
+            BindJumpHandler();
         }
 
         private void BindPlayer()
@@ -49,12 +49,11 @@ namespace HerosJourney.Core.Installers
                 .AsSingle();
         }
 
-        //private void BindJumpHandler()
-        //{
-        //    Container
-        //        .BindInterfacesTo<PlayerJumpHandler>()
-        //        .AsSingle()
-        //        .WithArguments((Func<bool>)GetComponent<GroundCheck>().CheckForGround);
-        //}
+        private void BindJumpHandler()
+        {
+            Container
+                .BindInterfacesTo<PlayerJumpHandler>()
+                .AsSingle();
+        }
     }
 }
