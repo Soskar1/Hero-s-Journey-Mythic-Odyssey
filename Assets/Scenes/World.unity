@@ -147,13 +147,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55439041}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57c4b9eb454de4343b0001edbefffcd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _world: {fileID: 1530814503}
-  _player: {fileID: 0}
   _updateTime: 1
 --- !u!4 &55439043
 Transform:
@@ -1189,6 +1187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _world: {fileID: 1530814503}
+  _chunkLoading: {fileID: 55439042}
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1299,7 +1298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 16
-  _renderDistance: 16
+  _renderDistance: 4
   _worldRenderer: {fileID: 1530814505}
   _biomeGenerator: {fileID: 1992527461}
 --- !u!4 &1530814504
@@ -1778,7 +1777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.804912, z: -8.477837}
+  m_FollowOffset: {x: 0, y: 3.58936, z: -8.25941}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1937,7 +1936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.804912, z: -8.477837}
+  m_FollowOffset: {x: 0, y: 3.58936, z: -8.25941}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2154,7 +2153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.804912, z: -8.477837}
+  m_FollowOffset: {x: 0, y: 3.58936, z: -8.25941}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

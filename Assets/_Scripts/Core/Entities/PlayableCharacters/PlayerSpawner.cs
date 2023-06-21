@@ -16,13 +16,15 @@ namespace HerosJourney.Core.Entities.PlayableCharacters
             _spawnPosition = spawnPosition;
         }
 
-        public void SpawnPlayer()
+        public PlayerFacade SpawnPlayer()
         {
-            var player = _playerFactory.Create();
+            PlayerFacade player = _playerFactory.Create();
             player.transform.position = _spawnPosition.position;
 
             _camera.Follow = player.transform;
             _camera.LookAt = player.transform;
+
+            return player;
         }
     }
 }

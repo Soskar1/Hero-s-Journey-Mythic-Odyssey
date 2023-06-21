@@ -1,31 +1,50 @@
 using System.Collections;
 using UnityEngine;
+using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public class ChunkLoading : MonoBehaviour
     {
-        [SerializeField] private World _world;
-        [SerializeField] private Transform _player;
         [SerializeField] private int _updateTime;
+
+        private World _world;
+        private Transform _player;
+
         private Vector3Int _currentPlayerChunkPosition;
         private Vector3Int _currentChunkCenter;
         
         private bool _requestIsProcessed = false;
+
+        [Inject]
+        private void Construct(World world)
+        {
+            _world = world;
+        }
 
         private void OnEnable()
         {
             _world.OnNewChunksInitialized += StartCheckingMap;
             _world.OnNewChunksInitialized += ChangeRequestStatus;
         }
+
         private void OnDisable()
         {
             _world.OnNewChunksInitialized -= StartCheckingMap;
             _world.OnNewChunksInitialized -= ChangeRequestStatus;
         }
 
+        public void SetPlayer(Transform player)
+        {
+            _player = player;
+            StartCheckingMap();
+        }
+
         public void StartCheckingMap()
         {
+            if (_player == null)
+                return;
+
             SetCurrentChunkCoordinates();
             StopAllCoroutines();
             StartCoroutine(TryRequestNewChunks());

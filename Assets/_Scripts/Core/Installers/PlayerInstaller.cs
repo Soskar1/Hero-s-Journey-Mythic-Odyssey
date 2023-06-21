@@ -1,7 +1,5 @@
 using HerosJourney.Core.Entities.PlayableCharacters;
-using HerosJourney.Core.Entities;
 using Zenject;
-using System;
 
 namespace HerosJourney.Core.Installers
 {
