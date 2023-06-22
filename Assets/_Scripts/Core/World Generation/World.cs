@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
 using Zenject;
-using System.Linq;
+using System.Collections.Concurrent;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -52,16 +52,13 @@ namespace HerosJourney.Core.WorldGeneration
 
             RemoveDistantChunks(worldGenerationData);
 
-            Dictionary<Vector3Int, MeshData> meshDataDicitonary = new Dictionary<Vector3Int, MeshData>();
+            ConcurrentDictionary<Vector3Int, MeshData> meshDataDicitonary = new ConcurrentDictionary<Vector3Int, MeshData>();
 
             try
             {
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
 
-                List<ChunkData> dataToRender = WorldData.chunkData
-                    .Where(keyValue => worldGenerationData.chunkRendererPositionsToCreate.Contains(keyValue.Key))
-                    .Select(keyValue => keyValue.Value)
-                    .ToList();
+                List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate);
 
                 meshDataDicitonary = await GenerateMeshData(dataToRender);
             } 
@@ -70,7 +67,7 @@ namespace HerosJourney.Core.WorldGeneration
                 return;
             }
             
-            StartCoroutine(InitializeChunks(meshDataDicitonary));
+            StartCoroutine(CreateChunks(meshDataDicitonary));
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
@@ -126,9 +123,9 @@ namespace HerosJourney.Core.WorldGeneration
             }, _taskTokenSource.Token);
         }
 
-        private Task<Dictionary<Vector3Int, MeshData>> GenerateMeshData(List<ChunkData> chunkDataToRender)
+        private Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<ChunkData> chunkDataToRender)
         {
-            Dictionary<Vector3Int, MeshData> dictionary = new Dictionary<Vector3Int, MeshData>();
+            ConcurrentDictionary<Vector3Int, MeshData> dictionary = new ConcurrentDictionary<Vector3Int, MeshData>();
 
             return Task.Run(() =>
             {
@@ -146,7 +143,7 @@ namespace HerosJourney.Core.WorldGeneration
             );
         }
 
-        private IEnumerator InitializeChunks(Dictionary<Vector3Int, MeshData> meshDataDictionary)
+        private IEnumerator CreateChunks(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary)
         {
             foreach (var meshData in meshDataDictionary)
             {

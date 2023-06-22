@@ -78,5 +78,13 @@ namespace HerosJourney.Core.WorldGeneration
                 .OrderBy(pos => Vector3.Distance(worldPosition, pos))
                 .ToList();
         }
+
+        public static List<ChunkData> SelectChunksToRender(WorldData worldData, List<Vector3Int> chunkRendererPositions)
+        {
+            return worldData.chunkData
+                .Where(keyValue => chunkRendererPositions.Contains(keyValue.Key))
+                .Select(keyValue => keyValue.Value)
+                .ToList();
+        }
     }
 }
