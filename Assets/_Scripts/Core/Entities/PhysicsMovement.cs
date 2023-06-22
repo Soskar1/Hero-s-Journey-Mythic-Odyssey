@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace HerosJourney.Core.Entities
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class PhysicsMovement : MonoBehaviour, IMovement
     {
         [SerializeField] private Rigidbody _rigidbody;

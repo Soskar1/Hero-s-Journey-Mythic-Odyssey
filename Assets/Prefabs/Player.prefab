@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7212298302820510924}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: 0.45}
+  m_LocalPosition: {x: 0, y: -0.99, z: 0.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -203,19 +203,20 @@ GameObject:
   m_Component:
   - component: {fileID: 7791523651829349504}
   - component: {fileID: 7791523651829349516}
-  - component: {fileID: 7791523651829349517}
-  - component: {fileID: 7791523651829349507}
-  - component: {fileID: 7791523651829349519}
-  - component: {fileID: 7791523651829349513}
-  - component: {fileID: 7791523651829349518}
-  - component: {fileID: 7083377027461605819}
+  - component: {fileID: 5723975704415473709}
+  - component: {fileID: 109620568571331998}
+  - component: {fileID: -8864813594813836043}
+  - component: {fileID: 1898080887866426982}
+  - component: {fileID: 1720683151043449519}
+  - component: {fileID: 8733024806816547044}
+  - component: {fileID: -3704388527125442676}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7791523651829349504
 Transform:
   m_ObjectHideFlags: 0
@@ -248,7 +249,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
---- !u!114 &7791523651829349517
+--- !u!114 &5723975704415473709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,15 +258,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dc0af8d8d18e8d4a88b87e393d9b42b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bfb02dfd9c7e49428435269d425985e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _thirdPerson: {fileID: 7791523651829349519}
-  _groundCheck: {fileID: 7791523651829349518}
-  _jumping: {fileID: 7791523651829349513}
-  _collisionClimbing: {fileID: 7083377027461605819}
-  _rigidbody: {fileID: 7791523651829349516}
---- !u!114 &7791523651829349507
+--- !u!114 &109620568571331998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791523651829349505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f2e755587732f419b0fe2260b507de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _turnSmoothTime: 0.1
+--- !u!114 &-8864813594813836043
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,11 +287,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7791523651829349516}
-  _maxSpeed: 27
-  _acceleration: 10
-  _decceleration: 60
+  _maxSpeed: 22
+  _acceleration: 15
+  _decceleration: 15
   _velocityPower: 0.5
---- !u!114 &7791523651829349519
+--- !u!114 &1898080887866426982
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -291,25 +300,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8eebc0060a93104cb78884091d866bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _turnSmoothTime: 0.1
---- !u!114 &7791523651829349513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791523651829349505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aecc573378b76f40a7f240ae858f148, type: 3}
+  m_Script: {fileID: 11500000, guid: 47115550c0b26fd4f95096a05c1910c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7791523651829349516}
-  _force: 5
---- !u!114 &7791523651829349518
+  _force: 7
+--- !u!114 &1720683151043449519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -318,7 +314,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78deaf0798161ef4eac437c9daf857d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 16d4f2d369693d545885587a9218e138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _groundCheckPoint: {fileID: 7791523650298689636}
@@ -326,7 +322,7 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
---- !u!114 &7083377027461605819
+--- !u!114 &8733024806816547044
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -335,7 +331,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7791523651829349505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1331f3220f0710439a9f75f9af6eaf0, type: 3}
+  m_Script: {fileID: 11500000, guid: 79f74927dc88bc14dbfc952219e77929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7791523651829349516}
@@ -344,20 +340,40 @@ MonoBehaviour:
   _collisionLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  _stepOffset: 0.15
-  _maxStepHeight: 1.5
-  _raycastMaxLength: 0.5
+  _stepOffset: 0.01
+  _maxStepHeight: 1.32
+  _raycastMaxLength: 0.55
   _angles:
   - 0
-  - 15
-  - -15
-  - 30
-  - -30
   - 45
   - -45
   - 60
   - -60
-  - 75
-  - -75
-  - 90
-  - -90
+  - 15
+  - -15
+  - 30
+  - -30
+--- !u!114 &-3704388527125442676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791523651829349505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 5723975704415473709}
+  - {fileID: 7791523651829349516}
+  - {fileID: -8864813594813836043}
+  - {fileID: 109620568571331998}
+  - {fileID: 1898080887866426982}
+  - {fileID: 1720683151043449519}
+  - {fileID: 8733024806816547044}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 2
