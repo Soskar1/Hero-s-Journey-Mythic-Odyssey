@@ -12,7 +12,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
         [SerializeField] private NoiseSettings _noiseSettings;
         [SerializeField] private int _height;
 
-        public ChunkData GenerateChunkColumn(ChunkData chunkData, int x, int z)
+        public void GenerateChunkColumn(ChunkData chunkData, int x, int z)
         {
             float noise = Noise.OctavePerlinNoise(x + chunkData.WorldPosition.x, z + chunkData.WorldPosition.z, _noiseSettings);
             int groundPosition = Mathf.RoundToInt(noise * _height);
@@ -27,8 +27,6 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
                         chunkData.isEmpty = false;
                 }
             }
-
-            return chunkData;
         }
     }
 }

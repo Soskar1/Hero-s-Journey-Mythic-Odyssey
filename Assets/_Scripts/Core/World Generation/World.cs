@@ -1,11 +1,11 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
-using HerosJourney.Core.WorldGeneration.Biomes;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
+using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -16,7 +16,6 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField, Range(4, 32)] private int _renderDistance = 8;
 
         [SerializeField] private WorldRenderer _worldRenderer;
-        [SerializeField] private BiomeGenerator _biomeGenerator;
         private TerrainGenerator _terrainGenerator;
 
         private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
@@ -37,10 +36,12 @@ namespace HerosJourney.Core.WorldGeneration
         }
 
         private void OnDisable() => _taskTokenSource.Cancel();
-        private void Awake()
+        private void Awake() => WorldData = new WorldData(_chunkLength, _chunkHeight);
+
+        [Inject]
+        private void Construct(TerrainGenerator terrainGenerator)
         {
-            _terrainGenerator = new TerrainGenerator(_biomeGenerator);
-            WorldData = new WorldData(_chunkLength, _chunkHeight);
+            _terrainGenerator = terrainGenerator;
         }
 
         public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
@@ -51,16 +52,20 @@ namespace HerosJourney.Core.WorldGeneration
 
             RemoveDistantChunks(worldGenerationData);
 
+            Dictionary<Vector3Int, MeshData> meshDataDicitonary = new Dictionary<Vector3Int, MeshData>();
+
             try
             {
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
+                List<ChunkData> dataToRender = WorldDataHandler.SelectNotEmptyChunks(WorldData, worldGenerationData.chunkDataPositionsToCreate);
+                meshDataDicitonary = await GenerateMeshData(dataToRender);
             } 
             catch (Exception)
             {
                 return;
             }
             
-            StartCoroutine(InitializeChunks(worldGenerationData.chunkRendererPositionsToCreate));
+            StartCoroutine(InitializeChunks(meshDataDicitonary));
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
@@ -116,18 +121,35 @@ namespace HerosJourney.Core.WorldGeneration
             }, _taskTokenSource.Token);
         }
 
-        private IEnumerator InitializeChunks(List<Vector3Int> chunkRendererPositionsToCreate)
+        private Task<Dictionary<Vector3Int, MeshData>> GenerateMeshData(List<ChunkData> chunkDataToRender)
         {
-            List<ChunkData> notEmptyChunks = WorldDataHandler.SelectNotEmptyChunks(WorldData, chunkRendererPositionsToCreate);
-            
-            foreach (ChunkData chunkData in notEmptyChunks)
+            Dictionary<Vector3Int, MeshData> dictionary = new Dictionary<Vector3Int, MeshData>();
+
+            return Task.Run(() =>
             {
-                MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
-                if (meshData.ColliderTriangles.Count == 0)
+                foreach (ChunkData chunkData in chunkDataToRender)
+                {
+                    if (_taskTokenSource.Token.IsCancellationRequested)
+                        _taskTokenSource.Token.ThrowIfCancellationRequested();
+
+                    MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
+                    dictionary.TryAdd(chunkData.WorldPosition, meshData);
+                }
+
+                return dictionary;
+            }, _taskTokenSource.Token
+            );
+        }
+
+        private IEnumerator InitializeChunks(Dictionary<Vector3Int, MeshData> meshDataDictionary)
+        {
+            foreach (var meshData in meshDataDictionary)
+            {
+                if (meshData.Value.ColliderTriangles.Count == 0)
                     continue;
 
-                ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(chunkData, meshData);
-                WorldData.chunkRenderers.Add(chunkData.WorldPosition, chunkRenderer);
+                ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(WorldData.chunkData[meshData.Key], meshData.Value);
+                WorldData.chunkRenderers.Add(meshData.Key, chunkRenderer);
                 yield return new WaitForEndOfFrame();
             }
 

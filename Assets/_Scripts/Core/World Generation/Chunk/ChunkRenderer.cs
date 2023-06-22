@@ -20,7 +20,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _colliderMesh = new Mesh();
         }
 
-        private void OnEnable() => _animator.enabled = true;
+        //private void OnEnable() => _animator.enabled = true;
 
         public void InitializeChunk(ChunkData data) => ChunkData = data;
 

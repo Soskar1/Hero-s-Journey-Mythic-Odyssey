@@ -22,12 +22,6 @@ namespace HerosJourney.Core.WorldGeneration
             _world = world;
         }
 
-        private void OnEnable()
-        {
-            _world.OnNewChunksInitialized += StartCheckingMap;
-            _world.OnNewChunksInitialized += ChangeRequestStatus;
-        }
-
         private void OnDisable()
         {
             _world.OnNewChunksInitialized -= StartCheckingMap;
@@ -38,6 +32,9 @@ namespace HerosJourney.Core.WorldGeneration
         {
             _player = player;
             StartCheckingMap();
+
+            _world.OnNewChunksInitialized += StartCheckingMap;
+            _world.OnNewChunksInitialized += ChangeRequestStatus;
         }
 
         private void StartCheckingMap()
