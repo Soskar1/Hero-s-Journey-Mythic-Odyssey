@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Threading;
 using Zenject;
+using System.Linq;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
         [SerializeField] private int _chunkLength = 16;
-        [SerializeField] private int _chunkHeight = 16;
+        [SerializeField] private int _chunkHeight = 128;
         [SerializeField, Range(4, 32)] private int _renderDistance = 8;
 
         [SerializeField] private WorldRenderer _worldRenderer;
@@ -23,7 +24,6 @@ namespace HerosJourney.Core.WorldGeneration
         public Action OnNewChunksInitialized;
 
         public int ChunkLength => _chunkLength;
-        public int ChunkHeight => _chunkHeight;
         public WorldData WorldData { get; private set; }
 
         private struct WorldGenerationData
@@ -57,7 +57,12 @@ namespace HerosJourney.Core.WorldGeneration
             try
             {
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
-                List<ChunkData> dataToRender = WorldDataHandler.SelectNotEmptyChunks(WorldData, worldGenerationData.chunkDataPositionsToCreate);
+
+                List<ChunkData> dataToRender = WorldData.chunkData
+                    .Where(keyValue => worldGenerationData.chunkDataPositionsToCreate.Contains(keyValue.Key))
+                    .Select(keyValue => keyValue.Value)
+                    .ToList();
+
                 meshDataDicitonary = await GenerateMeshData(dataToRender);
             } 
             catch (Exception)
