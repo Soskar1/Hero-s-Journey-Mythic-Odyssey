@@ -7,8 +7,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         public static void SetVoxelAt(ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
         {
-            localPosition = new Vector3Int(localPosition.x, localPosition.y - chunkData.WorldPosition.y, localPosition.z);
-
             if (IsInBounds(chunkData, localPosition))
                 chunkData.voxels[localPosition.x, localPosition.y, localPosition.z] = voxel;
         }

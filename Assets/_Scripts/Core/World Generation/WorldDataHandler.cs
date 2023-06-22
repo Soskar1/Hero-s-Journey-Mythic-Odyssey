@@ -8,27 +8,21 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public static class WorldDataHandler
     {
-        public static List<Vector3Int> GetChunksAroundPoint(WorldData worldData, Vector3Int worldPosition, int distance)
+        public static List<Vector3Int> GetChunksAroundPoint(WorldData worldData, Vector3Int worldPosition, int renderDistance)
         {
             List<Vector3Int> chunksAroundPoint = new List<Vector3Int>();
 
-            Vector3Int start = new Vector3Int(worldPosition.x - worldData.chunkLength * distance,
-                worldPosition.y - worldData.chunkHeight * distance,
-                worldPosition.z - worldData.chunkLength * distance);
+            int xStart = worldPosition.x - worldData.chunkLength * renderDistance;
+            int xEnd = worldPosition.x + worldData.chunkLength * renderDistance;
+            int zStart = worldPosition.z - worldData.chunkLength * renderDistance;
+            int zEnd = worldPosition.z + worldData.chunkLength * renderDistance;
 
-            Vector3Int end = new Vector3Int(worldPosition.x + worldData.chunkLength * distance,
-                worldPosition.y + worldData.chunkHeight * distance,
-                worldPosition.z + worldData.chunkLength * distance);
-
-            for (int x = start.x; x <= end.x; x += worldData.chunkLength)
+            for (int x = xStart; x <= xEnd; x += worldData.chunkLength)
             {
-                for (int z = start.z; z <= end.z; z += worldData.chunkLength)
+                for (int z = zStart; z <= zEnd; z += worldData.chunkLength)
                 {
-                    for (int y = start.y; y <= end.y; y += worldData.chunkHeight)
-                    {
-                        Vector3Int chunkPosition = GetChunkPosition(worldData, new Vector3Int(x, y, z));
-                        chunksAroundPoint.Add(chunkPosition);
-                    }
+                    Vector3Int chunkPosition = GetChunkPosition(worldData, new Vector3Int(x, worldPosition.y, z));
+                    chunksAroundPoint.Add(chunkPosition);
                 }
             }
 
@@ -85,10 +79,11 @@ namespace HerosJourney.Core.WorldGeneration
                 .ToList();
         }
 
-        public static List<ChunkData> SelectNotEmptyChunks(WorldData worldData, List<Vector3Int> chunkPositions) {
-            return chunkPositions
-                .Where(pos => worldData.chunkData[pos].isEmpty == false)
-                .Select(pos => worldData.chunkData[pos])
+        public static List<ChunkData> SelectChunksToRender(WorldData worldData, List<Vector3Int> chunkRendererPositions)
+        {
+            return worldData.chunkData
+                .Where(keyValue => chunkRendererPositions.Contains(keyValue.Key))
+                .Select(keyValue => keyValue.Value)
                 .ToList();
         }
     }

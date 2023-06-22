@@ -7,7 +7,10 @@ namespace HerosJourney.Core.WorldGeneration
     {
         private BiomeGenerator _biomeGenerator;
 
-        public TerrainGenerator(BiomeGenerator biomeGenerator) => _biomeGenerator = biomeGenerator;
+        public TerrainGenerator(BiomeGenerator biomeGenerator)
+        {
+            _biomeGenerator = biomeGenerator;
+        }
 
         public void GenerateChunkData(ChunkData chunkData)
         {

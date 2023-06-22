@@ -1188,6 +1188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _world: {fileID: 1530814503}
   _chunkLoading: {fileID: 55439042}
+  _biomeGenerator: {fileID: 1992527461}
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,10 +1298,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chunkLength: 16
-  _chunkHeight: 16
-  _renderDistance: 4
+  _chunkHeight: 128
+  _renderDistance: 16
   _worldRenderer: {fileID: 1530814505}
-  _biomeGenerator: {fileID: 1992527461}
 --- !u!4 &1530814504
 Transform:
   m_ObjectHideFlags: 0
@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 0.1982978, z: -6.318168}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1936,7 +1936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 0.1982978, z: -6.318168}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 0.1982978, z: -6.318168}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
