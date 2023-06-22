@@ -59,7 +59,7 @@ namespace HerosJourney.Core.WorldGeneration
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
 
                 List<ChunkData> dataToRender = WorldData.chunkData
-                    .Where(keyValue => worldGenerationData.chunkDataPositionsToCreate.Contains(keyValue.Key))
+                    .Where(keyValue => worldGenerationData.chunkRendererPositionsToCreate.Contains(keyValue.Key))
                     .Select(keyValue => keyValue.Value)
                     .ToList();
 

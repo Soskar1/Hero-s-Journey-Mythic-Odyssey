@@ -1,4 +1,3 @@
-using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
 using UnityEngine;
