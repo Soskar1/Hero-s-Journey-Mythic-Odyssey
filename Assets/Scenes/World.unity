@@ -1060,7 +1060,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _next: {fileID: 0}
   _voxelData: {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
-  _waterThreshold: 32
+  _sand: {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
+  _waterThreshold: 30
 --- !u!1 &1227941983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1299,7 +1300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 16
+  _renderDistance: 4
   _worldRenderer: {fileID: 1530814505}
 --- !u!4 &1530814504
 Transform:
@@ -1517,7 +1518,6 @@ MonoBehaviour:
   - {fileID: 1574429502}
   - {fileID: 1135902154}
   _noiseSettings: {fileID: 11400000, guid: 6a02d79f27131564c92ab4d619aec501, type: 2}
-  _height: 128
 --- !u!4 &1992527462
 Transform:
   m_ObjectHideFlags: 0
@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.04478775, z: -5.875704}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1936,7 +1936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.04478775, z: -5.875704}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.04478775, z: -5.875704}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
