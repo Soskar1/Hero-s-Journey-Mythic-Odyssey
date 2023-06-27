@@ -24,7 +24,15 @@ namespace HerosJourney.Core.Entities.PlayableCharacters
             _camera.Follow = player.transform;
             _camera.LookAt = player.transform;
 
+            LockCursor();
+
             return player;
+        }
+
+        private void LockCursor()
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }
