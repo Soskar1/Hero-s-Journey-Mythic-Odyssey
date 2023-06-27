@@ -13,6 +13,10 @@ namespace HerosJourney.Core.Entities.PlayableCharacters
             _inputHandler = inputHandler;
         }
 
-        public void Tick() => _player.Rotate(_inputHandler.RotY);
+        public void Tick()
+        {
+            if (_inputHandler.MovementInput.magnitude > 0)
+                _player.Rotate(_inputHandler.RotY);
+        }
     }
 }
