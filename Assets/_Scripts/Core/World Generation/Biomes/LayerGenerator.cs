@@ -13,17 +13,17 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
 
         private void Awake() => Voxel = new Voxel(_voxelData);
 
-        public bool TryGenerateLayer(ChunkData chunkData, Vector3Int position, int surfaceHeightNoise)
+        public bool TryGenerateLayer(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {
-            if (TryGenerateVoxels(chunkData, position, surfaceHeightNoise))
+            if (TryGenerateVoxels(chunkData, localPosition, surfaceHeightNoise))
                 return true;
 
             if (_next != null)
-                _next.TryGenerateLayer(chunkData, position, surfaceHeightNoise);
+                _next.TryGenerateLayer(chunkData, localPosition, surfaceHeightNoise);
 
             return false;
         }
 
-        protected abstract bool TryGenerateVoxels(ChunkData chunkData, Vector3Int position, int surfaceHeightNoise);
+        protected abstract bool TryGenerateVoxels(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise);
     }
 }

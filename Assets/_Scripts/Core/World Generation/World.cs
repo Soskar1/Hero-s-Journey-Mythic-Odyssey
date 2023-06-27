@@ -24,6 +24,7 @@ namespace HerosJourney.Core.WorldGeneration
         public Action OnNewChunksInitialized;
 
         public int ChunkLength => _chunkLength;
+        public int ChunkHeight => _chunkHeight;
         public WorldData WorldData { get; private set; }
 
         private struct WorldGenerationData
