@@ -311,7 +311,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &5723975704415473709
 MonoBehaviour:
@@ -407,7 +407,7 @@ MonoBehaviour:
   _stepOffset: 0.6
   _maxStepHeight: 1.32
   _raycastMaxLength: 1.15
-  _interpolationTime: 0.22
+  _interpolationTime: 0.3
   _angles:
   - 0
   - 15
