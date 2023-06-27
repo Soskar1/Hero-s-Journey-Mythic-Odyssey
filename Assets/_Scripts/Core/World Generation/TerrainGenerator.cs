@@ -14,6 +14,8 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunkData(ChunkData chunkData)
         {
+            chunkData.structureData = _biomeGenerator.GenerateStructureData(chunkData);
+
             for (int x = 0; x < chunkData.ChunkLength; ++x)
                 for (int z = 0; z < chunkData.ChunkLength; ++z)
                     _biomeGenerator.GenerateChunkColumn(chunkData, x, z);

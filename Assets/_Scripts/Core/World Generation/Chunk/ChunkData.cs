@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration.Voxels;
+using HerosJourney.Core.WorldGeneration.Structures;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
@@ -6,6 +7,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     public class ChunkData
     {
         public Voxel[,,] voxels;
+        public StructureData structureData;
 
         public int ChunkLength { get; private set; }
         public int ChunkHeight { get; private set; }

@@ -9,9 +9,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
         [SerializeField] private LayerGenerator _next;
         [SerializeField] private VoxelData _voxelData;
 
-        public Voxel Voxel { get; private set; }
-
-        private void Awake() => Voxel = new Voxel(_voxelData);
+        protected VoxelData VoxelData => _voxelData;
 
         public bool TryGenerateLayer(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {

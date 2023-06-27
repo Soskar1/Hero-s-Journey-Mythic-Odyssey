@@ -1,8 +1,9 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
+using HerosJourney.Core.WorldGeneration.Structures;
 using UnityEngine;
-using System.Collections.Generic;
 using Zenject;
+using System.Collections.Generic;
 
 namespace HerosJourney.Core.WorldGeneration.Biomes
 {
@@ -10,6 +11,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
     {
         [SerializeField] private List<LayerGenerator> _layerGenerators;
         [SerializeField] private NoiseSettings _noiseSettings;
+        [SerializeField] private StructureGenerator _structureGenerator;
 
         private World _world;
 
@@ -25,5 +27,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
                 for (int localY = chunkData.WorldPosition.y; localY < chunkData.WorldPosition.y + chunkData.ChunkHeight; ++localY)
                     layerGenerator.TryGenerateLayer(chunkData, new Vector3Int(x, localY, z), groundPosition);
         }
+
+        public StructureData GenerateStructureData(ChunkData chunkData) => _structureGenerator.GenerateStructureData(chunkData);
     }
 }
