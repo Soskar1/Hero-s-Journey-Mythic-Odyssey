@@ -7,14 +7,14 @@ namespace HerosJourney.Core.WorldGeneration.Structures
     public class StructureGenerator : MonoBehaviour
     {
         [SerializeField] private NoiseSettings _noiseSettings;
-        [SerializeField] private float _threshold;
+        [SerializeField] private StructurePlacementSettings _structurePlacementSettings;
 
         public StructureData GenerateStructureData(ChunkData chunkData)
         {
             StructureData structureData = new StructureData();
             float[,] noise = GenerateNoise(chunkData);
 
-            structureData.structurePositions = StructurePlacement.PlaceStructures(noise, chunkData.WorldPosition.x, chunkData.WorldPosition.z, _threshold);
+            structureData.structurePositions = StructurePlacement.PlaceStructures(noise, chunkData.WorldPosition.x, chunkData.WorldPosition.z, _structurePlacementSettings);
             
             return structureData;
         }

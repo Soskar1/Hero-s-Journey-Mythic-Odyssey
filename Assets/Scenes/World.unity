@@ -992,7 +992,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noiseSettings: {fileID: 11400000, guid: e805fbdc630442b478495e988d425224, type: 2}
-  _threshold: 0.5
+  _structurePlacementSettings:
+    radius: 3
+    threshold: 0.5
 --- !u!4 &952000721
 Transform:
   m_ObjectHideFlags: 0
