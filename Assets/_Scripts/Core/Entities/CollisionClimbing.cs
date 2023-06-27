@@ -13,6 +13,7 @@ namespace HerosJourney.Core.Entities
         [SerializeField] private float _stepOffset = 0.01f;
         [SerializeField] private float _maxStepHeight;
         [SerializeField] private float _raycastMaxLength;
+        [SerializeField] private float _interpolationTime;
 
         [SerializeField] private List<float> _angles = new List<float>();
 
@@ -24,7 +25,8 @@ namespace HerosJourney.Core.Entities
             {
                 if (CheckForCollision(_angles[index], out float heightDifference))
                 {
-                    _rigidbody.position += new Vector3(0f, heightDifference + _stepOffset, 0f);
+                    Vector3 targetPos = new Vector3(_rigidbody.position.x, _rigidbody.position.y + heightDifference + _stepOffset, _rigidbody.position.z);
+                    _rigidbody.position = Vector3.Lerp(_rigidbody.position, targetPos, _interpolationTime);
                     _rigidbody.velocity = lastVelocity;
 
                     return;

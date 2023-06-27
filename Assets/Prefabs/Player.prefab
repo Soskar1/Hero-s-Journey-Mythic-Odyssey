@@ -340,19 +340,14 @@ MonoBehaviour:
   _collisionLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  _stepOffset: 0.01
+  _stepOffset: 0.6
   _maxStepHeight: 1.32
-  _raycastMaxLength: 0.55
+  _raycastMaxLength: 1.15
+  _interpolationTime: 0.22
   _angles:
   - 0
-  - 45
-  - -45
-  - 60
-  - -60
   - 15
   - -15
-  - 30
-  - -30
 --- !u!114 &-3704388527125442676
 MonoBehaviour:
   m_ObjectHideFlags: 0

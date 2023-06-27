@@ -1777,7 +1777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.1982978, z: -6.318168}
+  m_FollowOffset: {x: 0, y: -0.4837423, z: -3.171616}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1936,7 +1936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.1982978, z: -6.318168}
+  m_FollowOffset: {x: 0, y: -0.4837423, z: -3.171616}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 0.1982978, z: -6.318168}
+  m_FollowOffset: {x: 0, y: -0.4837423, z: -3.171616}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
