@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
+using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Structures
@@ -8,40 +9,47 @@ namespace HerosJourney.Core.WorldGeneration.Structures
     {
         [SerializeField] private NoiseSettings _noiseSettings;
 
-        public StructureData GenerateStructureData(ChunkData chunkData)
+        [SerializeField] private int _treeHeight;
+        [SerializeField] private VoxelData _voxelData;
+        private Voxel _voxel;
+
+        private void Awake() => _voxel = new Voxel(_voxelData);
+
+        public void GenerateStructures(ChunkData chunkData)
+        {
+            Debug.Log("Generating StructureData");
+            chunkData.structureData = GenerateStructureData(chunkData);
+            
+            Debug.Log("Placing Structures: " + chunkData.structureData.structurePositions.Count);
+            PlaceStructures(chunkData);
+        }
+
+        private StructureData GenerateStructureData(ChunkData chunkData)
         {
             StructureData structureData = new StructureData();
-            float[,] noise = GenerateNoise(chunkData);
+            float[,] noise = Noise.GenerateNoise(chunkData.ChunkLength,
+                new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z),
+                _noiseSettings);
 
             structureData.structurePositions = Noise.FindLocalMaximas(noise, new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z));
 
             return structureData;
         }
 
-        private float[,] GenerateNoise(ChunkData chunkData)
+        private void PlaceStructures(ChunkData chunkData)
         {
-            float[,] noise = new float[chunkData.ChunkLength, chunkData.ChunkLength];
-
-            int xStart = chunkData.WorldPosition.x;
-            int xEnd = chunkData.WorldPosition.x + chunkData.ChunkLength;
-            int zStart = chunkData.WorldPosition.z;
-            int zEnd = chunkData.WorldPosition.z + chunkData.ChunkLength;
-
-            int xIndex = 0;
-            int zIndex = 0;
-            for (int x = xStart; x < xEnd; ++x)
+            foreach(Vector2Int position in chunkData.structureData.structurePositions)
             {
-                for (int z = zStart; z < zEnd; ++z)
+                Debug.Log(position);
+
+                Vector3Int localPosition = new Vector3Int(position.x, chunkData.groundHeight[position.x, position.y], position.y);
+
+                for (int i = 0; i < _treeHeight; ++i)
                 {
-                    noise[xIndex, zIndex] = Noise.OctavePerlinNoise(x, z, _noiseSettings);
-
-                    ++zIndex;
+                    ++localPosition.y;
+                    ChunkDataHandler.SetVoxelAt(chunkData, _voxel, localPosition);
                 }
-                ++xIndex;
-                zIndex = 0;
             }
-
-            return noise;
         }
     }
 }

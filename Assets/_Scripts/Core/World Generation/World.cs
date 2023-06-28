@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Terrain;
 using UnityEngine;
 using System;
 using System.Threading;
@@ -7,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Zenject;
+using HerosJourney.Core.WorldGeneration.Structures;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -18,6 +20,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         [SerializeField] private WorldRenderer _worldRenderer;
         private TerrainGenerator _terrainGenerator;
+        private StructureGenerator _structureGenerator;
 
         private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
 
@@ -37,12 +40,14 @@ namespace HerosJourney.Core.WorldGeneration
         }
 
         private void OnDisable() => _taskTokenSource.Cancel();
-        private void Awake() => WorldData = new WorldData(_chunkLength, _chunkHeight);
 
         [Inject]
-        private void Construct(TerrainGenerator terrainGenerator)
+        private void Construct(TerrainGenerator terrainGenerator, StructureGenerator structureGenerator)
         {
             _terrainGenerator = terrainGenerator;
+            _structureGenerator = structureGenerator;
+
+            WorldData = new WorldData(_chunkLength, _chunkHeight);
         }
 
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
@@ -51,28 +56,69 @@ namespace HerosJourney.Core.WorldGeneration
 
         private async Task GenerateChunks(Vector3Int worldPosition)
         {
-            WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
+            Debug.Log("Generating World Generation Data");
 
+            WorldGenerationData worldGenerationData = await Task.Run(
+                () => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
+
+            Debug.Log("Removing Chunks");
             RemoveDistantChunks(worldGenerationData);
 
-            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = null;
-            ConcurrentDictionary<Vector3Int, MeshData> meshDataDicitonary = null;
-
+            ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary = null;
             try
             {
-                chunkDataDictionary = await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
-                foreach (var data in chunkDataDictionary)
-                    WorldData.chunkData.Add(data.Key, data.Value);
+                Debug.Log("Generating ChunkData");
+                await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
 
-                List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate);
-                meshDataDicitonary = await GenerateMeshData(dataToRender);
-            } 
-            catch (Exception)
+                Debug.Log("Generating MeshData");
+                meshDataDictionary = await GenerateMeshData(worldGenerationData.chunkRendererPositionsToCreate);
+            }
+            catch (Exception) 
             {
                 return;
             }
             
-            StartCoroutine(CreateChunks(meshDataDicitonary));
+            Debug.Log("Rendering");
+            StartCoroutine(CreateChunks(meshDataDictionary));
+        }
+
+        private async Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+        {
+            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = null;
+
+            try
+            {
+                Debug.Log("Generating Terrain");
+                chunkDataDictionary = await GenerateTerrain(chunkDataPositionsToCreate);
+            } 
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+
+            Debug.Log("Generating Structures");
+            foreach (ChunkData chunkData in chunkDataDictionary.Values)
+                _structureGenerator.GenerateStructures(chunkData);
+
+            foreach (var data in chunkDataDictionary)
+                WorldData.chunkData.Add(data.Key, data.Value);
+        }
+
+        private async Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<Vector3Int> chunkRendererPositionsToCreate)
+        {
+            ConcurrentDictionary<Vector3Int, MeshData> meshDataDicitonary = null;
+            List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, chunkRendererPositionsToCreate);
+            
+            try
+            {
+                meshDataDicitonary = await GenerateMeshData(dataToRender);
+            } 
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+
+            return meshDataDicitonary;
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
@@ -111,7 +157,7 @@ namespace HerosJourney.Core.WorldGeneration
             }
         }
 
-        private Task<ConcurrentDictionary<Vector3Int, ChunkData>> GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+        private Task<ConcurrentDictionary<Vector3Int, ChunkData>> GenerateTerrain(List<Vector3Int> chunkDataPositionsToCreate)
         {
             ConcurrentDictionary<Vector3Int, ChunkData> dictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
 
@@ -123,7 +169,7 @@ namespace HerosJourney.Core.WorldGeneration
                         _taskTokenSource.Token.ThrowIfCancellationRequested();
 
                     ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
-                    _terrainGenerator.GenerateChunkData(chunkData);
+                    _terrainGenerator.GenerateTerrain(chunkData);
 
                     dictionary.TryAdd(position, chunkData);
                 }

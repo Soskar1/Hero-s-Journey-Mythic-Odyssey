@@ -1,7 +1,7 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration.Biomes
+namespace HerosJourney.Core.WorldGeneration.Terrain
 {
     public class UndergroundLayerGenerator : LayerGenerator
     {

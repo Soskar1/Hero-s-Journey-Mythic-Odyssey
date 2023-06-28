@@ -2,7 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration.Biomes
+namespace HerosJourney.Core.WorldGeneration.Terrain
 {
     public class WaterLayerGenerator : LayerGenerator
     {

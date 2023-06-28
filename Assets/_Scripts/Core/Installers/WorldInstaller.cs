@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration;
-using HerosJourney.Core.WorldGeneration.Biomes;
+using HerosJourney.Core.WorldGeneration.Structures;
+using HerosJourney.Core.WorldGeneration.Terrain;
 using UnityEngine;
 using Zenject;
 
@@ -9,7 +10,8 @@ namespace HerosJourney.Core.Installers
     {
         [SerializeField] private World _world;
         [SerializeField] private ChunkLoading _chunkLoading;
-        [SerializeField] private BiomeGenerator _biomeGenerator;
+        [SerializeField] private TerrainGenerator _terrainGenerator;
+        [SerializeField] private StructureGenerator _structureGenerator;
 
         public override void InstallBindings()
         {
@@ -21,12 +23,13 @@ namespace HerosJourney.Core.Installers
         private void BindWorldGenerators()
         {
             Container
-                .Bind<BiomeGenerator>()
-                .FromInstance(_biomeGenerator)
+                .Bind<TerrainGenerator>()
+                .FromInstance(_terrainGenerator)
                 .AsSingle();
 
             Container
-                .Bind<TerrainGenerator>()
+                .Bind<StructureGenerator>()
+                .FromInstance(_structureGenerator)
                 .AsSingle();
         }
 

@@ -6,8 +6,7 @@ namespace HerosJourney.Core.Testing
 {
     public class NoiseVisualizer : MonoBehaviour
     {
-        [SerializeField] private NoiseGenerator _noiseGenerator;
-
+        [SerializeField] private NoiseSettings _noiseSettings;
         [SerializeField] private Renderer _renderer;
 
         [SerializeField] private int size;
@@ -22,7 +21,7 @@ namespace HerosJourney.Core.Testing
 
         public void VisualizeNoise()
         {
-            _currentNoiseData = _noiseGenerator.GenerateNoise(size, _offset);
+            _currentNoiseData = Noise.GenerateNoise(size, _offset, _noiseSettings);
             Texture2D generatedTexture = GenerateTexture();
 
             if (_showLocalMaximas)
@@ -51,7 +50,7 @@ namespace HerosJourney.Core.Testing
         private void AddLocalMaximas(Texture2D texture)
         {
             List<Vector2Int> localMaximas = Noise.FindLocalMaximas(_currentNoiseData, _offset);
-            
+
             foreach (var maxima in localMaximas)
                 texture.SetPixel(maxima.x, maxima.y, _localMaximaColor);
 
