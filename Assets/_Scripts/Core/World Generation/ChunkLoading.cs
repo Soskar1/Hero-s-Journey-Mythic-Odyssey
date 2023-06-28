@@ -55,7 +55,7 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 if (!_requestIsProcessed)
                 {
-                    _world.GenerateChunks(Vector3Int.RoundToInt(_player.position));
+                    _world.GenerateChunksRequest(Vector3Int.RoundToInt(_player.position));
                     _requestIsProcessed = true;
                 }
             }

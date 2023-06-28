@@ -46,8 +46,10 @@ namespace HerosJourney.Core.WorldGeneration
         }
 
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
+        
+        public async void GenerateChunksRequest(Vector3Int worldPosition) => await GenerateChunks(worldPosition);
 
-        public async Task GenerateChunks(Vector3Int worldPosition)
+        private async Task GenerateChunks(Vector3Int worldPosition)
         {
             WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
 
