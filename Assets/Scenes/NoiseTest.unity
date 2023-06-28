@@ -650,12 +650,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noiseGenerator: {fileID: 1514719945}
   _renderer: {fileID: 329445086}
-  size: 16
+  size: 256
   _offset: {x: 0, y: 0}
-  _showLocalMaximas: 1
-  _settings:
-    radius: 3
-    threshold: 0.5
+  _showLocalMaximas: 0
   _localMaximaColor: {r: 1, g: 0, b: 0, a: 0}
 --- !u!114 &1514719945
 MonoBehaviour:

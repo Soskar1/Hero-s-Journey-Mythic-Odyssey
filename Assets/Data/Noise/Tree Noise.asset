@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tree Noise
   m_EditorClassIdentifier: 
   octaves: 1
-  persistence: 0.1
-  noiseZoom: 0.02
+  persistence: 0.05
+  noiseZoom: 0.005
   offset: {x: 300, y: 5000}

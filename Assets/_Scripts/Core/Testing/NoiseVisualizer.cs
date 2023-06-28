@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using HerosJourney.Core.WorldGeneration.Noises;
-using HerosJourney.Core.WorldGeneration.Structures;
 using UnityEngine;
 
 namespace HerosJourney.Core.Testing
@@ -15,7 +14,6 @@ namespace HerosJourney.Core.Testing
         [SerializeField] private Vector2Int _offset;
 
         [SerializeField] private bool _showLocalMaximas;
-        [SerializeField] private StructurePlacementSettings _settings;
         [SerializeField] private Color _localMaximaColor;
 
         private float[,] _currentNoiseData;
@@ -52,8 +50,8 @@ namespace HerosJourney.Core.Testing
 
         private void AddLocalMaximas(Texture2D texture)
         {
-            List<Vector2Int> localMaximas = StructurePlacement.PlaceStructures(_currentNoiseData, _offset, _settings);
-
+            List<Vector2Int> localMaximas = Noise.FindLocalMaximas(_currentNoiseData, _offset);
+            
             foreach (var maxima in localMaximas)
                 texture.SetPixel(maxima.x, maxima.y, _localMaximaColor);
 
