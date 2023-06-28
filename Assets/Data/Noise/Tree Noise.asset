@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47104f5307ace1c44a05a2639f419ddd, type: 3}
   m_Name: Tree Noise
   m_EditorClassIdentifier: 
-  octaves: 3
-  persistence: 0.2
+  octaves: 1
+  persistence: 0.01
   noiseZoom: 0.02
-  offset: {x: 128, y: 628}
+  offset: {x: 300, y: 5000}

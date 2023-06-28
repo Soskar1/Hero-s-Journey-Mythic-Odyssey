@@ -15,7 +15,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
             float[,] noise = GenerateNoise(chunkData);
 
             structureData.structurePositions = StructurePlacement.PlaceStructures(noise, new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z), _structurePlacementSettings);
-            
+
             return structureData;
         }
 

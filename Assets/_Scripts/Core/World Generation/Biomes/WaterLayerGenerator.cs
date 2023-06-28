@@ -8,16 +8,25 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
     {
         [SerializeField] private VoxelData _sand;
         [SerializeField] private int _waterThreshold;
+        private Voxel sandVoxel;
+
+        public override void Awake()
+        {
+            base.Awake();
+            sandVoxel = new Voxel(_sand);
+        }
 
         protected override bool TryGenerateVoxels(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {
             if (localPosition.y < _waterThreshold && chunkData.voxels[localPosition.x, localPosition.y, localPosition.z].VoxelType == VoxelType.Air)
             {
-                ChunkDataHandler.SetVoxelAt(chunkData, new Voxels.Voxel(VoxelData, chunkData.WorldPosition + localPosition), localPosition);
+                ChunkDataHandler.SetVoxelAt(chunkData, MainVoxel, localPosition);
 
-                VoxelType voxelType = ChunkDataHandler.GetVoxelAt(chunkData, localPosition + Vector3Int.down).VoxelType;
-                if (voxelType == VoxelType.Solid)
-                    ChunkDataHandler.SetVoxelAt(chunkData, new Voxels.Voxel(_sand, chunkData.WorldPosition + localPosition), localPosition + Vector3Int.down);
+                if (localPosition.y == surfaceHeightNoise + 1)
+                {
+                    localPosition.y = surfaceHeightNoise;
+                    ChunkDataHandler.SetVoxelAt(chunkData, sandVoxel, localPosition);
+                }
 
                 return true;
             }

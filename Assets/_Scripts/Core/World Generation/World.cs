@@ -14,7 +14,7 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
-        [SerializeField, Range(4, 32)] private int _renderDistance = 8;
+        [SerializeField, Range(1, 32)] private int _renderDistance = 8;
 
         [SerializeField] private WorldRenderer _worldRenderer;
         private TerrainGenerator _terrainGenerator;
@@ -45,22 +45,24 @@ namespace HerosJourney.Core.WorldGeneration
             _terrainGenerator = terrainGenerator;
         }
 
-        public void GenerateChunks() => GenerateChunks(Vector3Int.zero);
+        public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
 
-        public async void GenerateChunks(Vector3Int worldPosition)
+        public async Task GenerateChunks(Vector3Int worldPosition)
         {
             WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
 
             RemoveDistantChunks(worldGenerationData);
 
-            ConcurrentDictionary<Vector3Int, MeshData> meshDataDicitonary = new ConcurrentDictionary<Vector3Int, MeshData>();
+            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = null;
+            ConcurrentDictionary<Vector3Int, MeshData> meshDataDicitonary = null;
 
             try
             {
-                await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
+                chunkDataDictionary = await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
+                foreach (var data in chunkDataDictionary)
+                    WorldData.chunkData.Add(data.Key, data.Value);
 
                 List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate);
-
                 meshDataDicitonary = await GenerateMeshData(dataToRender);
             } 
             catch (Exception)
@@ -107,8 +109,10 @@ namespace HerosJourney.Core.WorldGeneration
             }
         }
 
-        private Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+        private Task<ConcurrentDictionary<Vector3Int, ChunkData>> GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
         {
+            ConcurrentDictionary<Vector3Int, ChunkData> dictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
+
             return Task.Run(() =>
             {
                 foreach (Vector3Int position in chunkDataPositionsToCreate)
@@ -119,8 +123,10 @@ namespace HerosJourney.Core.WorldGeneration
                     ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
                     _terrainGenerator.GenerateChunkData(chunkData);
 
-                    WorldData.chunkData.Add(position, chunkData);
+                    dictionary.TryAdd(position, chunkData);
                 }
+
+                return dictionary;
             }, _taskTokenSource.Token);
         }
 

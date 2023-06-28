@@ -993,7 +993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noiseSettings: {fileID: 11400000, guid: e805fbdc630442b478495e988d425224, type: 2}
   _structurePlacementSettings:
-    radius: 5
+    radius: 10
     threshold: 0.5
 --- !u!4 &952000721
 Transform:
@@ -1428,7 +1428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 4
+  _renderDistance: 16
   _worldRenderer: {fileID: 1530814505}
 --- !u!4 &1530814504
 Transform:
@@ -1538,15 +1538,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1645,7 +1645,6 @@ MonoBehaviour:
   _layerGenerators:
   - {fileID: 1574429502}
   - {fileID: 1135902154}
-  - {fileID: 209020194}
   _noiseSettings: {fileID: 11400000, guid: 6a02d79f27131564c92ab4d619aec501, type: 2}
   _structureGenerator: {fileID: 952000720}
 --- !u!4 &1992527462
@@ -1908,7 +1907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.2199124, z: -4.869437}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2067,7 +2066,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.2199124, z: -4.869437}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2284,7 +2283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.2199124, z: -4.869437}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

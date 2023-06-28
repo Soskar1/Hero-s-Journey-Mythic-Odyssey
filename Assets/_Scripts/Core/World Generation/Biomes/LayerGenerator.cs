@@ -8,8 +8,14 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
     {
         [SerializeField] private LayerGenerator _next;
         [SerializeField] private VoxelData _voxelData;
+        private Voxel _voxel;
 
-        protected VoxelData VoxelData => _voxelData;
+        protected Voxel MainVoxel => _voxel;
+
+        public virtual void Awake()
+        {
+            _voxel = new Voxel(_voxelData);
+        }
 
         public bool TryGenerateLayer(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {

@@ -67,7 +67,7 @@ namespace HerosJourney.Core.WorldGeneration
         public static List<Vector3Int> ExcludeMatchingChunkRendererPositions(WorldData worldData, List<Vector3Int> chunkPositions)
         {
             return worldData.chunkRenderers.Keys
-                .Where(pos => chunkPositions.Contains(pos) == false)
+                .Where(pos => chunkPositions.Contains(pos) == false && worldData.chunkData.ContainsKey(pos))
                 .ToList();
         }
 
