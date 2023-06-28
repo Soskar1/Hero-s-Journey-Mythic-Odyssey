@@ -994,7 +994,7 @@ MonoBehaviour:
   _noiseSettings: {fileID: 11400000, guid: e805fbdc630442b478495e988d425224, type: 2}
   _structurePlacementSettings:
     radius: 3
-    threshold: 0.5
+    threshold: 0.3
 --- !u!4 &952000721
 Transform:
   m_ObjectHideFlags: 0
@@ -1908,7 +1908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 1.766111, z: -8.344718}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2067,7 +2067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 1.766111, z: -8.344718}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2284,7 +2284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 1.766111, z: -8.344718}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
