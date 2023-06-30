@@ -8,13 +8,6 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
     {
         [SerializeField] private VoxelData _sand;
         [SerializeField] private int _waterThreshold;
-        private Voxel sandVoxel;
-
-        public override void Awake()
-        {
-            base.Awake();
-            sandVoxel = new Voxel(_sand);
-        }
 
         protected override bool TryGenerateVoxels(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {
@@ -25,7 +18,7 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
                 if (localPosition.y == surfaceHeightNoise + 1)
                 {
                     localPosition.y = surfaceHeightNoise;
-                    ChunkDataHandler.SetVoxelAt(chunkData, sandVoxel, localPosition);
+                    ChunkDataHandler.SetVoxelAt(chunkData, VoxelStorage.GetVoxel(_sand), localPosition);
                 }
 
                 return true;
