@@ -21,5 +21,23 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
             string json = JsonConvert.SerializeObject(structureVoxelData);
             File.WriteAllText(directory + fileName + EXTENSION, json);
         }
+
+        public static Dictionary<Vector3Int, VoxelData> LoadStructure(string fileName)
+        {
+            Dictionary<Vector3Int, VoxelData> structureVoxelData = new Dictionary<Vector3Int, VoxelData>();
+
+            string path = Application.dataPath + RESOURCES_PATH + fileName + EXTENSION;
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+                structureVoxelData = JsonConvert.DeserializeObject<Dictionary<Vector3Int, VoxelData>>(json);
+            }
+            else 
+            {
+                Debug.LogError($"File {fileName + EXTENSION} does not exist. Path: {path}");
+            }
+
+            return structureVoxelData;  
+        }
     }
 }

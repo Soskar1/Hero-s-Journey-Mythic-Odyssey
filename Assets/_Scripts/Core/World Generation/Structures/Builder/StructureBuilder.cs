@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using HerosJourney.Core.WorldGeneration.Voxels;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Structures.Builder
@@ -13,15 +13,23 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
 
         private void Start()
         {
-            foreach (Vector3Int position in _voxelPositions)
+            foreach (var position in _voxelPositions)
                 _voxels.Add(position, _voxelData);
 
             //CreateStructure();
+            LoadStructure("tree");
+
+            Debug.Log(_voxels);
         }
 
         public void CreateStructure()
         {
             StructureSaveLoad.SaveStructure(_voxels, "tree");
+        }
+
+        public void LoadStructure(string structureName)
+        {
+            _voxels = StructureSaveLoad.LoadStructure(structureName);
         }
     }
 }
