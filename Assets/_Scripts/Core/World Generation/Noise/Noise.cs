@@ -69,7 +69,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             return noise;
         }
 
-        public static List<Vector2Int> FindLocalMaximas(float[,] noise, Vector2Int worldPosition)
+        public static List<Vector2Int> FindLocalMaximas(float[,] noise)
         {
             List<Vector2Int> localMaximas = new List<Vector2Int>();
 
@@ -79,7 +79,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
                 {
                     Vector2Int localPosition = new Vector2Int(x, y);
                     if (CheckNeighbours(noise, localPosition, (neighbourNoise) => neighbourNoise < noise[x, y]))
-                        localMaximas.Add(localPosition + worldPosition);
+                        localMaximas.Add(localPosition);
                 }
             }
                 

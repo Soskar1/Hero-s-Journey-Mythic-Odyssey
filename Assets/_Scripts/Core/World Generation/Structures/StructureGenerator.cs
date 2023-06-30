@@ -17,10 +17,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
 
         public void GenerateStructures(ChunkData chunkData)
         {
-            Debug.Log("Generating StructureData");
             chunkData.structureData = GenerateStructureData(chunkData);
-            
-            Debug.Log("Placing Structures: " + chunkData.structureData.structurePositions.Count);
             PlaceStructures(chunkData);
         }
 
@@ -31,7 +28,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                 new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z),
                 _noiseSettings);
 
-            structureData.structurePositions = Noise.FindLocalMaximas(noise, new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z));
+            structureData.structurePositions = Noise.FindLocalMaximas(noise);
 
             return structureData;
         }
@@ -40,8 +37,6 @@ namespace HerosJourney.Core.WorldGeneration.Structures
         {
             foreach(Vector2Int position in chunkData.structureData.structurePositions)
             {
-                Debug.Log(position);
-
                 Vector3Int localPosition = new Vector3Int(position.x, chunkData.groundHeight[position.x, position.y], position.y);
 
                 for (int i = 0; i < _treeHeight; ++i)

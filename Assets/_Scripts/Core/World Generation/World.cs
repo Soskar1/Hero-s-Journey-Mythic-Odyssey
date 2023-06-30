@@ -56,21 +56,15 @@ namespace HerosJourney.Core.WorldGeneration
 
         private async Task GenerateChunks(Vector3Int worldPosition)
         {
-            Debug.Log("Generating World Generation Data");
-
             WorldGenerationData worldGenerationData = await Task.Run(
                 () => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
 
-            Debug.Log("Removing Chunks");
             RemoveDistantChunks(worldGenerationData);
 
             ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary = null;
             try
             {
-                Debug.Log("Generating ChunkData");
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
-
-                Debug.Log("Generating MeshData");
                 meshDataDictionary = await GenerateMeshData(worldGenerationData.chunkRendererPositionsToCreate);
             }
             catch (Exception) 
@@ -78,7 +72,6 @@ namespace HerosJourney.Core.WorldGeneration
                 return;
             }
             
-            Debug.Log("Rendering");
             StartCoroutine(CreateChunks(meshDataDictionary));
         }
 
@@ -88,7 +81,6 @@ namespace HerosJourney.Core.WorldGeneration
 
             try
             {
-                Debug.Log("Generating Terrain");
                 chunkDataDictionary = await GenerateTerrain(chunkDataPositionsToCreate);
             } 
             catch (Exception)
@@ -96,7 +88,6 @@ namespace HerosJourney.Core.WorldGeneration
                 throw new Exception();
             }
 
-            Debug.Log("Generating Structures");
             foreach (ChunkData chunkData in chunkDataDictionary.Values)
                 _structureGenerator.GenerateStructures(chunkData);
 

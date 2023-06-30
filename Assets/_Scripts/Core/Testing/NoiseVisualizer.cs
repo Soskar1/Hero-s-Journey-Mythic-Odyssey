@@ -49,7 +49,7 @@ namespace HerosJourney.Core.Testing
 
         private void AddLocalMaximas(Texture2D texture)
         {
-            List<Vector2Int> localMaximas = Noise.FindLocalMaximas(_currentNoiseData, _offset);
+            List<Vector2Int> localMaximas = Noise.FindLocalMaximas(_currentNoiseData);
 
             foreach (var maxima in localMaximas)
                 texture.SetPixel(maxima.x, maxima.y, _localMaximaColor);
