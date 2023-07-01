@@ -1,8 +1,9 @@
-using HerosJourney.Core.WorldGeneration.Voxels;
+using HerosJourney.Utils;
 using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
+using Newtonsoft.Json;
+using HerosJourney.Core.WorldGeneration.Voxels;
 
 namespace HerosJourney.Core.WorldGeneration.Structures.Builder
 {
@@ -11,33 +12,33 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
         public const string RESOURCES_PATH = "/Resources/";
         public const string EXTENSION = ".json";
 
-        public static void SaveStructure(Dictionary<Vector3Int, VoxelData> structureVoxelData, string fileName)
+        public static void SaveStructure(List<VoxelSaveData> voxelSaveData, string fileName)
         {
             string directory = Application.dataPath + RESOURCES_PATH;
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            string json = JsonConvert.SerializeObject(structureVoxelData);
+            string json = JsonConvert.SerializeObject(voxelSaveData);
             File.WriteAllText(directory + fileName + EXTENSION, json);
         }
 
-        public static Dictionary<Vector3Int, VoxelData> LoadStructure(string fileName)
+        public static List<VoxelSaveData> LoadStructure(string fileName)
         {
-            Dictionary<Vector3Int, VoxelData> structureVoxelData = new Dictionary<Vector3Int, VoxelData>();
-
+            List<VoxelSaveData> voxelSaveData = new List<VoxelSaveData>();
             string path = Application.dataPath + RESOURCES_PATH + fileName + EXTENSION;
+
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                structureVoxelData = JsonConvert.DeserializeObject<Dictionary<Vector3Int, VoxelData>>(json);
+                voxelSaveData = JsonConvert.DeserializeObject<List<VoxelSaveData>>(json, new SOConverter<VoxelData>());
             }
-            else 
+            else
             {
-                Debug.LogError($"File {fileName + EXTENSION} does not exist. Path: {path}");
+                Debug.LogError($"File {path} does not exist");
             }
 
-            return structureVoxelData;  
+            return voxelSaveData;
         }
     }
 }

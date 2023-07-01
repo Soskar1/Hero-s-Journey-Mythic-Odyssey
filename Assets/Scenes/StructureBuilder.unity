@@ -330,13 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83099d7a3e10b6a43bc60015ad1841bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _voxelData: {fileID: 11400000, guid: 085abdc5c01f5d34194201d63ff709b0, type: 2}
-  _voxelPositions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 1, z: 0}
-  - {x: 0, y: 2, z: 0}
-  - {x: 0, y: 3, z: 0}
-  - {x: 0, y: 4, z: 0}
+  _savedVoxels: []
 --- !u!4 &1903049497
 Transform:
   m_ObjectHideFlags: 0
