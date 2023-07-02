@@ -6,14 +6,19 @@ namespace HerosJourney.Core.Installers
 {
     public class VoxelInstaller : MonoInstaller
     {
-        [SerializeField] private VoxelStorage _voxelStorage;
+        [SerializeField] private VoxelDataStorage _voxelStorage;
 
         public override void InstallBindings()
         {
             Container
-                .Bind<VoxelStorage>()
+                .Bind<VoxelDataStorage>()
                 .FromInstance(_voxelStorage)
                 .AsSingle();
+
+            Container
+                .BindInterfacesAndSelfTo<VoxelStorage>()
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

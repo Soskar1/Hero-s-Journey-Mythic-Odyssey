@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b260763ba7648439e6c0773014afb2, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
+  id: 5
   type: 1
   textureData:
-    up: {x: 0, y: 3}
-    down: {x: 0, y: 3}
-    side: {x: 0, y: 3}
+    up:
+      x: 0
+      y: 3
+    down:
+      x: 0
+      y: 3
+    side:
+      x: 0
+      y: 3
+  generatesCollider: 0

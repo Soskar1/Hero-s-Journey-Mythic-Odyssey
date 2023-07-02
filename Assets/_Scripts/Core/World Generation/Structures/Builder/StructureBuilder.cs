@@ -10,7 +10,6 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
         private void Start()
         {
             CreateStructure();
-            //LoadStructure("tree");
         }
 
         public void CreateStructure()

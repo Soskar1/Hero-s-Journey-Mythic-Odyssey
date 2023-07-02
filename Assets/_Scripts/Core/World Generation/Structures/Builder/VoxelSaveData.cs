@@ -1,4 +1,3 @@
-using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Utils;
 using System;
 
@@ -8,6 +7,6 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
     public struct VoxelSaveData
     {
         public LightVector3Int position;
-        public VoxelData voxelData;
+        public int id;
     }
 }

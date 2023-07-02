@@ -1,19 +1,25 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
 using HerosJourney.Core.WorldGeneration.Voxels;
+using HerosJourney.Core.WorldGeneration.Structures.Builder;
+using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration.Structures
 {
     public class StructureGenerator : MonoBehaviour
     {
         [SerializeField] private NoiseSettings _noiseSettings;
+        [SerializeField] private TextAsset _tree;
+        private VoxelStorage _voxelStorage;
 
-        [SerializeField] private int _treeHeight;
-        [SerializeField] private VoxelData _voxelData;
-        private Voxel _voxel;
+        private List<VoxelSaveData> _structureVoxels = new List<VoxelSaveData>();
 
-        private void Awake() => _voxel = new Voxel(_voxelData);
+        [Inject]
+        private void Construct(VoxelStorage voxelStorage) => _voxelStorage = voxelStorage;
+
+        private void Start() => _structureVoxels = StructureSaveLoad.LoadStructure(_tree);
 
         public void GenerateStructures(ChunkData chunkData)
         {
@@ -35,14 +41,17 @@ namespace HerosJourney.Core.WorldGeneration.Structures
 
         private void PlaceStructures(ChunkData chunkData)
         {
-            foreach(Vector2Int position in chunkData.structureData.structurePositions)
+            foreach (Vector2Int position in chunkData.structureData.structurePositions)
             {
                 Vector3Int localPosition = new Vector3Int(position.x, chunkData.groundHeight[position.x, position.y], position.y);
+                Vector3Int tmpPosition = localPosition;
 
-                for (int i = 0; i < _treeHeight; ++i)
+                foreach (var voxel in _structureVoxels)
                 {
-                    ++localPosition.y;
-                    ChunkDataHandler.SetVoxelAt(chunkData, _voxel, localPosition);
+                    tmpPosition += voxel.position;
+                    Voxel voxelInstance = _voxelStorage.GetVoxelByID(voxel.id);
+                    ChunkDataHandler.SetVoxelAt(chunkData, voxelInstance, tmpPosition);
+                    tmpPosition = localPosition;
                 }
             }
         }

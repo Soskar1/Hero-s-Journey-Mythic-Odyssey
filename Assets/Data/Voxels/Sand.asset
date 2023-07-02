@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b260763ba7648439e6c0773014afb2, type: 3}
   m_Name: Sand
   m_EditorClassIdentifier: 
+  id: 4
   type: 2
   textureData:
-    up: {x: 0, y: 4}
-    down: {x: 0, y: 4}
-    side: {x: 0, y: 4}
+    up:
+      x: 0
+      y: 4
+    down:
+      x: 0
+      y: 4
+    side:
+      x: 0
+      y: 4
   generatesCollider: 1

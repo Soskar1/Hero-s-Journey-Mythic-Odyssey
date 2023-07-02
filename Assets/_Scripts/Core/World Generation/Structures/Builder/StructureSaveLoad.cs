@@ -31,7 +31,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
             if (File.Exists(path))
             {
                 string json = File.ReadAllText(path);
-                voxelSaveData = JsonConvert.DeserializeObject<List<VoxelSaveData>>(json, new SOConverter<VoxelData>());
+                voxelSaveData = JsonConvert.DeserializeObject<List<VoxelSaveData>>(json);
             }
             else
             {
@@ -40,5 +40,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
 
             return voxelSaveData;
         }
+
+        public static List<VoxelSaveData> LoadStructure(TextAsset json) => JsonConvert.DeserializeObject<List<VoxelSaveData>>(json.text);
     }
 }
