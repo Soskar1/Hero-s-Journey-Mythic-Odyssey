@@ -1,9 +1,9 @@
+using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Utils;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
-using HerosJourney.Core.WorldGeneration.Voxels;
 
 namespace HerosJourney.Core.WorldGeneration.Structures.Builder
 {

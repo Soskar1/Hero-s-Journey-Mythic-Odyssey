@@ -1,3 +1,4 @@
+using HerosJourney.Utils;
 using UnityEngine;
 using System;
 
@@ -14,8 +15,8 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
     [Serializable]
     public struct TextureData
     {
-        public Vector2Int up;
-        public Vector2Int down;
-        public Vector2Int side;
+        public LightVector2Int up;
+        public LightVector2Int down;
+        public LightVector2Int side;
     }
 }
