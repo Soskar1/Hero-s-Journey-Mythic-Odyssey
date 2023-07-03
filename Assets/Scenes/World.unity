@@ -355,7 +355,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &541782301
 GameObject:
@@ -480,7 +480,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &731337518
 GameObject:
@@ -711,7 +711,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &791969272
 MonoBehaviour:
@@ -928,58 +928,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1012844001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1012844003}
-  - component: {fileID: 1012844004}
-  m_Layer: 0
-  m_Name: VoxelDataStorage
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1012844003
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012844001}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1012844004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012844001}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c700cafa5a32a44789fb37c84635f7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _voxelData:
-  - {fileID: 11400000, guid: 1b5202608daf3f4419d89bee76379fba, type: 2}
-  - {fileID: 11400000, guid: 71ff359277f07094ead5f371a4fea571, type: 2}
-  - {fileID: 11400000, guid: 8fbc37ad17d74ee4898b8cf8df1499e2, type: 2}
-  - {fileID: 11400000, guid: 80aebb5da66ce2843b9763afc5508758, type: 2}
-  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
-  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
-  - {fileID: 11400000, guid: 085abdc5c01f5d34194201d63ff709b0, type: 2}
 --- !u!1 &1041467649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,7 +1058,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1135902152
 GameObject:
@@ -1303,7 +1251,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3f8dcf5b65f0242a85cc7ef1aac6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _voxelStorage: {fileID: 1012844004}
+  _voxelData:
+  - {fileID: 11400000, guid: 1b5202608daf3f4419d89bee76379fba, type: 2}
+  - {fileID: 11400000, guid: 71ff359277f07094ead5f371a4fea571, type: 2}
+  - {fileID: 11400000, guid: 8fbc37ad17d74ee4898b8cf8df1499e2, type: 2}
+  - {fileID: 11400000, guid: 80aebb5da66ce2843b9763afc5508758, type: 2}
+  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
+  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
+  - {fileID: 11400000, guid: 085abdc5c01f5d34194201d63ff709b0, type: 2}
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,7 +1459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1769,7 +1724,7 @@ Transform:
   - {fileID: 7829133394019614696}
   - {fileID: 7829133393403156250}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7829133392477162707
 GameObject:
@@ -1891,7 +1846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.361889, z: -8.494977}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2050,7 +2005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.361889, z: -8.494977}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2267,7 +2222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.361889, z: -8.494977}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

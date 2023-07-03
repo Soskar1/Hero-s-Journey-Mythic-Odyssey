@@ -67,8 +67,9 @@ namespace HerosJourney.Core.WorldGeneration
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
                 meshDataDictionary = await GenerateMeshData(worldGenerationData.chunkRendererPositionsToCreate);
             }
-            catch (Exception) 
+            catch (Exception e) 
             {
+                Debug.LogException(e);
                 return;
             }
             

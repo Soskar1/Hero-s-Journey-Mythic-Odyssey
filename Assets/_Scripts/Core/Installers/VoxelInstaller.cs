@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration.Voxels;
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -6,14 +7,15 @@ namespace HerosJourney.Core.Installers
 {
     public class VoxelInstaller : MonoInstaller
     {
-        [SerializeField] private VoxelDataStorage _voxelStorage;
+        [SerializeField] private List<VoxelData> _voxelData;
 
         public override void InstallBindings()
         {
             Container
-                .Bind<VoxelDataStorage>()
-                .FromInstance(_voxelStorage)
-                .AsSingle();
+                .BindInterfacesAndSelfTo<VoxelDataStorage>()
+                .AsSingle()
+                .WithArguments(_voxelData)
+                .NonLazy();
 
             Container
                 .BindInterfacesAndSelfTo<VoxelStorage>()

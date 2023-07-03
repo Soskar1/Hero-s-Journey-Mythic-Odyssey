@@ -18,7 +18,7 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
                 if (localPosition.y == surfaceHeightNoise + 1)
                 {
                     localPosition.y = surfaceHeightNoise;
-                    ChunkDataHandler.SetVoxelAt(chunkData, VoxelStorage.GetVoxel(_sand), localPosition);
+                    ChunkDataHandler.SetVoxelAt(chunkData, VoxelStorage.Get(_sand), localPosition);
                 }
 
                 return true;

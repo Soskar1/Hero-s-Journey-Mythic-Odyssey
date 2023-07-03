@@ -11,7 +11,7 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
         [SerializeField] private VoxelData _voxelData;
         private VoxelStorage _voxelStorage;
 
-        protected Voxel MainVoxel => _voxelStorage.GetVoxel(_voxelData);
+        protected Voxel MainVoxel => _voxelStorage.Get(_voxelData);
         protected VoxelStorage VoxelStorage => _voxelStorage;
 
         [Inject]

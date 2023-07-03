@@ -1,29 +1,19 @@
+using HerosJourney.Utils;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration.Voxels
 {
-    public class VoxelDataStorage : MonoBehaviour
+    public class VoxelDataStorage : Storage<int, VoxelData>, IInitializable
     {
-        [SerializeField] private List<VoxelData> _voxelData;
-        private Dictionary<int, VoxelData> _voxelDataByID = new Dictionary<int, VoxelData>();
+        private List<VoxelData> _voxelData;
 
-        private void Awake()
+        public VoxelDataStorage(List<VoxelData> voxelData) => _voxelData = voxelData;
+
+        public void Initialize()
         {
             foreach (var voxelData in _voxelData)
-                _voxelDataByID.Add(voxelData.id, voxelData);
-        }    
-
-        public VoxelData FindVoxelData(int id)
-        {
-            if (_voxelDataByID.ContainsKey(id))
-                return _voxelDataByID[id];
-
-            Debug.LogError($"VoxelData with id={id} does not exist");
-            return null;
+                Add(voxelData.id, voxelData);
         }
-
-        public List<VoxelData> GetAllData() => _voxelDataByID.Values.ToList();
     }
 }
