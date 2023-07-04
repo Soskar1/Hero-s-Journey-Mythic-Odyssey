@@ -1110,7 +1110,7 @@ MonoBehaviour:
   _next: {fileID: 0}
   _voxelData: {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
   _sand: {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
-  _waterThreshold: 30
+  _waterThreshold: 45
 --- !u!1 &1227941983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,9 +1386,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d82523ba5905f746abceb7a6f34eb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _worldSeed: 0
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 6
+  _renderDistance: 4
   _worldRenderer: {fileID: 1530814505}
 --- !u!4 &1530814504
 Transform:
@@ -1486,7 +1487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 62.73
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1865,7 +1866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.09532955, z: -5.390953}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2024,7 +2025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.09532955, z: -5.390953}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2241,7 +2242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.09532955, z: -5.390953}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

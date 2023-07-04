@@ -6,6 +6,8 @@ namespace HerosJourney.Core.WorldGeneration.Noises
 {
     public static class Noise
     {
+        private static int noiseSeed;
+
         private static List<Vector2Int> directions = new List<Vector2Int>
         {
             new Vector2Int(0, 1),
@@ -17,6 +19,8 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             new Vector2Int(-1, 0),
             new Vector2Int(-1, 1)
         };
+
+        public static void SetSeed(int seed) => noiseSeed = seed;
 
         public static float OctavePerlinNoise(float x, float y, NoiseSettings noiseSettings)
         {
@@ -31,8 +35,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
 
             for (int i = 0; i < noiseSettings.octaves; ++i)
             {
-                //TODO: Add seed
-                total += Mathf.PerlinNoise((x + noiseSettings.offset.x) * frequency, (y + noiseSettings.offset.y) * frequency) * amplitude;
+                total += Mathf.PerlinNoise((x + noiseSettings.offset.x) * frequency + noiseSeed, (y + noiseSettings.offset.y) * frequency + noiseSeed) * amplitude;
 
                 maxValue += amplitude;
 
@@ -42,6 +45,8 @@ namespace HerosJourney.Core.WorldGeneration.Noises
 
             return total / maxValue;
         }
+
+        public static float WhiteNoise(float x, float y) => Mathf.PerlinNoise(x + noiseSeed, y + noiseSeed);
         
         public static float[,] GenerateNoise(int size, Vector2Int worldPosition, NoiseSettings noiseSettings)
         {
@@ -58,7 +63,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             {
                 for (int y = yStart; y < yEnd; ++y)
                 {
-                    noise[xIndex, yIndex] = Noise.OctavePerlinNoise(x, y, noiseSettings);
+                    noise[xIndex, yIndex] = OctavePerlinNoise(x, y, noiseSettings);
 
                     ++yIndex;
                 }
@@ -67,6 +72,18 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             }
 
             return noise;
+        }
+
+        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, float threshold)
+        {
+            List<Vector2Int> points = new List<Vector2Int>();
+
+            for (int x = 0; x < noise.GetLength(0); ++x)
+                for (int y = 0; y < noise.GetLength(1); ++y)
+                    if (noise[x, y] > threshold)
+                        points.Add(new Vector2Int(x, y));
+                
+            return points;
         }
 
         public static List<Vector2Int> FindLocalMaximas(float[,] noise)

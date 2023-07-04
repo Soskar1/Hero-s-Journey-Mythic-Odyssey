@@ -35,6 +35,8 @@ namespace HerosJourney.Core.WorldGeneration.Structures
 
         private StructureData GenerateStructureData(ChunkData chunkData)
         {
+            Noise.SetSeed(chunkData.ChunkSeed);
+
             StructureData structureData = new StructureData();
             float[,] noise = Noise.GenerateNoise(chunkData.ChunkLength,
                 new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z),

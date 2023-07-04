@@ -14,9 +14,11 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
+        [SerializeField] private int _worldSeed;
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
         [SerializeField, Range(1, 32)] private int _renderDistance = 8;
+        private WorldData _worldData;
 
         [SerializeField] private WorldRenderer _worldRenderer;
         private TerrainGenerator _terrainGenerator;
@@ -28,7 +30,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         public int ChunkLength => _chunkLength;
         public int ChunkHeight => _chunkHeight;
-        public WorldData WorldData { get; private set; }
+        public WorldData WorldData => _worldData;
 
         private struct WorldGenerationData
         {
@@ -47,7 +49,7 @@ namespace HerosJourney.Core.WorldGeneration
             _terrainGenerator = terrainGenerator;
             _structureGenerator = structureGenerator;
 
-            WorldData = new WorldData(_chunkLength, _chunkHeight);
+            _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
         }
 
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
@@ -84,9 +86,9 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 chunkDataDictionary = await GenerateTerrain(chunkDataPositionsToCreate);
             } 
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception();
+                throw e;
             }
 
             foreach (var data in chunkDataDictionary)
@@ -160,7 +162,7 @@ namespace HerosJourney.Core.WorldGeneration
                     if (_taskTokenSource.IsCancellationRequested)
                         _taskTokenSource.Token.ThrowIfCancellationRequested();
 
-                    ChunkData chunkData = new ChunkData(_chunkLength, _chunkHeight, position, this);
+                    ChunkData chunkData = new ChunkData(ref _worldData, position);
                     _terrainGenerator.GenerateTerrain(chunkData);
 
                     dictionary.TryAdd(position, chunkData);
