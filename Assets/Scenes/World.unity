@@ -913,6 +913,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noiseSettings: {fileID: 11400000, guid: e805fbdc630442b478495e988d425224, type: 2}
   _tree: {fileID: 4900000, guid: 65d498074ab4df842834530f47cdd596, type: 3}
+  _voxelsNotToBuildOn:
+  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
+  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
 --- !u!4 &952000721
 Transform:
   m_ObjectHideFlags: 0
@@ -1862,7 +1865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 1.04715, z: -7.804534}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2021,7 +2024,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 1.04715, z: -7.804534}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2238,7 +2241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 1.04715, z: -7.804534}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

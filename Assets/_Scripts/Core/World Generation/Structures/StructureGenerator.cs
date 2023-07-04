@@ -12,6 +12,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
     {
         [SerializeField] private NoiseSettings _noiseSettings;
         [SerializeField] private TextAsset _tree;
+        [SerializeField] private List<VoxelData> _voxelsNotToBuildOn;
         private VoxelStorage _voxelStorage;
         private StructureStorage _structureStorage;
 
@@ -54,6 +55,11 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                 foreach (var voxel in _structureVoxels)
                 {
                     tmpPosition += voxel.position;
+
+                    Voxel currentVoxel = ChunkDataHandler.GetVoxelAt(chunkData, tmpPosition);
+                    if (currentVoxel != null && _voxelsNotToBuildOn.Contains(currentVoxel.data))
+                        break;
+
                     Voxel voxelInstance = _voxelStorage.GetVoxelByID(voxel.id);
                     ChunkDataHandler.SetVoxelAt(chunkData, voxelInstance, tmpPosition);
                     tmpPosition = localPosition;
