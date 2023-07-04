@@ -13,13 +13,18 @@ namespace HerosJourney.Core.WorldGeneration.Structures
         [SerializeField] private NoiseSettings _noiseSettings;
         [SerializeField] private TextAsset _tree;
         private VoxelStorage _voxelStorage;
+        private StructureStorage _structureStorage;
 
         private List<VoxelSaveData> _structureVoxels = new List<VoxelSaveData>();
 
         [Inject]
-        private void Construct(VoxelStorage voxelStorage) => _voxelStorage = voxelStorage;
+        private void Construct(VoxelStorage voxelStorage, StructureStorage structureStorage)
+        {
+            _voxelStorage = voxelStorage;
+            _structureStorage = structureStorage;
+        }
 
-        private void Start() => _structureVoxels = StructureSaveLoad.LoadStructure(_tree);
+        public void Start() => _structureVoxels = _structureStorage.Get(_tree.name);
 
         public void GenerateStructures(ChunkData chunkData)
         {

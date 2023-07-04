@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace HerosJourney.Utils
 {
-    public abstract class Storage<Key, Value> 
-        where Value : class
+    public abstract class Storage<Key, Value>
     {
         private Dictionary<Key, Value> _storage = new Dictionary<Key, Value>();
 
@@ -16,8 +14,7 @@ namespace HerosJourney.Utils
             if (_storage.ContainsKey(key))
                 return _storage[key];
 
-            Debug.LogError($"Key {key} does not exist in the storage!");
-            return null;
+            throw new System.Exception($"Key {key} does not exist in the storage!");
         }
 
         public List<Value> GetValues() => _storage.Values.ToList();
