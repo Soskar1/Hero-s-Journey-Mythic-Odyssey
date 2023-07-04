@@ -7,6 +7,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     public class ChunkData
     {
         public Voxel[,,] voxels;
+        public int[,] groundHeight;
         public StructureData structureData;
 
         public int ChunkLength { get; private set; }
@@ -19,6 +20,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             ChunkLength = chunkLength;
             ChunkHeight = chunkHeight;
             voxels = new Voxel[chunkLength, chunkHeight, chunkLength];
+            groundHeight = new int[chunkLength, chunkLength];
             WorldPosition = worldPosition;
             World = worldReference;
         }

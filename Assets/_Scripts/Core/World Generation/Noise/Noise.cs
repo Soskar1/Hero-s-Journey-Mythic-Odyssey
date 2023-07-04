@@ -42,8 +42,34 @@ namespace HerosJourney.Core.WorldGeneration.Noises
 
             return total / maxValue;
         }
+        
+        public static float[,] GenerateNoise(int size, Vector2Int worldPosition, NoiseSettings noiseSettings)
+        {
+            float[,] noise = new float[size, size];
 
-        public static List<Vector2Int> FindLocalMaximas(float[,] noise, Vector2Int worldPosition)
+            int xStart = worldPosition.x;
+            int xEnd = worldPosition.x + size;
+            int yStart = worldPosition.y;
+            int yEnd = worldPosition.y + size;
+
+            int xIndex = 0;
+            int yIndex = 0;
+            for (int x = xStart; x < xEnd; ++x)
+            {
+                for (int y = yStart; y < yEnd; ++y)
+                {
+                    noise[xIndex, yIndex] = Noise.OctavePerlinNoise(x, y, noiseSettings);
+
+                    ++yIndex;
+                }
+                ++xIndex;
+                yIndex = 0;
+            }
+
+            return noise;
+        }
+
+        public static List<Vector2Int> FindLocalMaximas(float[,] noise)
         {
             List<Vector2Int> localMaximas = new List<Vector2Int>();
 
@@ -53,7 +79,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
                 {
                     Vector2Int localPosition = new Vector2Int(x, y);
                     if (CheckNeighbours(noise, localPosition, (neighbourNoise) => neighbourNoise < noise[x, y]))
-                        localMaximas.Add(localPosition + worldPosition);
+                        localMaximas.Add(localPosition);
                 }
             }
                 
@@ -72,7 +98,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
                 if (condition(noise[newPos.x, newPos.y]) == false)
                     return false;
             }
-            
+
             return true;
         }
     }
