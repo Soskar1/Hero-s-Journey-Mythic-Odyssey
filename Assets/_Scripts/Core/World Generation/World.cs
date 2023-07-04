@@ -89,11 +89,11 @@ namespace HerosJourney.Core.WorldGeneration
                 throw new Exception();
             }
 
-            foreach (ChunkData chunkData in chunkDataDictionary.Values)
-                _structureGenerator.GenerateStructures(chunkData);
-
             foreach (var data in chunkDataDictionary)
                 WorldData.chunkData.Add(data.Key, data.Value);
+
+            foreach (ChunkData chunkData in chunkDataDictionary.Values)
+                _structureGenerator.GenerateStructures(chunkData);
         }
 
         private async Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<Vector3Int> chunkRendererPositionsToCreate)

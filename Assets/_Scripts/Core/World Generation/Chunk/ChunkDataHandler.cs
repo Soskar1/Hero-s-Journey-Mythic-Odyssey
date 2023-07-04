@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 
@@ -10,6 +9,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         {
             if (IsInBounds(chunkData, localPosition))
                 chunkData.voxels[localPosition.x, localPosition.y, localPosition.z] = voxel;
+            else
+                WorldDataHandler.SetVoxelInWorld(chunkData.World.WorldData, voxel, chunkData.WorldPosition + localPosition);
         }
 
         public static Voxel GetVoxelAt(ChunkData chunkData, Vector3Int localPosition)

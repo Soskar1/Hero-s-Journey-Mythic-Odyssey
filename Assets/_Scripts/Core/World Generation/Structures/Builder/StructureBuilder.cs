@@ -7,7 +7,8 @@ namespace HerosJourney.Core.WorldGeneration.Structures.Builder
     {
         [SerializeField] private List<VoxelSaveData> _savedVoxels;
 
-        public void CreateStructure(string structureName) => StructureSaveLoad.SaveStructure(_savedVoxels, structureName);
+        [ContextMenu("Save Structure")]
+        public void SaveStructure() => StructureSaveLoad.SaveStructure(_savedVoxels, "tree");
 
         public void LoadStructure(string structureName)
         {
