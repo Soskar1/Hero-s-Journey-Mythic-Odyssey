@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89340e9c4c0aed549a4cb2ca1bfffaeb, type: 3}
   m_Name: Tree
   m_EditorClassIdentifier: 
-  octaves: 3
-  persistence: 0.09
-  noiseZoom: 0.001
-  offset: {x: 300, y: 5000}
   probability: 0.08
+  threshold: 0.5
+  radius: 3
+  voxelsNotToBuildOn:
+  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
+  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}

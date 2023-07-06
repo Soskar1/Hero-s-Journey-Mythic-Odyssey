@@ -77,7 +77,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             return noise;
         }
 
-        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, float threshold, Func<bool> condition)
+        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, PointSelectionSettings selectionSettings, Func<bool> condition)
         {
             List<Vector2Int> points = new List<Vector2Int>();
 
@@ -85,11 +85,12 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             {
                 for (int y = 0; y < noise.GetLength(1); ++y)
                 {
-                    if (noise[x, y] > threshold && condition())
+                    if (noise[x, y] > selectionSettings.threshold && condition())
                     {
                         Vector2Int localPosition = new Vector2Int(x, y);
                         points.Add(localPosition);
-                        ChangeNeighbours(noise, localPosition, (neighbourNoise, pos) => neighbourNoise[pos.x, pos.y] = 0);
+
+                        ChangeNeighbours(noise, localPosition, selectionSettings.radius, (neighbourNoise, pos) => neighbourNoise[pos.x, pos.y] = 0);
                     }
                 }
             }
@@ -97,39 +98,12 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             return points;
         }
 
-        public static List<Vector2Int> FindLocalMaximas(float[,] noise)
+        private static void ChangeNeighbours(float[,] noise, Vector2Int localPosition, float radius, Action<float[,], Vector2Int> operation)
         {
-            List<Vector2Int> localMaximas = new List<Vector2Int>();
-
-            for (int x = 0; x < noise.GetLength(0); ++x)
-            {
-                for (int y = 0; y < noise.GetLength(1); ++y)
-                {
-                    Vector2Int localPosition = new Vector2Int(x, y);
-                    if (CheckNeighbours(noise, localPosition, (neighbourNoise) => neighbourNoise < noise[x, y]))
-                        localMaximas.Add(localPosition);
-                }
-            }
-                
-            return localMaximas;
+            for (int currentRadius = 1; currentRadius <= radius; ++currentRadius)
+                ChangeNeighbours(noise, localPosition * currentRadius, operation);
         }
-
-        private static bool CheckNeighbours(float[,] noise, Vector2Int localPosition, Func<float, bool> condition)
-        {
-            foreach (var dir in directions)
-            {
-                var newPos = new Vector2Int(dir.x + localPosition.x, dir.y + localPosition.y);
-
-                if (newPos.x < 0 || newPos.x >= noise.GetLength(0) || newPos.y < 0 || newPos.y >= noise.GetLength(1))
-                    continue;
-
-                if (condition(noise[newPos.x, newPos.y]) == false)
-                    return false;
-            }
-
-            return true;
-        }
-
+        
         private static void ChangeNeighbours(float[,] noise, Vector2Int localPosition, Action<float[,], Vector2Int> operation)
         {
             foreach (var dir in directions)
@@ -141,6 +115,19 @@ namespace HerosJourney.Core.WorldGeneration.Noises
 
                 operation(noise, newPos);
             }
+        }
+
+    }
+
+    public struct PointSelectionSettings
+    {
+        public readonly float threshold;
+        public readonly int radius;
+
+        public PointSelectionSettings(float threshold, int radius)
+        {
+            this.threshold = threshold;
+            this.radius = radius;
         }
     }
 }

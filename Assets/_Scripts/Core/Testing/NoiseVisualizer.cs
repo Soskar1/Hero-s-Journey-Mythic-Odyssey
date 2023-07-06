@@ -15,15 +15,18 @@ namespace HerosJourney.Core.Testing
         [SerializeField] private int size;
         [SerializeField] private Vector2Int _offset;
 
-        [SerializeField] private bool _showLocalMaximas;
         [SerializeField] private bool _showPointsAboveThreshold;
         [SerializeField] private float _threshold;
-        [SerializeField] private Color _localMaximaColor;
         [SerializeField] private Color _highPointColor;
 
         private float[,] _currentNoiseData;
+        private PointSelectionSettings _selectionSettings;
 
-        private void Awake() => _currentNoiseData = new float[size, size];
+        private void Awake() 
+        {
+            _currentNoiseData = new float[size, size];
+            _selectionSettings = new PointSelectionSettings(_generationSettings.threshold, _generationSettings.radius);
+        }
 
         public void VisualizeNoise()
         {
@@ -31,9 +34,6 @@ namespace HerosJourney.Core.Testing
 
             _currentNoiseData = Noise.GenerateNoise(size, _offset, _noiseSettings);
             Texture2D generatedTexture = GenerateTexture();
-
-            if (_showLocalMaximas)
-                AddLocalMaximas(generatedTexture);
 
             if (_showPointsAboveThreshold)
                 ShowPointsAboveThreshold(generatedTexture);
@@ -58,19 +58,9 @@ namespace HerosJourney.Core.Testing
             return texture;
         }
 
-        private void AddLocalMaximas(Texture2D texture)
-        {
-            List<Vector2Int> localMaximas = Noise.FindLocalMaximas(_currentNoiseData);
-
-            foreach (var maxima in localMaximas)
-                texture.SetPixel(maxima.x, maxima.y, _localMaximaColor);
-
-            texture.Apply();
-        }
-
         private void ShowPointsAboveThreshold(Texture2D texture)
         {
-            List<Vector2Int> points = Noise.FindPointsAboveThreshold(_currentNoiseData, _threshold, 
+            List<Vector2Int> points = Noise.FindPointsAboveThreshold(_currentNoiseData, _selectionSettings, 
                 () => ThreadSafeRandom.NextDouble() <= _generationSettings.probability);
 
             foreach (var point in points)

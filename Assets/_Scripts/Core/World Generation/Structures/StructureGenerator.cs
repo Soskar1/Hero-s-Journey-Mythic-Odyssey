@@ -16,6 +16,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
         [SerializeField] private TextAsset _tree;
         private VoxelStorage _voxelStorage;
         private StructureStorage _structureStorage;
+        private PointSelectionSettings _selectionSettings;
 
         private List<VoxelSaveData> _structureVoxels = new List<VoxelSaveData>();
 
@@ -26,7 +27,11 @@ namespace HerosJourney.Core.WorldGeneration.Structures
             _structureStorage = structureStorage;
         }
 
-        public void Start() => _structureVoxels = _structureStorage.Get(_tree.name);
+        public void Start() 
+        {
+            _structureVoxels = _structureStorage.Get(_tree.name);
+            _selectionSettings = new PointSelectionSettings(_generationSettings.threshold, _generationSettings.radius);
+        }
 
         public void GenerateStructures(ChunkData chunkData)
         {
@@ -43,7 +48,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                 new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z),
                 _noiseSettings);
 
-            structureData.structurePositions = Noise.FindPointsAboveThreshold(noise, _generationSettings.threshold,
+            structureData.structurePositions = Noise.FindPointsAboveThreshold(noise, _selectionSettings,
                 () => ThreadSafeRandom.NextDouble() <= _generationSettings.probability);
 
             return structureData;
