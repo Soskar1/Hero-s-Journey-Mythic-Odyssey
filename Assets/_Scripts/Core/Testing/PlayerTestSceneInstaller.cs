@@ -4,7 +4,7 @@ using Cinemachine;
 using UnityEngine;
 using Zenject;
 
-namespace HerosJourney.Core.PlayerTestScene
+namespace HerosJourney.Core.Testing
 {
     public class PlayerTestSceneInstaller : MonoInstaller
     {

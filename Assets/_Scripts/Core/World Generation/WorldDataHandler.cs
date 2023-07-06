@@ -29,6 +29,14 @@ namespace HerosJourney.Core.WorldGeneration
             return chunksAroundPoint;
         }
 
+        public static void SetVoxelInWorld(WorldData worldData, Voxel voxel, Vector3Int worldPosition)
+        {
+            Vector3Int chunkPosition = GetChunkPosition(worldData, worldPosition);
+
+            if (worldData.chunkData.TryGetValue(chunkPosition, out ChunkData chunk))
+                ChunkDataHandler.SetVoxelAt(chunk, voxel, ChunkDataHandler.WorldToLocalPosition(chunk, worldPosition));
+        }
+
         public static Voxel GetVoxelInWorld(WorldData worldData, Vector3Int worldPosition)
         {
             Vector3Int chunkPosition = GetChunkPosition(worldData, worldPosition);
@@ -67,7 +75,7 @@ namespace HerosJourney.Core.WorldGeneration
         public static List<Vector3Int> ExcludeMatchingChunkRendererPositions(WorldData worldData, List<Vector3Int> chunkPositions)
         {
             return worldData.chunkRenderers.Keys
-                .Where(pos => chunkPositions.Contains(pos) == false)
+                .Where(pos => chunkPositions.Contains(pos) == false && worldData.chunkData.ContainsKey(pos))
                 .ToList();
         }
 

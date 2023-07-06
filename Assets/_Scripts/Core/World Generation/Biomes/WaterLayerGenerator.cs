@@ -2,7 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration.Biomes
+namespace HerosJourney.Core.WorldGeneration.Terrain
 {
     public class WaterLayerGenerator : LayerGenerator
     {
@@ -11,13 +11,15 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
 
         protected override bool TryGenerateVoxels(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {
-            if (localPosition.y < _waterThreshold && chunkData.voxels[localPosition.x, localPosition.y, localPosition.z].GetVoxelType() == VoxelType.Air)
+            if (localPosition.y < _waterThreshold && chunkData.voxels[localPosition.x, localPosition.y, localPosition.z].VoxelType == VoxelType.Air)
             {
-                ChunkDataHandler.SetVoxelAt(chunkData, Voxel, localPosition);
+                ChunkDataHandler.SetVoxelAt(chunkData, MainVoxel, localPosition);
 
-                VoxelType voxelType = ChunkDataHandler.GetVoxelAt(chunkData, localPosition + Vector3Int.down).GetVoxelType();
-                if (voxelType == VoxelType.Solid)
-                    ChunkDataHandler.SetVoxelAt(chunkData, new Voxel(_sand), localPosition + Vector3Int.down);
+                if (localPosition.y == surfaceHeightNoise + 1)
+                {
+                    localPosition.y = surfaceHeightNoise;
+                    ChunkDataHandler.SetVoxelAt(chunkData, VoxelStorage.Get(_sand), localPosition);
+                }
 
                 return true;
             }

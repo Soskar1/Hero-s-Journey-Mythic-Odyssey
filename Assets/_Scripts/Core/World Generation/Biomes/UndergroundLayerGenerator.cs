@@ -1,7 +1,7 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration.Biomes
+namespace HerosJourney.Core.WorldGeneration.Terrain
 {
     public class UndergroundLayerGenerator : LayerGenerator
     {
@@ -9,7 +9,7 @@ namespace HerosJourney.Core.WorldGeneration.Biomes
         {
             if (localPosition.y < surfaceHeightNoise)
             {
-                ChunkDataHandler.SetVoxelAt(chunkData, Voxel, localPosition);
+                ChunkDataHandler.SetVoxelAt(chunkData, MainVoxel, localPosition);
                 return true;
             }
 

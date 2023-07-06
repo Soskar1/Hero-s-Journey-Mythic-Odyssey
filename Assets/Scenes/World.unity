@@ -166,7 +166,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &71199083
 GameObject:
@@ -355,7 +355,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &541782301
 GameObject:
@@ -480,7 +480,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &731337518
 GameObject:
@@ -711,7 +711,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &791969272
 MonoBehaviour:
@@ -882,6 +882,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 813797616}
   m_CullTransparentMesh: 1
+--- !u!1 &952000719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 952000721}
+  - component: {fileID: 952000720}
+  m_Layer: 0
+  m_Name: StructureGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &952000720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952000719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0237a7c4233ee438988d9e0fccc579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _noiseSettings: {fileID: 11400000, guid: 5d0cf0017a56a634f916d89f002ed5bb, type: 2}
+  _tree: {fileID: 4900000, guid: 65d498074ab4df842834530f47cdd596, type: 3}
+  _voxelsNotToBuildOn:
+  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
+  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
+  _threshold: 0.5
+--- !u!4 &952000721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952000719}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1041467649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,7 +1062,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1135902152
 GameObject:
@@ -1061,7 +1111,7 @@ MonoBehaviour:
   _next: {fileID: 0}
   _voxelData: {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
   _sand: {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
-  _waterThreshold: 30
+  _waterThreshold: 45
 --- !u!1 &1227941983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1154,8 @@ GameObject:
   - component: {fileID: 1339897345}
   - component: {fileID: 1339897344}
   - component: {fileID: 1339897346}
+  - component: {fileID: 1339897348}
+  - component: {fileID: 1339897349}
   - component: {fileID: 1339897347}
   m_Layer: 0
   m_Name: SceneContext
@@ -1126,8 +1178,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
   _monoInstallers:
-  - {fileID: 1339897347}
   - {fileID: 1339897346}
+  - {fileID: 1339897348}
+  - {fileID: 1339897349}
+  - {fileID: 1339897347}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -1189,7 +1243,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _world: {fileID: 1530814503}
   _chunkLoading: {fileID: 55439042}
-  _biomeGenerator: {fileID: 1992527461}
+  _terrainGenerator: {fileID: 1992527461}
+  _structureGenerator: {fileID: 952000720}
+--- !u!114 &1339897348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339897343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df3f8dcf5b65f0242a85cc7ef1aac6e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _voxelData:
+  - {fileID: 11400000, guid: 1b5202608daf3f4419d89bee76379fba, type: 2}
+  - {fileID: 11400000, guid: 71ff359277f07094ead5f371a4fea571, type: 2}
+  - {fileID: 11400000, guid: 8fbc37ad17d74ee4898b8cf8df1499e2, type: 2}
+  - {fileID: 11400000, guid: 80aebb5da66ce2843b9763afc5508758, type: 2}
+  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
+  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
+  - {fileID: 11400000, guid: 085abdc5c01f5d34194201d63ff709b0, type: 2}
+--- !u!114 &1339897349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339897343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f8b81a01bfe5c47b83b7e552ee4046, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _structureFiles:
+  - {fileID: 4900000, guid: 65d498074ab4df842834530f47cdd596, type: 3}
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,6 +1387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d82523ba5905f746abceb7a6f34eb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _worldSeed: 0
   _chunkLength: 16
   _chunkHeight: 128
   _renderDistance: 4
@@ -1390,7 +1480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1398,7 +1488,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 62.73
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1410,15 +1500,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1421274125235268130, guid: 8519309fb684b6a449a81015ebf08a44, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1496,7 +1586,7 @@ GameObject:
   - component: {fileID: 1992527462}
   - component: {fileID: 1992527461}
   m_Layer: 0
-  m_Name: BiomeGenerator
+  m_Name: TerrainGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1655,7 +1745,7 @@ Transform:
   - {fileID: 7829133394019614696}
   - {fileID: 7829133393403156250}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7829133392477162707
 GameObject:
@@ -1777,7 +1867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.4898362, z: -3.109556}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1936,7 +2026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.4898362, z: -3.109556}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2153,7 +2243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: -0.4898362, z: -3.109556}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

@@ -1,17 +1,24 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
+using Zenject;
 
-namespace HerosJourney.Core.WorldGeneration.Biomes
+namespace HerosJourney.Core.WorldGeneration.Terrain
 {
     public abstract class LayerGenerator : MonoBehaviour
     {
         [SerializeField] private LayerGenerator _next;
         [SerializeField] private VoxelData _voxelData;
+        private VoxelStorage _voxelStorage;
 
-        public Voxel Voxel { get; private set; }
+        protected Voxel MainVoxel => _voxelStorage.Get(_voxelData);
+        protected VoxelStorage VoxelStorage => _voxelStorage;
 
-        private void Awake() => Voxel = new Voxel(_voxelData);
+        [Inject]
+        private void Construct(VoxelStorage voxelStorage)
+        {
+            _voxelStorage = voxelStorage;
+        }
 
         public bool TryGenerateLayer(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {
