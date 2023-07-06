@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using HerosJourney.Utils;
 
 namespace HerosJourney.Core.WorldGeneration.Noises
 {
@@ -24,7 +24,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
         public static void SetSeed(int seed)
         {
             noiseSeed = seed;
-            Random.InitState(seed);
+            ThreadSafeRandom.SetSeed(seed);
         }
 
         public static float OctavePerlinNoise(float x, float y, NoiseSettings noiseSettings)
@@ -85,7 +85,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             {
                 for (int y = 0; y < noise.GetLength(1); ++y)
                 {
-                    if (noise[x, y] > threshold && Random.Range(0f, 1f) <= structureNoise.probability)
+                    if (noise[x, y] > threshold && ThreadSafeRandom.NextDouble() <= structureNoise.probability)
                     {
                         Vector2Int localPosition = new Vector2Int(x, y);
                         points.Add(localPosition);

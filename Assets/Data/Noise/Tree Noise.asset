@@ -16,4 +16,4 @@ MonoBehaviour:
   persistence: 0.09
   noiseZoom: 0.001
   offset: {x: 300, y: 5000}
-  probability: 0.1
+  probability: 0.08

@@ -107,9 +107,9 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 meshDataDicitonary = await GenerateMeshData(dataToRender);
             } 
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception();
+                throw e;
             }
 
             return meshDataDicitonary;
