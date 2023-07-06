@@ -911,12 +911,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0237a7c4233ee438988d9e0fccc579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noiseSettings: {fileID: 11400000, guid: 5d0cf0017a56a634f916d89f002ed5bb, type: 2}
+  _noiseSettings: {fileID: 11400000, guid: b38988e483ca89a4eade581068b6ef17, type: 2}
+  _generationSettings: {fileID: 11400000, guid: 5d0cf0017a56a634f916d89f002ed5bb, type: 2}
   _tree: {fileID: 4900000, guid: 65d498074ab4df842834530f47cdd596, type: 3}
-  _voxelsNotToBuildOn:
-  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
-  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
-  _threshold: 0.5
 --- !u!4 &952000721
 Transform:
   m_ObjectHideFlags: 0
@@ -1867,7 +1864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.4898362, z: -3.109556}
+  m_FollowOffset: {x: 0, y: -0.4939399, z: -3.066303}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2026,7 +2023,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.4898362, z: -3.109556}
+  m_FollowOffset: {x: 0, y: -0.4939399, z: -3.066303}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2243,7 +2240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.4898362, z: -3.109556}
+  m_FollowOffset: {x: 0, y: -0.4939399, z: -3.066303}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
