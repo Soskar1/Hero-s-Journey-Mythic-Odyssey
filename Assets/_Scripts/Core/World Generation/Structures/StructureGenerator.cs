@@ -10,9 +10,10 @@ namespace HerosJourney.Core.WorldGeneration.Structures
 {
     public class StructureGenerator : MonoBehaviour
     {
-        [SerializeField] private NoiseSettings _noiseSettings;
+        [SerializeField] private StructureNoiseSettings _noiseSettings;
         [SerializeField] private TextAsset _tree;
         [SerializeField] private List<VoxelData> _voxelsNotToBuildOn;
+        [SerializeField] private float _threshold;
         private VoxelStorage _voxelStorage;
         private StructureStorage _structureStorage;
 
@@ -42,7 +43,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                 new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z),
                 _noiseSettings);
 
-            structureData.structurePositions = Noise.FindLocalMaximas(noise);
+            structureData.structurePositions = Noise.FindPointsAboveThreshold(noise, _threshold, _noiseSettings);
 
             return structureData;
         }

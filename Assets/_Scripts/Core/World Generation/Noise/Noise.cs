@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace HerosJourney.Core.WorldGeneration.Noises
 {
@@ -20,7 +21,11 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             new Vector2Int(-1, 1)
         };
 
-        public static void SetSeed(int seed) => noiseSeed = seed;
+        public static void SetSeed(int seed)
+        {
+            noiseSeed = seed;
+            Random.InitState(seed);
+        }
 
         public static float OctavePerlinNoise(float x, float y, NoiseSettings noiseSettings)
         {
@@ -45,8 +50,6 @@ namespace HerosJourney.Core.WorldGeneration.Noises
 
             return total / maxValue;
         }
-
-        public static float WhiteNoise(float x, float y) => Mathf.PerlinNoise(x + noiseSeed, y + noiseSeed);
         
         public static float[,] GenerateNoise(int size, Vector2Int worldPosition, NoiseSettings noiseSettings)
         {
@@ -74,14 +77,22 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             return noise;
         }
 
-        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, float threshold)
+        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, float threshold, StructureNoiseSettings structureNoise)
         {
             List<Vector2Int> points = new List<Vector2Int>();
 
             for (int x = 0; x < noise.GetLength(0); ++x)
+            {
                 for (int y = 0; y < noise.GetLength(1); ++y)
-                    if (noise[x, y] > threshold)
-                        points.Add(new Vector2Int(x, y));
+                {
+                    if (noise[x, y] > threshold && Random.Range(0f, 1f) <= structureNoise.probability)
+                    {
+                        Vector2Int localPosition = new Vector2Int(x, y);
+                        points.Add(localPosition);
+                        ChangeNeighbours(noise, localPosition, (neighbourNoise, pos) => neighbourNoise[pos.x, pos.y] = 0);
+                    }
+                }
+            }
                 
             return points;
         }
@@ -117,6 +128,19 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             }
 
             return true;
+        }
+
+        private static void ChangeNeighbours(float[,] noise, Vector2Int localPosition, Action<float[,], Vector2Int> operation)
+        {
+            foreach (var dir in directions)
+            {
+                var newPos = new Vector2Int(dir.x + localPosition.x, dir.y + localPosition.y);
+
+                if (newPos.x < 0 || newPos.x >= noise.GetLength(0) || newPos.y < 0 || newPos.y >= noise.GetLength(1))
+                    continue;
+
+                operation(noise, newPos);
+            }
         }
     }
 }

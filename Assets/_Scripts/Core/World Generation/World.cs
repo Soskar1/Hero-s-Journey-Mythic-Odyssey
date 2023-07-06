@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Terrain;
+using HerosJourney.Core.WorldGeneration.Structures;
 using UnityEngine;
 using System;
 using System.Threading;
@@ -8,7 +9,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Zenject;
-using HerosJourney.Core.WorldGeneration.Structures;
 
 namespace HerosJourney.Core.WorldGeneration
 {

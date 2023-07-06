@@ -627,7 +627,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1514719946}
-  - component: {fileID: 1514719945}
   - component: {fileID: 1514719944}
   m_Layer: 0
   m_Name: NoiseVisualizer
@@ -648,25 +647,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b656c72c13062a4dba90b9468d99fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _noiseGenerator: {fileID: 1514719945}
+  _noiseSettings: {fileID: 11400000, guid: 5d0cf0017a56a634f916d89f002ed5bb, type: 2}
   _renderer: {fileID: 329445086}
-  size: 256
-  _offset: {x: 0, y: 0}
+  seed: 0
+  size: 1024
+  _offset: {x: -65, y: 46}
   _showLocalMaximas: 0
+  _showPointsAboveThreshold: 1
+  _threshold: 0.75
   _localMaximaColor: {r: 1, g: 0, b: 0, a: 0}
---- !u!114 &1514719945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1514719943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb47bfa2e23876c4e854c0d7fab7cf87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _noiseSettings: {fileID: 11400000, guid: e805fbdc630442b478495e988d425224, type: 2}
+  _highPointColor: {r: 0.17849922, g: 1, b: 0, a: 0}
 --- !u!4 &1514719946
 Transform:
   m_ObjectHideFlags: 0
