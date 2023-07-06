@@ -30,7 +30,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
         public void Start() 
         {
             _structureVoxels = _structureStorage.Get(_tree.name);
-            _selectionSettings = new PointSelectionSettings(_generationSettings.threshold, _generationSettings.radius);
+            _selectionSettings = new PointSelectionSettings(_generationSettings.noiseThreshold, _generationSettings.radius);
         }
 
         public void GenerateStructures(ChunkData chunkData)
@@ -58,6 +58,10 @@ namespace HerosJourney.Core.WorldGeneration.Structures
         {
             foreach (Vector2Int position in chunkData.structureData.structurePositions)
             {
+                int localY = chunkData.groundHeight[position.x, position.y];
+                if (localY >= _generationSettings.heightThreshold)
+                    continue;
+
                 Vector3Int localPosition = new Vector3Int(position.x, chunkData.groundHeight[position.x, position.y], position.y);
                 Vector3Int tmpPosition = localPosition;
 

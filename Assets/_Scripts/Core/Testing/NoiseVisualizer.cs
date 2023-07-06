@@ -25,7 +25,7 @@ namespace HerosJourney.Core.Testing
         private void Awake() 
         {
             _currentNoiseData = new float[size, size];
-            _selectionSettings = new PointSelectionSettings(_generationSettings.threshold, _generationSettings.radius);
+            _selectionSettings = new PointSelectionSettings(_generationSettings.noiseThreshold, _generationSettings.radius);
         }
 
         public void VisualizeNoise()

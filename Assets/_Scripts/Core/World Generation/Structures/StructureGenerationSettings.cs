@@ -8,8 +8,9 @@ namespace HerosJourney.Core.WorldGeneration.Noises
     public class StructureGenerationSettings : ScriptableObject
     {
         [Range(0f, 1f)] public float probability;
-        [Range(0f, 1f)] public float threshold;
+        [Range(0f, 1f)] public float noiseThreshold;
         [Range(1, 100)] public int radius;
+        public int heightThreshold;
         public List<VoxelData> voxelsNotToBuildOn;
     }
 }

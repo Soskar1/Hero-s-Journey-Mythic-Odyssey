@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Tree
   m_EditorClassIdentifier: 
   probability: 0.08
-  threshold: 0.5
+  noiseThreshold: 0.65
   radius: 3
+  heightThreshold: 75
   voxelsNotToBuildOn:
   - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
   - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
