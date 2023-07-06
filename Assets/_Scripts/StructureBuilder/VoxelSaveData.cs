@@ -1,12 +1,12 @@
 using HerosJourney.Utils;
 using System;
 
-namespace HerosJourney.Core.WorldGeneration.Structures.Builder
+namespace HerosJourney.StructureBuilder
 {
     [Serializable]
     public struct VoxelSaveData
     {
-        public LightVector3Int position;
+        public LightVector3Int pos;
         public int id;
     }
 }

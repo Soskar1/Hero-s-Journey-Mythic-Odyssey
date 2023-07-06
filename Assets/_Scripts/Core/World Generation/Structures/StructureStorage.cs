@@ -1,4 +1,4 @@
-using HerosJourney.Core.WorldGeneration.Structures.Builder;
+using HerosJourney.StructureBuilder;
 using HerosJourney.Utils;
 using System.Collections.Generic;
 using UnityEngine;

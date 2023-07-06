@@ -15,7 +15,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public MeshData WaterMeshData { get; private set; }
 
-        public MeshData(bool isMainMesh) {
+        public MeshData(bool isMainMesh)
+        {
             Vertices = new List<Vector3>();
             Triangles = new List<int>();
             UVs = new List<Vector3>();

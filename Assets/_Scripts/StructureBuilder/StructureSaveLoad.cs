@@ -1,11 +1,9 @@
-using HerosJourney.Core.WorldGeneration.Voxels;
-using HerosJourney.Utils;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-namespace HerosJourney.Core.WorldGeneration.Structures.Builder
+namespace HerosJourney.StructureBuilder
 {
     public static class StructureSaveLoad
     {

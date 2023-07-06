@@ -1,7 +1,7 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
 using HerosJourney.Core.WorldGeneration.Voxels;
-using HerosJourney.Core.WorldGeneration.Structures.Builder;
+using HerosJourney.StructureBuilder;
 using HerosJourney.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,7 +67,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
 
                 foreach (var voxel in _structureVoxels)
                 {
-                    tmpPosition += voxel.position;
+                    tmpPosition += voxel.pos;
 
                     Voxel currentVoxel = ChunkDataHandler.GetVoxelAt(chunkData, tmpPosition);
                     if (currentVoxel != null && _generationSettings.voxelsNotToBuildOn.Contains(currentVoxel.data))
