@@ -77,7 +77,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             return noise;
         }
 
-        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, float threshold, StructureNoiseSettings structureNoise)
+        public static List<Vector2Int> FindPointsAboveThreshold(float[,] noise, float threshold, Func<bool> condition)
         {
             List<Vector2Int> points = new List<Vector2Int>();
 
@@ -85,7 +85,7 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             {
                 for (int y = 0; y < noise.GetLength(1); ++y)
                 {
-                    if (noise[x, y] > threshold && ThreadSafeRandom.NextDouble() <= structureNoise.probability)
+                    if (noise[x, y] > threshold && condition())
                     {
                         Vector2Int localPosition = new Vector2Int(x, y);
                         points.Add(localPosition);

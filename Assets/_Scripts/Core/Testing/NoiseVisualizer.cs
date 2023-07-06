@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using HerosJourney.Core.WorldGeneration.Noises;
+using HerosJourney.Utils;
 using UnityEngine;
 
 namespace HerosJourney.Core.Testing
 {
     public class NoiseVisualizer : MonoBehaviour
     {
-        [SerializeField] private StructureNoiseSettings _noiseSettings;
+        [SerializeField] private NoiseSettings _noiseSettings;
+        [SerializeField] private StructureGenerationSettings _generationSettings;
         [SerializeField] private Renderer _renderer;
 
         [SerializeField] private int seed;
@@ -68,7 +70,8 @@ namespace HerosJourney.Core.Testing
 
         private void ShowPointsAboveThreshold(Texture2D texture)
         {
-            List<Vector2Int> points = Noise.FindPointsAboveThreshold(_currentNoiseData, _threshold, _noiseSettings);
+            List<Vector2Int> points = Noise.FindPointsAboveThreshold(_currentNoiseData, _threshold, 
+                () => ThreadSafeRandom.NextDouble() <= _generationSettings.probability);
 
             foreach (var point in points)
                 texture.SetPixel(point.x, point.y, _highPointColor);

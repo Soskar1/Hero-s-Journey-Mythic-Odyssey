@@ -2,6 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Core.WorldGeneration.Structures.Builder;
+using HerosJourney.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -10,10 +11,9 @@ namespace HerosJourney.Core.WorldGeneration.Structures
 {
     public class StructureGenerator : MonoBehaviour
     {
-        [SerializeField] private StructureNoiseSettings _noiseSettings;
+        [SerializeField] private NoiseSettings _noiseSettings;
+        [SerializeField] private StructureGenerationSettings _generationSettings;
         [SerializeField] private TextAsset _tree;
-        [SerializeField] private List<VoxelData> _voxelsNotToBuildOn;
-        [SerializeField] private float _threshold;
         private VoxelStorage _voxelStorage;
         private StructureStorage _structureStorage;
 
@@ -43,7 +43,8 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                 new Vector2Int(chunkData.WorldPosition.x, chunkData.WorldPosition.z),
                 _noiseSettings);
 
-            structureData.structurePositions = Noise.FindPointsAboveThreshold(noise, _threshold, _noiseSettings);
+            structureData.structurePositions = Noise.FindPointsAboveThreshold(noise, _generationSettings.threshold,
+                () => ThreadSafeRandom.NextDouble() <= _generationSettings.probability);
 
             return structureData;
         }
@@ -60,7 +61,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                     tmpPosition += voxel.position;
 
                     Voxel currentVoxel = ChunkDataHandler.GetVoxelAt(chunkData, tmpPosition);
-                    if (currentVoxel != null && _voxelsNotToBuildOn.Contains(currentVoxel.data))
+                    if (currentVoxel != null && _generationSettings.voxelsNotToBuildOn.Contains(currentVoxel.data))
                         break;
 
                     Voxel voxelInstance = _voxelStorage.GetVoxelByID(voxel.id);
