@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Utils
 {
     public enum Direction
     {

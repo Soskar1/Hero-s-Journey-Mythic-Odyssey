@@ -1,7 +1,7 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
 using HerosJourney.Core.WorldGeneration.Voxels;
-using HerosJourney.StructureBuilder;
+using HerosJourney.StructureBuilder.Saving;
 using HerosJourney.Utils;
 using System.Collections.Generic;
 using UnityEngine;

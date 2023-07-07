@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-namespace HerosJourney.StructureBuilder
+namespace HerosJourney.StructureBuilder.Saving
 {
     public static class StructureSaveLoad
     {

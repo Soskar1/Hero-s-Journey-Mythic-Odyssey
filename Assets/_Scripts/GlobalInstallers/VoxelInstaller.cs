@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-namespace HerosJourney.Core.Installers
+namespace HerosJourney.GlobalInstallers
 {
     public class VoxelInstaller : MonoInstaller
     {

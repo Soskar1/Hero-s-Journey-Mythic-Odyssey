@@ -3,33 +3,34 @@ using System;
 
 namespace HerosJourney.Utils
 {
-    public class UVMapping : MonoBehaviour
+    public static class UVMapping
     {
-        [SerializeField] private int _tileSize = 16;
-        [SerializeField] private Texture2D _atlas;
+        private static int _tileSize = 16;
+        private static Texture2D _atlas;
+
+        private static int _width;
+        private static int _height;
 
         private static float _offset = 0.001f;
         private static float _xStep;
         private static float _yStep;
 
-        public static float AtlasWidth { get; private set; }
-        public static float AtlasHeight { get; private set; }
-        public static int TileSize { get; private set; }
-
-        private void Awake()
+        public static void Initialize(Texture2D atlas, int tileSize)
         {
+            _tileSize = tileSize;
+            _atlas = atlas;
+
             _xStep = _tileSize / (float)_atlas.width;
             _yStep = _tileSize / (float)_atlas.height;
 
-            AtlasWidth = _atlas.width;
-            AtlasHeight = _atlas.height;
-            TileSize = _tileSize;
+            _width = _atlas.width;
+            _height = _atlas.height;
         }
 
         public static Vector2[] GetUVCoordinates(Vector2Int textureCoordinates)
         {
-            if (textureCoordinates.x > AtlasWidth / TileSize ||
-                textureCoordinates.y > AtlasHeight / TileSize)
+            if (textureCoordinates.x > _width / _tileSize ||
+                textureCoordinates.y > _height / _tileSize)
                 throw new ArgumentOutOfRangeException();
 
             Vector2[] uvCoordinates = new Vector2[4];
