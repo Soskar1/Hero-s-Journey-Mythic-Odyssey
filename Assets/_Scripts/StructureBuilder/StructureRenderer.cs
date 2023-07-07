@@ -17,7 +17,6 @@ namespace HerosJourney.StructureBuilder
             _mesh = _meshFilter.mesh;
         }
 
-        [ContextMenu("UpdateMesh")]
         public void UpdateStructure() => RenderMesh(_structureData.mesh);
 
         private void RenderMesh(StructureMesh meshData)
