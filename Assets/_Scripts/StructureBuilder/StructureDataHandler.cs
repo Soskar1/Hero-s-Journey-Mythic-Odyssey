@@ -1,4 +1,3 @@
-using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 
@@ -20,24 +19,14 @@ namespace HerosJourney.StructureBuilder
             return null;
         }
 
-        public static bool IsInBounds(StructureData chunkData, Vector3Int localPosition)
+        public static bool IsInBounds(StructureData structureData, Vector3Int localPosition)
         {
-            if (localPosition.x < 0 || localPosition.x >= chunkData.Size.x ||
-                localPosition.y < 0 || localPosition.y >= chunkData.Size.y ||
-                localPosition.z < 0 || localPosition.z >= chunkData.Size.z)
+            if (localPosition.x < 0 || localPosition.x >= structureData.Size.x ||
+                localPosition.y < 0 || localPosition.y >= structureData.Size.y ||
+                localPosition.z < 0 || localPosition.z >= structureData.Size.z)
                 return false;
 
             return true;
-        }
-
-        public static Vector3Int WorldToLocalPosition(ChunkData chunk, Vector3Int worldPosition)
-        {
-            return new Vector3Int
-            {
-                x = worldPosition.x - chunk.WorldPosition.x,
-                y = worldPosition.y - chunk.WorldPosition.y,
-                z = worldPosition.z - chunk.WorldPosition.z
-            };
         }
     }
 }

@@ -1,4 +1,3 @@
-using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Utils;
 using UnityEngine;
@@ -24,29 +23,24 @@ namespace HerosJourney.StructureBuilder
             for (int x = 0; x < structureData.Size.x; ++x)
                 for (int y = 0; y < structureData.Size.y; ++y)
                     for (int z = 0; z < structureData.Size.z; ++z)
-                        GenerateVoxelFaces(structureData, structureMesh, structureData.voxels[x, y, z].data, new Vector3Int(x, y, z));
+                        if (structureData.voxels[x, y, z] != null)
+                            GenerateVoxelFaces(structureData, structureMesh, structureData.voxels[x, y, z].data, new Vector3Int(x, y, z));
 
             return structureMesh;
         }
 
         private static void GenerateVoxelFaces(StructureData structureData, StructureMesh structureMesh, VoxelData voxelData, Vector3Int position)
         {
-            if (voxelData.type == VoxelType.Air || voxelData.type == VoxelType.Nothing)
+            if (voxelData.type is VoxelType.Air || voxelData.type is VoxelType.Nothing)
                 return;
 
             foreach (var direction in _directions)
             {
                 Vector3Int neighbourVoxelCoordinates = position + direction.ToVector3Int();
                 Voxel neighbourVoxel = StructureDataHandler.GetVoxelAt(structureData, neighbourVoxelCoordinates);
-                VoxelType neighbourVoxelType = VoxelType.Nothing;
+                VoxelType neighbourVoxelType = neighbourVoxel is null ? VoxelType.Nothing : neighbourVoxel.VoxelType;
 
-                if (neighbourVoxel != null)
-                    neighbourVoxelType = neighbourVoxel.VoxelType;
-
-                if (voxelData.type == VoxelType.Liquid && neighbourVoxelType != VoxelType.Air)
-                    continue;
-
-                if (neighbourVoxelType == VoxelType.Air || neighbourVoxelType == VoxelType.Liquid)
+                if (neighbourVoxelType != VoxelType.Solid)
                     SetVoxelFace(structureMesh, voxelData, position, direction);
             }
         }

@@ -10,15 +10,15 @@ namespace HerosJourney.StructureBuilder
 
         private StructureData _structureData;
 
-        private void Awake() => _mesh = _meshFilter.mesh;
-
         [Inject]
-        private void Construct(StructureData data) => _structureData = data;
+        private void Construct(StructureData data)
+        {
+            _structureData = data;
+            _mesh = _meshFilter.mesh;
+        }
 
         [ContextMenu("UpdateMesh")]
-        public void UpdateStructure() => UpdateStructure(_structureData.mesh);
-
-        public void UpdateStructure(StructureMesh meshData) => RenderMesh(meshData);
+        public void UpdateStructure() => RenderMesh(_structureData.mesh);
 
         private void RenderMesh(StructureMesh meshData)
         {
