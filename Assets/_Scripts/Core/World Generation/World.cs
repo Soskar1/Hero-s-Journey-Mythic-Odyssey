@@ -57,7 +57,16 @@ namespace HerosJourney.Core.WorldGeneration
         public async void GenerateChunks() 
         {
             _renderDistance = (int)_renderDistanceSlider.value;
-            _worldSeed = _seedInputField.text.Length == 0 ? 0 : Int32.Parse(_seedInputField.text);
+
+            try
+            {
+                _worldSeed = _seedInputField.text.Length == 0 ? 0 : Int32.Parse(_seedInputField.text);
+            }
+            catch 
+            {
+                _worldSeed = 0;
+            }
+
             _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
 
             await GenerateChunks(Vector3Int.zero);
