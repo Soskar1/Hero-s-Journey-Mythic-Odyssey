@@ -9,15 +9,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Zenject;
+using UnityEngine.UI;
+using TMPro;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
-        [SerializeField] private int _worldSeed;
+        [SerializeField] private TMP_InputField _seedInputField;
+        [SerializeField] private Slider _renderDistanceSlider;
         [SerializeField] private int _chunkLength = 16;
         [SerializeField] private int _chunkHeight = 128;
-        [SerializeField, Range(1, 32)] private int _renderDistance = 8;
+        private int _worldSeed = 0; 
+        private int _renderDistance = 8;
         private WorldData _worldData;
 
         [SerializeField] private WorldRenderer _worldRenderer;
@@ -52,8 +56,14 @@ namespace HerosJourney.Core.WorldGeneration
             _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
         }
 
-        public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
-        
+        public async void GenerateChunks() 
+        {
+            _renderDistance = (int)_renderDistanceSlider.value;
+            _worldSeed = _seedInputField.text.Length == 0 ? 0 : Int32.Parse(_seedInputField.text);
+            Debug.Log(_worldSeed);
+            await GenerateChunks(Vector3Int.zero);
+        }
+
         public async void GenerateChunksRequest(Vector3Int worldPosition) => await GenerateChunks(worldPosition);
 
         private async Task GenerateChunks(Vector3Int worldPosition)
