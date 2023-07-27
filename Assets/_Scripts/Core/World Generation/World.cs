@@ -52,15 +52,14 @@ namespace HerosJourney.Core.WorldGeneration
         {
             _terrainGenerator = terrainGenerator;
             _structureGenerator = structureGenerator;
-
-            _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
         }
 
         public async void GenerateChunks() 
         {
             _renderDistance = (int)_renderDistanceSlider.value;
             _worldSeed = _seedInputField.text.Length == 0 ? 0 : Int32.Parse(_seedInputField.text);
-            Debug.Log(_worldSeed);
+            _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
+
             await GenerateChunks(Vector3Int.zero);
         }
 
