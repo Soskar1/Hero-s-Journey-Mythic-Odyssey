@@ -6,7 +6,6 @@ namespace HerosJourney.StructureBuilder
     public class StructureBuilder : IInitializable
     {
         private StructureData _structureData;
-        private StructureMesh _structureMesh;
         private StructureRenderer _structureRenderer;
         private VoxelPlacement _voxelPlacement;
         private int _groundID;

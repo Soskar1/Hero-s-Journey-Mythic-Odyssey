@@ -1,5 +1,6 @@
 using Zenject;
 using System;
+using UnityEngine;
 
 namespace HerosJourney.StructureBuilder.Actor
 {
@@ -14,5 +15,8 @@ namespace HerosJourney.StructureBuilder.Actor
 
         public void Enable() => Controls.Enable();
         public void Disable() => Controls.Disable();
+
+        public Vector2 MovementInput => Controls.Builder.Movement.ReadValue<Vector2>();
+        public Vector2 DeltaMouse => Controls.Builder.DeltaMouse.ReadValue<Vector2>();
     }
 }

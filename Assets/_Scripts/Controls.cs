@@ -147,6 +147,24 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""6a0568fd-435b-48e0-ae48-607f732ebccd"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""DeltaMouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""b5a81be5-177a-4ba3-a016-be654250ba83"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -158,6 +176,72 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
                     ""action"": ""Build"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""ebb35822-5791-4d1b-ba9d-19c5a4067cd5"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a20ade38-17fc-49e4-873f-c05cc3e17bbd"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""92b1788f-5611-4653-9c7c-535db6c5b61f"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""75b76192-3afd-4370-96fb-c4298c09f9f3"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""0683867c-39cb-4d1a-8bf6-b8826a76b17c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f141aa02-3ed0-4ca6-ac71-57b7239da4fe"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""DeltaMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -191,6 +275,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         // Builder
         m_Builder = asset.FindActionMap("Builder", throwIfNotFound: true);
         m_Builder_Build = m_Builder.FindAction("Build", throwIfNotFound: true);
+        m_Builder_Movement = m_Builder.FindAction("Movement", throwIfNotFound: true);
+        m_Builder_DeltaMouse = m_Builder.FindAction("DeltaMouse", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -315,11 +401,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Builder;
     private List<IBuilderActions> m_BuilderActionsCallbackInterfaces = new List<IBuilderActions>();
     private readonly InputAction m_Builder_Build;
+    private readonly InputAction m_Builder_Movement;
+    private readonly InputAction m_Builder_DeltaMouse;
     public struct BuilderActions
     {
         private @Controls m_Wrapper;
         public BuilderActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Build => m_Wrapper.m_Builder_Build;
+        public InputAction @Movement => m_Wrapper.m_Builder_Movement;
+        public InputAction @DeltaMouse => m_Wrapper.m_Builder_DeltaMouse;
         public InputActionMap Get() { return m_Wrapper.m_Builder; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -332,6 +422,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Build.started += instance.OnBuild;
             @Build.performed += instance.OnBuild;
             @Build.canceled += instance.OnBuild;
+            @Movement.started += instance.OnMovement;
+            @Movement.performed += instance.OnMovement;
+            @Movement.canceled += instance.OnMovement;
+            @DeltaMouse.started += instance.OnDeltaMouse;
+            @DeltaMouse.performed += instance.OnDeltaMouse;
+            @DeltaMouse.canceled += instance.OnDeltaMouse;
         }
 
         private void UnregisterCallbacks(IBuilderActions instance)
@@ -339,6 +435,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Build.started -= instance.OnBuild;
             @Build.performed -= instance.OnBuild;
             @Build.canceled -= instance.OnBuild;
+            @Movement.started -= instance.OnMovement;
+            @Movement.performed -= instance.OnMovement;
+            @Movement.canceled -= instance.OnMovement;
+            @DeltaMouse.started -= instance.OnDeltaMouse;
+            @DeltaMouse.performed -= instance.OnDeltaMouse;
+            @DeltaMouse.canceled -= instance.OnDeltaMouse;
         }
 
         public void RemoveCallbacks(IBuilderActions instance)
@@ -374,5 +476,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     public interface IBuilderActions
     {
         void OnBuild(InputAction.CallbackContext context);
+        void OnMovement(InputAction.CallbackContext context);
+        void OnDeltaMouse(InputAction.CallbackContext context);
     }
 }
