@@ -69,16 +69,19 @@ namespace HerosJourney.Core.WorldGeneration
             StartCoroutine(RenderChunks(meshDataDictionary));
         }
 
-        private async Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+        private Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
         {
             ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = AllocateMemoryForChunkData(chunkDataPositionsToCreate);
-
+            
             foreach (var data in chunkDataDictionary)
                 WorldData.chunkData.Add(data.Key, data.Value);
 
-            foreach (var generator in _generators)
-                foreach (ChunkData chunkData in chunkDataDictionary.Values)
-                    await Task.Run(() => generator.Generate(chunkData));
+            return Task.Run(() => 
+            {
+                foreach (var generator in _generators)
+                    foreach (ChunkData chunkData in chunkDataDictionary.Values)
+                        generator.Generate(chunkData);
+            });
         }
 
         private ConcurrentDictionary<Vector3Int, ChunkData> AllocateMemoryForChunkData(List<Vector3Int> chunkDataPositionsToCreate)
