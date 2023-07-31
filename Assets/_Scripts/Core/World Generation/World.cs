@@ -38,16 +38,15 @@ namespace HerosJourney.Core.WorldGeneration
             public List<Vector3Int> chunkRendererPositionsToRemove;
         }
 
-        private void OnDisable() => _taskTokenSource.Cancel();
-
         [Inject]
-        private void Construct(List<IGenerator> generators)
+        private void Construct(List<IGenerator> generators) => _generators = generators;
+
+        private void OnEnable()
         {
-            _generators = generators;
-
             _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
+            _taskTokenSource.Cancel();
         }
-
+        
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
         
         public async void GenerateChunksRequest(Vector3Int worldPosition) => await GenerateChunks(worldPosition);

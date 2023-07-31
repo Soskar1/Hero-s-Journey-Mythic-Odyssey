@@ -7,10 +7,9 @@ namespace HerosJourney.Core.WorldGeneration
     public class WorldRenderer : MonoBehaviour
     {
         [SerializeField] private ChunkRenderer _chunkPrefab;
-        [SerializeField] private int _initialPoolCapacity;
         private Queue<ChunkRenderer> _chunkPool;
 
-        private void Awake() => _chunkPool = new Queue<ChunkRenderer>(_initialPoolCapacity);
+        private void Awake() => _chunkPool = new Queue<ChunkRenderer>();
 
         public ChunkRenderer RenderChunk(ChunkData chunkData, MeshData meshData)
         {
