@@ -9,7 +9,7 @@ using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration.Structures
 {
-    public class StructureGenerator : MonoBehaviour
+    public class StructureGenerator : MonoBehaviour, IGenerator
     {
         [SerializeField] private NoiseSettings _noiseSettings;
         [SerializeField] private StructureGenerationSettings _generationSettings;
@@ -33,7 +33,7 @@ namespace HerosJourney.Core.WorldGeneration.Structures
             _selectionSettings = new PointSelectionSettings(_generationSettings.noiseThreshold, _generationSettings.radius);
         }
 
-        public void GenerateStructures(ChunkData chunkData)
+        public void Generate(ChunkData chunkData)
         {
             chunkData.structureData = GenerateStructureData(chunkData);
             PlaceStructures(chunkData);
@@ -63,7 +63,13 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                     continue;
 
                 Vector3Int localPosition = new Vector3Int(position.x, chunkData.groundHeight[position.x, position.y], position.y);
-                Vector3Int tmpPosition = localPosition;
+                PlaceStructureVoxels(chunkData, localPosition);
+            }
+        }
+
+        private void PlaceStructureVoxels(ChunkData chunkData, Vector3Int localPosition)
+        {
+            Vector3Int tmpPosition = localPosition;
 
                 foreach (var voxel in _structureVoxels)
                 {
@@ -77,7 +83,6 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                     ChunkDataHandler.SetVoxelAt(chunkData, voxelInstance, tmpPosition);
                     tmpPosition = localPosition;
                 }
-            }
         }
     }
 }

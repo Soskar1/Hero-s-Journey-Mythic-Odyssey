@@ -1,6 +1,4 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
-using HerosJourney.Core.WorldGeneration.Terrain;
-using HerosJourney.Core.WorldGeneration.Structures;
 using UnityEngine;
 using System;
 using System.Threading;
@@ -21,8 +19,7 @@ namespace HerosJourney.Core.WorldGeneration
         private WorldData _worldData;
 
         [SerializeField] private WorldRenderer _worldRenderer;
-        private TerrainGenerator _terrainGenerator;
-        private StructureGenerator _structureGenerator;
+        private List<IGenerator> _generators;
 
         private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
 
@@ -41,17 +38,11 @@ namespace HerosJourney.Core.WorldGeneration
             public List<Vector3Int> chunkRendererPositionsToRemove;
         }
 
-        private void OnDisable() => _taskTokenSource.Cancel();
-
         [Inject]
-        private void Construct(TerrainGenerator terrainGenerator, StructureGenerator structureGenerator)
-        {
-            _terrainGenerator = terrainGenerator;
-            _structureGenerator = structureGenerator;
-
-            _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
-        }
-
+        private void Construct(List<IGenerator> generators) => _generators = generators;
+        private void OnEnable() => _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
+        private void OnDisable() => _taskTokenSource.Cancel();
+        
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
         
         public async void GenerateChunksRequest(Vector3Int worldPosition) => await GenerateChunks(worldPosition);
@@ -61,7 +52,7 @@ namespace HerosJourney.Core.WorldGeneration
             WorldGenerationData worldGenerationData = await Task.Run(
                 () => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
 
-            RemoveDistantChunks(worldGenerationData);
+            UnloadChunks(worldGenerationData);
 
             ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary = null;
             try
@@ -75,27 +66,35 @@ namespace HerosJourney.Core.WorldGeneration
                 return;
             }
             
-            StartCoroutine(CreateChunks(meshDataDictionary));
+            StartCoroutine(RenderChunks(meshDataDictionary));
         }
 
-        private async Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+        private Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
         {
-            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = null;
-
-            try
-            {
-                chunkDataDictionary = await GenerateTerrain(chunkDataPositionsToCreate);
-            } 
-            catch (Exception e)
-            {
-                throw e;
-            }
-
+            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = AllocateMemoryForChunkData(chunkDataPositionsToCreate);
+            
             foreach (var data in chunkDataDictionary)
                 WorldData.chunkData.Add(data.Key, data.Value);
 
-            foreach (ChunkData chunkData in chunkDataDictionary.Values)
-                _structureGenerator.GenerateStructures(chunkData);
+            return Task.Run(() => 
+            {
+                foreach (var generator in _generators)
+                    foreach (ChunkData chunkData in chunkDataDictionary.Values)
+                        generator.Generate(chunkData);
+            });
+        }
+
+        private ConcurrentDictionary<Vector3Int, ChunkData> AllocateMemoryForChunkData(List<Vector3Int> chunkDataPositionsToCreate)
+        {
+            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
+
+            foreach (Vector3Int position in chunkDataPositionsToCreate)
+            {
+                ChunkData newChunkData = new ChunkData(ref _worldData, position);
+                chunkDataDictionary.TryAdd(position, newChunkData);
+            }
+
+            return chunkDataDictionary;
         }
 
         private async Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<Vector3Int> chunkRendererPositionsToCreate)
@@ -138,7 +137,7 @@ namespace HerosJourney.Core.WorldGeneration
             return worldGenerationData;
         }
 
-        private void RemoveDistantChunks(WorldGenerationData worldGenerationData)
+        private void UnloadChunks(WorldGenerationData worldGenerationData)
         {
             foreach (Vector3Int position in worldGenerationData.chunkDataPositionsToRemove)
                 WorldData.chunkData.Remove(position);
@@ -149,27 +148,6 @@ namespace HerosJourney.Core.WorldGeneration
 
                 WorldData.chunkRenderers.Remove(position);
             }
-        }
-
-        private Task<ConcurrentDictionary<Vector3Int, ChunkData>> GenerateTerrain(List<Vector3Int> chunkDataPositionsToCreate)
-        {
-            ConcurrentDictionary<Vector3Int, ChunkData> dictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
-
-            return Task.Run(() =>
-            {
-                foreach (Vector3Int position in chunkDataPositionsToCreate)
-                {
-                    if (_taskTokenSource.IsCancellationRequested)
-                        _taskTokenSource.Token.ThrowIfCancellationRequested();
-
-                    ChunkData chunkData = new ChunkData(ref _worldData, position);
-                    _terrainGenerator.GenerateTerrain(chunkData);
-
-                    dictionary.TryAdd(position, chunkData);
-                }
-
-                return dictionary;
-            }, _taskTokenSource.Token);
         }
 
         private Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<ChunkData> chunkDataToRender)
@@ -192,7 +170,7 @@ namespace HerosJourney.Core.WorldGeneration
             );
         }
 
-        private IEnumerator CreateChunks(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary)
+        private IEnumerator RenderChunks(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary)
         {
             foreach (var meshData in meshDataDictionary)
             {

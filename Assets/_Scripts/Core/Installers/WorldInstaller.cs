@@ -23,12 +23,14 @@ namespace HerosJourney.Core.Installers
         private void BindWorldGenerators()
         {
             Container
-                .Bind<TerrainGenerator>()
+                .Bind<IGenerator>()
+                .To<TerrainGenerator>()
                 .FromInstance(_terrainGenerator)
                 .AsSingle();
 
             Container
-                .Bind<StructureGenerator>()
+                .Bind<IGenerator>()
+                .To<StructureGenerator>()
                 .FromInstance(_structureGenerator)
                 .AsSingle();
         }

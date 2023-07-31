@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace HerosJourney.Core.WorldGeneration.Terrain
 {
-    public class TerrainGenerator : MonoBehaviour
+    public class TerrainGenerator : MonoBehaviour, IGenerator
     {
         [SerializeField] private List<LayerGenerator> _layerGenerators;
         [SerializeField] private NoiseSettings _noiseSettings;
@@ -16,7 +16,7 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
         [Inject]
         private void Construct(World world) => _world = world;
 
-        public void GenerateTerrain(ChunkData chunkData)
+        public void Generate(ChunkData chunkData)
         {
             Noise.SetSeed(_world.WorldData.worldSeed);
 

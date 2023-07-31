@@ -1323,7 +1323,7 @@ MonoBehaviour:
   _worldSeed: 0
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 4
+  _renderDistance: 16
   _worldRenderer: {fileID: 1530814505}
 --- !u!4 &1530814504
 Transform:
@@ -1353,7 +1353,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chunkPrefab: {fileID: 9212265846582118787, guid: fbd0fe1fb5acaf747a8ed3f3bff5a672, type: 3}
-  _initialPoolCapacity: 2000
 --- !u!1 &1574429500
 GameObject:
   m_ObjectHideFlags: 0
