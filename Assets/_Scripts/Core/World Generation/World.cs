@@ -40,12 +40,8 @@ namespace HerosJourney.Core.WorldGeneration
 
         [Inject]
         private void Construct(List<IGenerator> generators) => _generators = generators;
-
-        private void OnEnable()
-        {
-            _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
-            _taskTokenSource.Cancel();
-        }
+        private void OnEnable() => _worldData = new WorldData(_chunkLength, _chunkHeight, _worldSeed);
+        private void OnDisable() => _taskTokenSource.Cancel();
         
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
         
