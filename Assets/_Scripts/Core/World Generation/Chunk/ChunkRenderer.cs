@@ -7,7 +7,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         [SerializeField] private MeshCollider _meshCollider;
         [SerializeField] private MeshFilter _meshFilter;
-        [SerializeField] private Transform _visual;
         private Mesh _mesh;
         private Mesh _colliderMesh;
 
