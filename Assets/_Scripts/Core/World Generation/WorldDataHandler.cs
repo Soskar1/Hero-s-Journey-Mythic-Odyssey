@@ -8,7 +8,7 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public static class WorldDataHandler
     {
-        public static List<Vector3Int> GetChunksAroundPoint(WorldData worldData, Vector3Int worldPosition, int renderDistance)
+        public static List<Vector3Int> GetChunksPositionsAroundPoint(WorldData worldData, Vector3Int worldPosition, int renderDistance)
         {
             List<Vector3Int> chunksAroundPoint = new List<Vector3Int>();
 
@@ -68,7 +68,7 @@ namespace HerosJourney.Core.WorldGeneration
         {
             return chunkPositions
                 .Where(pos => worldData.chunkData.ContainsKey(pos) == false)
-                .OrderBy(pos => Vector3.Distance(worldPosition, pos))
+                .OrderBy(pos => Vector3Int.Distance(worldPosition, pos))
                 .ToList();
         }
 
@@ -83,11 +83,11 @@ namespace HerosJourney.Core.WorldGeneration
         {
             return chunkPositions
                 .Where(pos => worldData.chunkRenderers.ContainsKey(pos) == false)
-                .OrderBy(pos => Vector3.Distance(worldPosition, pos))
+                .OrderBy(pos => Vector3Int.Distance(worldPosition, pos))
                 .ToList();
         }
 
-        public static List<ChunkData> SelectChunksToRender(WorldData worldData, List<Vector3Int> chunkRendererPositions)
+        public static List<ChunkData> SelectChunksToRender(WorldData worldData, List<Vector3Int> chunkRendererPositions, Vector3Int worldPosition)
         {
             return worldData.chunkData
                 .Where(keyValue => chunkRendererPositions.Contains(keyValue.Key))

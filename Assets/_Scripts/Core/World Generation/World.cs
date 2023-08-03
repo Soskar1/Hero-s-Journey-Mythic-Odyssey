@@ -58,7 +58,8 @@ namespace HerosJourney.Core.WorldGeneration
             try
             {
                 await GenerateChunkData(worldGenerationData.chunkDataPositionsToCreate);
-                meshDataDictionary = await GenerateMeshData(worldGenerationData.chunkRendererPositionsToCreate);
+                List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate, worldPosition);
+                meshDataDictionary = await GenerateMeshData(dataToRender);
             }
             catch (Exception e) 
             {
@@ -66,7 +67,7 @@ namespace HerosJourney.Core.WorldGeneration
                 return;
             }
             
-            StartCoroutine(RenderChunks(meshDataDictionary));
+            StartCoroutine(RenderChunks(meshDataDictionary, worldGenerationData.chunkRendererPositionsToCreate));
         }
 
         private Task GenerateChunkData(List<Vector3Int> chunkDataPositionsToCreate)
@@ -97,10 +98,9 @@ namespace HerosJourney.Core.WorldGeneration
             return chunkDataDictionary;
         }
 
-        private async Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<Vector3Int> chunkRendererPositionsToCreate)
+        private async Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<Vector3Int> dataToRender)
         {
             ConcurrentDictionary<Vector3Int, MeshData> meshDataDicitonary = null;
-            List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, chunkRendererPositionsToCreate);
             
             try
             {
@@ -116,8 +116,8 @@ namespace HerosJourney.Core.WorldGeneration
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
         {
-            List<Vector3Int> nearestChunkDataPositions = WorldDataHandler.GetChunksAroundPoint(WorldData, worldPosition, _renderDistance + 1);
-            List<Vector3Int> nearestChunkRendererPositions = WorldDataHandler.GetChunksAroundPoint(WorldData, worldPosition, _renderDistance);
+            List<Vector3Int> nearestChunkDataPositions = WorldDataHandler.GetChunksPositionsAroundPoint(WorldData, worldPosition, _renderDistance + 1);
+            List<Vector3Int> nearestChunkRendererPositions = WorldDataHandler.GetChunksPositionsAroundPoint(WorldData, worldPosition, _renderDistance);
 
             List<Vector3Int> chunkDataPositionsToCreate = WorldDataHandler.SelectChunkDataPositionsToCreate(WorldData, nearestChunkDataPositions, worldPosition);
             List<Vector3Int> chunkRendererPositionsToCreate = WorldDataHandler.SelectChunkRendererPositionsToCreate(WorldData, nearestChunkRendererPositions, worldPosition);
@@ -170,16 +170,16 @@ namespace HerosJourney.Core.WorldGeneration
             );
         }
 
-        private IEnumerator RenderChunks(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary)
+        private IEnumerator RenderChunks(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary, List<Vector3Int> dataToRender)
         {
-            foreach (var meshData in meshDataDictionary)
+            foreach (var pos in dataToRender)
             {
-                if (meshData.Value.ColliderTriangles.Count == 0)
+                if (meshDataDictionary[pos].ColliderTriangles.Count == 0)
                     continue;
 
-                ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(WorldData.chunkData[meshData.Key], meshData.Value);
-                WorldData.chunkRenderers.Add(meshData.Key, chunkRenderer);
-                yield return new WaitForEndOfFrame();
+                ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(WorldData.chunkData[pos], meshDataDictionary[pos]);
+                WorldData.chunkRenderers.Add(pos, chunkRenderer);
+                yield return new WaitForEndOfFrame(); 
             }
 
             OnNewChunksInitialized?.Invoke();
