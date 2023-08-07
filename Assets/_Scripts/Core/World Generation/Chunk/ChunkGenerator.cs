@@ -1,17 +1,22 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Chunks
 {
-    public class ChunkGenerator
+    public class ChunkGenerator : IDisposable
     {
-        private List<IGenerator> _generators;
+        private readonly List<IGenerator> _generators;
+        private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
+
+        public Action<Chunk> ChunkGenerated;
 
         public ChunkGenerator(List<IGenerator> generators) => _generators = generators;
+
+        public void Dispose() => _taskTokenSource.Cancel();
 
         public Task GenerateChunkData(WorldData worldData, List<Vector3Int> chunkDataPositionsToCreate)
         {
@@ -41,23 +46,21 @@ namespace HerosJourney.Core.WorldGeneration
             return chunkDataDictionary;
         }
 
-        public Task<ConcurrentDictionary<Vector3Int, MeshData>> GenerateMeshData(List<ChunkData> chunkDataToRender, CancellationTokenSource taskTokenSource)
+        public Task GenerateMeshData(List<ChunkData> chunkDataToRender)
         {
-            ConcurrentDictionary<Vector3Int, MeshData> dictionary = new ConcurrentDictionary<Vector3Int, MeshData>();
 
             return Task.Run(() =>
             {
                 foreach (ChunkData chunkData in chunkDataToRender)
                 {
-                    if (taskTokenSource.Token.IsCancellationRequested)
-                        taskTokenSource.Token.ThrowIfCancellationRequested();
+                    if (_taskTokenSource.Token.IsCancellationRequested)
+                        _taskTokenSource.Token.ThrowIfCancellationRequested();
 
                     MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
-                    dictionary.TryAdd(chunkData.WorldPosition, meshData);
+                    ChunkGenerated?.Invoke(new Chunk(chunkData, meshData));
                 }
 
-                return dictionary;
-            }, taskTokenSource.Token
+            }, _taskTokenSource.Token
             );
         }
     }

@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration;
+using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Structures;
 using HerosJourney.Core.WorldGeneration.Terrain;
 using UnityEngine;
@@ -55,7 +56,7 @@ namespace HerosJourney.Core.Installers
                 .AsSingle();
 
             Container
-                .Bind<ChunkGenerator>()
+                .BindInterfacesAndSelfTo<ChunkGenerator>()
                 .AsSingle();
         }
 

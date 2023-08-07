@@ -1197,7 +1197,7 @@ MonoBehaviour:
   _chunkLength: 16
   _chunkHeight: 128
   _worldSeed: 0
-  _renderDistance: 8
+  _renderDistance: 4
   _terrainGenerator: {fileID: 1992527461}
   _structureGenerator: {fileID: 952000720}
   _world: {fileID: 1530814503}
@@ -1945,7 +1945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.922122, z: -8.458691}
+  m_FollowOffset: {x: 0, y: 1.080949, z: -7.8412}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2104,7 +2104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.922122, z: -8.458691}
+  m_FollowOffset: {x: 0, y: 1.080949, z: -7.8412}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2321,7 +2321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.922122, z: -8.458691}
+  m_FollowOffset: {x: 0, y: 1.080949, z: -7.8412}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

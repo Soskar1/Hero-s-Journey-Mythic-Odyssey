@@ -1,12 +1,12 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Zenject;
+using System.Threading;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -17,9 +17,9 @@ namespace HerosJourney.Core.WorldGeneration
         private WorldGenerationSettings _worldGenerationSettings;
         private ChunkGenerator _chunkGenerator;
 
-        private CancellationTokenSource _taskTokenSource = new CancellationTokenSource();
-
         public Action OnNewChunksInitialized;
+
+        private ConcurrentQueue<Chunk> _chunksToRender = new ConcurrentQueue<Chunk>();
 
         public int ChunkLength => _worldGenerationSettings.WorldData.chunkLength;
         public int ChunkHeight => _worldGenerationSettings.WorldData.chunkHeight;
@@ -41,7 +41,20 @@ namespace HerosJourney.Core.WorldGeneration
             _worldGenerationSettings = worldGenerationSettings;
         }
 
-        private void OnDisable() => _taskTokenSource.Cancel();
+        private void OnEnable() => _chunkGenerator.ChunkGenerated += AddToRenderQueue;
+        private void OnDisable() => _chunkGenerator.ChunkGenerated -= AddToRenderQueue;
+        private void AddToRenderQueue(Chunk chunk) => _chunksToRender.Enqueue(chunk);
+
+        private void Update()
+        {
+            if (_chunksToRender.IsEmpty)
+                return;
+
+            Timer.Start(1f, () => {
+                _chunksToRender.TryDequeue(out Chunk chunk);
+                _worldRenderer.RenderChunk(chunk);
+            });
+        }
 
         public async void GenerateChunks() => await GenerateChunks(Vector3Int.zero);
         
@@ -50,24 +63,23 @@ namespace HerosJourney.Core.WorldGeneration
         private async Task GenerateChunks(Vector3Int worldPosition)
         {
             WorldGenerationData worldGenerationData = await Task.Run(
-                () => GetWorldGenerationData(worldPosition), _taskTokenSource.Token);
+                () => GetWorldGenerationData(worldPosition));
 
             UnloadChunks(worldGenerationData);
 
-            ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary = null;
             try
             {
                 await _chunkGenerator.GenerateChunkData(_worldGenerationSettings.WorldData, worldGenerationData.chunkDataPositionsToCreate);
                 List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate, worldPosition);
-                meshDataDictionary = await _chunkGenerator.GenerateMeshData(dataToRender, _taskTokenSource);
+                await _chunkGenerator.GenerateMeshData(dataToRender);
             }
             catch (Exception e) 
             {
                 Debug.LogException(e);
                 return;
             }
-            
-            StartCoroutine(RenderChunks(meshDataDictionary, worldGenerationData.chunkRendererPositionsToCreate));
+
+            OnNewChunksInitialized?.Invoke();
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
@@ -104,21 +116,6 @@ namespace HerosJourney.Core.WorldGeneration
 
                 WorldData.chunkRenderers.Remove(position);
             }
-        }
-
-        private IEnumerator RenderChunks(ConcurrentDictionary<Vector3Int, MeshData> meshDataDictionary, List<Vector3Int> dataToRender)
-        {
-            foreach (var pos in dataToRender)
-            {
-                if (meshDataDictionary[pos].ColliderTriangles.Count == 0)
-                    continue;
-
-                ChunkRenderer chunkRenderer = _worldRenderer.RenderChunk(WorldData.chunkData[pos], meshDataDictionary[pos]);
-                WorldData.chunkRenderers.Add(pos, chunkRenderer);
-                yield return new WaitForEndOfFrame(); 
-            }
-
-            OnNewChunksInitialized?.Invoke();
         }
     }
 }

@@ -8,10 +8,11 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private ChunkRenderer _chunkPrefab;
         private Queue<ChunkRenderer> _chunkPool;
+        
 
         private void Awake() => _chunkPool = new Queue<ChunkRenderer>();
 
-        public ChunkRenderer RenderChunk(ChunkData chunkData, MeshData meshData)
+        public ChunkRenderer RenderChunk(Chunk chunk)
         {
             ChunkRenderer chunkRenderer;
 
@@ -19,16 +20,16 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 chunkRenderer = _chunkPool.Dequeue();
                 chunkRenderer.gameObject.SetActive(true);
-                chunkRenderer.transform.position = chunkData.WorldPosition;
+                chunkRenderer.transform.position = chunk.chunkData.WorldPosition;
             }
             else
             {
-                chunkRenderer = Instantiate(_chunkPrefab, chunkData.WorldPosition, Quaternion.identity);
+                chunkRenderer = Instantiate(_chunkPrefab, chunk.chunkData.WorldPosition, Quaternion.identity);
                 chunkRenderer.transform.parent = transform;
             }
 
-            chunkRenderer.InitializeChunk(chunkData);
-            chunkRenderer.UpdateChunk(meshData);
+            chunkRenderer.InitializeChunk(chunk.chunkData);
+            chunkRenderer.UpdateChunk(chunk.meshData);
 
             return chunkRenderer;
         }
