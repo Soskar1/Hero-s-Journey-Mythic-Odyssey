@@ -1194,10 +1194,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4dcaddb5d84a2e4eb2261a2a7a313b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _world: {fileID: 1530814503}
-  _chunkLoading: {fileID: 55439042}
+  _chunkLength: 16
+  _chunkHeight: 128
+  _worldSeed: 0
+  _renderDistance: 8
   _terrainGenerator: {fileID: 1992527461}
   _structureGenerator: {fileID: 952000720}
+  _world: {fileID: 1530814503}
+  _chunkLoading: {fileID: 55439042}
 --- !u!114 &1339897349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1320,10 +1324,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d82523ba5905f746abceb7a6f34eb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _worldSeed: 0
-  _chunkLength: 16
-  _chunkHeight: 128
-  _renderDistance: 4
   _worldRenderer: {fileID: 1530814505}
 --- !u!4 &1530814504
 Transform:
@@ -1945,7 +1945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.300259, z: -4.468373}
+  m_FollowOffset: {x: 0, y: 0.1063737, z: -6.062864}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2104,7 +2104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.300259, z: -4.468373}
+  m_FollowOffset: {x: 0, y: 0.1063737, z: -6.062864}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -2321,7 +2321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.300259, z: -4.468373}
+  m_FollowOffset: {x: 0, y: 0.1063737, z: -6.062864}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

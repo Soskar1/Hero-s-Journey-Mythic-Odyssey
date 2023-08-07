@@ -16,7 +16,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public Vector3Int WorldPosition { get; private set; }
         public WorldData WorldData { get; private set; }
 
-        public ChunkData (ref WorldData worldData, Vector3Int worldPosition)
+        public ChunkData (WorldData worldData, Vector3Int worldPosition)
         {
             WorldData = worldData;
             ChunkLength = worldData.chunkLength;

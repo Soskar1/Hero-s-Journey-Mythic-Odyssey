@@ -8,16 +8,36 @@ namespace HerosJourney.Core.Installers
 {
     public class WorldInstaller : MonoInstaller
     {
-        [SerializeField] private World _world;
-        [SerializeField] private ChunkLoading _chunkLoading;
+        [Header("World Generation Settings")]
+        [SerializeField] private int _chunkLength;
+        [SerializeField] private int _chunkHeight;
+        [SerializeField] private int _worldSeed;
+        [SerializeField, Range(1, 32)] private int _renderDistance;
+
+        [Header("World Generators")]
         [SerializeField] private TerrainGenerator _terrainGenerator;
         [SerializeField] private StructureGenerator _structureGenerator;
 
+        [Header("World")]
+        [SerializeField] private World _world;
+
+        [Header("Chunk Loading")]
+        [SerializeField] private ChunkLoading _chunkLoading;
+
         public override void InstallBindings()
         {
+            BindWorldGenerationSettings();
             BindWorldGenerators();
             BindWorld();
             BindChunkLoading();
+        }
+
+        private void BindWorldGenerationSettings()
+        {
+            Container
+                .Bind<WorldGenerationSettings>()
+                .AsSingle()
+                .WithArguments(new WorldData(_chunkLength, _chunkHeight, _worldSeed), _renderDistance);
         }
 
         private void BindWorldGenerators()
@@ -32,6 +52,10 @@ namespace HerosJourney.Core.Installers
                 .Bind<IGenerator>()
                 .To<StructureGenerator>()
                 .FromInstance(_structureGenerator)
+                .AsSingle();
+
+            Container
+                .Bind<ChunkGenerator>()
                 .AsSingle();
         }
 

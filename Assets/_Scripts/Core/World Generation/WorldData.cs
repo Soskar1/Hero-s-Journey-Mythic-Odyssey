@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public struct WorldData
+    public class WorldData
     {
         public int chunkLength;
         public int chunkHeight;
