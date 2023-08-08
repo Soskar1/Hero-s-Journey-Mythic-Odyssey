@@ -29,7 +29,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             {
                 foreach (var generator in _generators)
                     foreach (ChunkData chunkData in chunkDataDictionary.Values)
-                        generator.Generate(chunkData);
+                        ThreadPool.QueueUserWorkItem((state) => generator.Generate(chunkData));
+                        //generator.Generate(chunkData);
             });
         }
 
