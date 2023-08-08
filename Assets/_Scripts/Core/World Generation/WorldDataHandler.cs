@@ -64,11 +64,10 @@ namespace HerosJourney.Core.WorldGeneration
                 .ToList();
         }
 
-        public static List<Vector3Int> SelectChunkDataPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions, Vector3Int worldPosition)
+        public static List<Vector3Int> SelectChunkDataPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions)
         {
             return chunkPositions
                 .Where(pos => worldData.chunkData.ContainsKey(pos) == false)
-                .OrderBy(pos => Vector3Int.Distance(worldPosition, pos))
                 .ToList();
         }
 
@@ -79,11 +78,10 @@ namespace HerosJourney.Core.WorldGeneration
                 .ToList();
         }
 
-        public static List<Vector3Int> SelectChunkRendererPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions, Vector3Int worldPosition)
+        public static List<Vector3Int> SelectChunkRendererPositionsToCreate(WorldData worldData, List<Vector3Int> chunkPositions)
         {
             return chunkPositions
                 .Where(pos => worldData.chunkRenderers.ContainsKey(pos) == false)
-                .OrderBy(pos => Vector3Int.Distance(worldPosition, pos))
                 .ToList();
         }
 
@@ -92,6 +90,7 @@ namespace HerosJourney.Core.WorldGeneration
             return worldData.chunkData
                 .Where(keyValue => chunkRendererPositions.Contains(keyValue.Key))
                 .Select(keyValue => keyValue.Value)
+                .OrderBy(chunk => Vector3Int.Distance(chunk.WorldPosition, worldPosition))
                 .ToList();
         }
     }

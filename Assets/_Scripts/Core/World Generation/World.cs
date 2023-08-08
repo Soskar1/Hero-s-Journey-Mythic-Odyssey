@@ -50,7 +50,7 @@ namespace HerosJourney.Core.WorldGeneration
             if (_chunksToRender.IsEmpty)
                 return;
 
-            Timer.Start(1f, () => {
+            Timer.Start(0.2f, () => {
                 _chunksToRender.TryDequeue(out Chunk chunk);
                 _worldRenderer.RenderChunk(chunk);
             });
@@ -69,7 +69,7 @@ namespace HerosJourney.Core.WorldGeneration
 
             try
             {
-                await _chunkGenerator.GenerateChunkData(_worldGenerationSettings.WorldData, worldGenerationData.chunkDataPositionsToCreate);
+                await _chunkGenerator.GenerateChunkData(WorldData, worldGenerationData.chunkDataPositionsToCreate);
                 List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate, worldPosition);
                 await _chunkGenerator.GenerateMeshData(dataToRender);
             }
@@ -87,8 +87,8 @@ namespace HerosJourney.Core.WorldGeneration
             List<Vector3Int> nearestChunkDataPositions = WorldDataHandler.GetChunksPositionsAroundPoint(WorldData, worldPosition, _worldGenerationSettings.RenderDistance + 1);
             List<Vector3Int> nearestChunkRendererPositions = WorldDataHandler.GetChunksPositionsAroundPoint(WorldData, worldPosition, _worldGenerationSettings.RenderDistance);
 
-            List<Vector3Int> chunkDataPositionsToCreate = WorldDataHandler.SelectChunkDataPositionsToCreate(WorldData, nearestChunkDataPositions, worldPosition);
-            List<Vector3Int> chunkRendererPositionsToCreate = WorldDataHandler.SelectChunkRendererPositionsToCreate(WorldData, nearestChunkRendererPositions, worldPosition);
+            List<Vector3Int> chunkDataPositionsToCreate = WorldDataHandler.SelectChunkDataPositionsToCreate(WorldData, nearestChunkDataPositions);
+            List<Vector3Int> chunkRendererPositionsToCreate = WorldDataHandler.SelectChunkRendererPositionsToCreate(WorldData, nearestChunkRendererPositions);
 
             List<Vector3Int> chunkDataPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkDataPositions(WorldData, nearestChunkDataPositions);
             List<Vector3Int> chunkRendererPositionsToRemove = WorldDataHandler.ExcludeMatchingChunkRendererPositions(WorldData, nearestChunkRendererPositions);

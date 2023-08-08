@@ -48,7 +48,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public Task GenerateMeshData(List<ChunkData> chunkDataToRender)
         {
-
             return Task.Run(() =>
             {
                 foreach (ChunkData chunkData in chunkDataToRender)
@@ -59,9 +58,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                     MeshData meshData = MeshDataBuilder.GenerateMeshData(chunkData);
                     ChunkGenerated?.Invoke(new Chunk(chunkData, meshData));
                 }
-
-            }, _taskTokenSource.Token
-            );
+            }, _taskTokenSource.Token);
         }
     }
 }

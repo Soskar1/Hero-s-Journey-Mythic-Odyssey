@@ -5,7 +5,7 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public static class Timer
     {
-        private static bool _isActive;
+        private static bool _isActive = false;
 
         public static void Start(float time, Action action)
         {
