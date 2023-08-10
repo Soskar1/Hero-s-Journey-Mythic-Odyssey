@@ -22,15 +22,15 @@ namespace HerosJourney.Core.Installers
         [Header("World")]
         [SerializeField] private World _world;
 
-        [Header("Chunk Loading")]
-        [SerializeField] private ChunkLoading _chunkLoading;
+        [Header("Chunk Loader")]
+        [SerializeField] private ChunkLoader _chunkLoader;
 
         public override void InstallBindings()
         {
             BindWorldGenerationSettings();
             BindWorldGenerators();
             BindWorld();
-            BindChunkLoading();
+            BindChunkLoader();
         }
 
         private void BindWorldGenerationSettings()
@@ -68,11 +68,11 @@ namespace HerosJourney.Core.Installers
                 .AsSingle();
         }
 
-        private void BindChunkLoading()
+        private void BindChunkLoader()
         {
             Container
-                .Bind<ChunkLoading>()
-                .FromInstance(_chunkLoading)
+                .Bind<ChunkLoader>()
+                .FromInstance(_chunkLoader)
                 .AsSingle();
         }
     }

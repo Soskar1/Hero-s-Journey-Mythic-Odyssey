@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,28 +17,24 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void Dispose() => _taskTokenSource.Cancel();
 
-        public Task GenerateChunkData(Dictionary<Vector3Int, ChunkData> chunkDataDictionary)
+        public Task GenerateChunkData(WorldData worldData, List<Vector3Int> chunkDataPositionsToCreate)
         {
-            return Task.Run(() => 
+            return Task.Run(() =>
             {
-                foreach (var generator in _generators)
-                    foreach (ChunkData chunkData in chunkDataDictionary.Values)
-                        generator.Generate(chunkData);
-                        //ThreadPool.QueueUserWorkItem((state) => generator.Generate(chunkData));
+                foreach (Vector3Int pos in chunkDataPositionsToCreate)
+                {
+                    ChunkData chunkData = new ChunkData(worldData, pos);
+                    Generate(chunkData);
+                    worldData.chunkData.Add(pos, chunkData);
+                }
             });
         }
 
-        public Dictionary<Vector3Int, ChunkData> AllocateMemoryForChunkData(WorldData worldData, List<Vector3Int> chunkDataPositionsToCreate)
+        private void Generate(ChunkData chunkData)
         {
-            Dictionary<Vector3Int, ChunkData> chunkDataDictionary = new Dictionary<Vector3Int, ChunkData>();
-
-            foreach (Vector3Int position in chunkDataPositionsToCreate)
-            {
-                ChunkData newChunkData = new ChunkData(worldData, position);
-                chunkDataDictionary.TryAdd(position, newChunkData);
-            }
-
-            return chunkDataDictionary;
+            foreach (var generator in _generators)
+                generator.Generate(chunkData);
+                //ThreadPool.QueueUserWorkItem((state) => generator.Generate(chunkData));
         }
 
         public Task GenerateMeshData(List<ChunkData> chunkDataToRender)

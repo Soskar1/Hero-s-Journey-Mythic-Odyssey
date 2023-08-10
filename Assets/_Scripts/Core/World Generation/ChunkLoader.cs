@@ -4,7 +4,7 @@ using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public class ChunkLoading : MonoBehaviour
+    public class ChunkLoader : MonoBehaviour
     {
         [SerializeField] private int _updateTime;
 
@@ -17,10 +17,7 @@ namespace HerosJourney.Core.WorldGeneration
         private bool _requestIsProcessed = false;
 
         [Inject]
-        private void Construct(World world)
-        {
-            _world = world;
-        }
+        private void Construct(World world) => _world = world;
 
         private void OnDisable()
         {

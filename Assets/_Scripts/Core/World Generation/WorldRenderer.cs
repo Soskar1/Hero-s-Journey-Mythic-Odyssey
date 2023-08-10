@@ -7,9 +7,7 @@ namespace HerosJourney.Core.WorldGeneration
     public class WorldRenderer : MonoBehaviour
     {
         [SerializeField] private ChunkRenderer _chunkPrefab;
-        private Queue<ChunkRenderer> _chunkPool;
-        
-        private void Awake() => _chunkPool = new Queue<ChunkRenderer>();
+        private Queue<ChunkRenderer> _chunkPool = new Queue<ChunkRenderer>();
 
         public ChunkRenderer RenderChunk(Chunk chunk)
         {
@@ -19,11 +17,11 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 chunkRenderer = _chunkPool.Dequeue();
                 chunkRenderer.gameObject.SetActive(true);
-                chunkRenderer.transform.position = chunk.chunkData.WorldPosition;
+                chunkRenderer.transform.position = chunk.WorldPosition;
             }
             else
             {
-                chunkRenderer = Instantiate(_chunkPrefab, chunk.chunkData.WorldPosition, Quaternion.identity);
+                chunkRenderer = Instantiate(_chunkPrefab, chunk.WorldPosition, Quaternion.identity);
                 chunkRenderer.transform.parent = transform;
             }
 

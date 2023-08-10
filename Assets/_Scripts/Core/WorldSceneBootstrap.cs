@@ -8,13 +8,13 @@ namespace HerosJourney.Core
     {
         private readonly World _world;
         private readonly PlayerSpawner _spawner;
-        private readonly ChunkLoading _chunkLoading;
+        private readonly ChunkLoader _chunkLoader;
 
-        public WorldSceneBootstrap(World world, PlayerSpawner spawner, ChunkLoading chunkLoading)
+        public WorldSceneBootstrap(World world, PlayerSpawner spawner, ChunkLoader chunkLoader)
         {
             _world = world;
             _spawner = spawner;
-            _chunkLoading = chunkLoading;
+            _chunkLoader = chunkLoader;
         }
 
         public void Initialize()
@@ -25,7 +25,7 @@ namespace HerosJourney.Core
         private void SpawnPlayer()
         {
             PlayerFacade player = _spawner.SpawnPlayer();
-            _chunkLoading.SetPlayer(player.transform);
+            _chunkLoader.SetPlayer(player.transform);
             _world.OnNewChunksInitialized -= SpawnPlayer;
         }
     }

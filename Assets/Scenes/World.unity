@@ -132,27 +132,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 55439043}
-  - component: {fileID: 55439042}
+  - component: {fileID: 55439044}
   m_Layer: 0
-  m_Name: ChunkLoading
+  m_Name: ChunkLoader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &55439042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 55439041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c4b9eb454de4343b0001edbefffcd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _updateTime: 1
 --- !u!4 &55439043
 Transform:
   m_ObjectHideFlags: 0
@@ -168,6 +155,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &55439044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55439041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c4b9eb454de4343b0001edbefffcd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateTime: 1
 --- !u!1 &71199083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1197,11 +1197,11 @@ MonoBehaviour:
   _chunkLength: 16
   _chunkHeight: 128
   _worldSeed: 0
-  _renderDistance: 32
+  _renderDistance: 7
   _terrainGenerator: {fileID: 1992527461}
   _structureGenerator: {fileID: 952000720}
   _world: {fileID: 1530814503}
-  _chunkLoading: {fileID: 55439042}
+  _chunkLoader: {fileID: 55439044}
 --- !u!114 &1339897349
 MonoBehaviour:
   m_ObjectHideFlags: 0

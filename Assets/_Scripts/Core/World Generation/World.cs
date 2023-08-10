@@ -2,11 +2,9 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 using System;
 using System.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Zenject;
-using System.Threading;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -50,10 +48,10 @@ namespace HerosJourney.Core.WorldGeneration
             if (_chunksToRender.IsEmpty)
                 return;
 
-            Timer.Start(0.2f, () => {
+            Timer.Start(0.1f, () => {
                 _chunksToRender.TryDequeue(out Chunk chunk);
                 ChunkRenderer renderer = _worldRenderer.RenderChunk(chunk);
-                WorldData.chunkRenderers.Add(chunk.chunkData.WorldPosition, renderer);
+                WorldData.chunkRenderers.Add(chunk.WorldPosition, renderer);
 
                 if (_chunksToRender.IsEmpty)
                     OnNewChunksInitialized?.Invoke();
@@ -71,14 +69,9 @@ namespace HerosJourney.Core.WorldGeneration
 
             UnloadChunks(worldGenerationData);
 
-            Dictionary<Vector3Int, ChunkData> chunkDataDictionary = _chunkGenerator.AllocateMemoryForChunkData(WorldData, worldGenerationData.chunkDataPositionsToCreate);
-
-            foreach (var data in chunkDataDictionary)
-                WorldData.chunkData.Add(data.Key, data.Value);
-
             try
             {
-                await _chunkGenerator.GenerateChunkData(chunkDataDictionary);
+                await _chunkGenerator.GenerateChunkData(WorldData, worldGenerationData.chunkDataPositionsToCreate);
                 List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate, worldPosition);
                 await _chunkGenerator.GenerateMeshData(dataToRender);
             }
@@ -120,7 +113,6 @@ namespace HerosJourney.Core.WorldGeneration
             foreach (Vector3Int position in worldGenerationData.chunkRendererPositionsToRemove)
             {
                 _worldRenderer.UnloadChunk(WorldData.chunkRenderers[position]);
-
                 WorldData.chunkRenderers.Remove(position);
             }
         }

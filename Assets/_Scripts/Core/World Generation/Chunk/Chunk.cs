@@ -1,9 +1,13 @@
+using UnityEngine;
+
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public struct Chunk
     {
         public ChunkData chunkData;
         public MeshData meshData;
+        
+        public Vector3Int WorldPosition => chunkData.WorldPosition;
 
         public Chunk(ChunkData chunkData, MeshData meshData)
         {
