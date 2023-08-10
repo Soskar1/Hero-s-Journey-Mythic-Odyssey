@@ -9,7 +9,6 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private ChunkRenderer _chunkPrefab;
         private Queue<ChunkRenderer> _chunkPool;
         
-
         private void Awake() => _chunkPool = new Queue<ChunkRenderer>();
 
         public ChunkRenderer RenderChunk(Chunk chunk)

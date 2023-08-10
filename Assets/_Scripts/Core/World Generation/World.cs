@@ -52,7 +52,11 @@ namespace HerosJourney.Core.WorldGeneration
 
             Timer.Start(0.2f, () => {
                 _chunksToRender.TryDequeue(out Chunk chunk);
-                _worldRenderer.RenderChunk(chunk);
+                ChunkRenderer renderer = _worldRenderer.RenderChunk(chunk);
+                WorldData.chunkRenderers.Add(chunk.chunkData.WorldPosition, renderer);
+
+                if (_chunksToRender.IsEmpty)
+                    OnNewChunksInitialized?.Invoke();
             });
         }
 
@@ -67,9 +71,14 @@ namespace HerosJourney.Core.WorldGeneration
 
             UnloadChunks(worldGenerationData);
 
+            Dictionary<Vector3Int, ChunkData> chunkDataDictionary = _chunkGenerator.AllocateMemoryForChunkData(WorldData, worldGenerationData.chunkDataPositionsToCreate);
+
+            foreach (var data in chunkDataDictionary)
+                WorldData.chunkData.Add(data.Key, data.Value);
+
             try
             {
-                await _chunkGenerator.GenerateChunkData(WorldData, worldGenerationData.chunkDataPositionsToCreate);
+                await _chunkGenerator.GenerateChunkData(chunkDataDictionary);
                 List<ChunkData> dataToRender = WorldDataHandler.SelectChunksToRender(WorldData, worldGenerationData.chunkRendererPositionsToCreate, worldPosition);
                 await _chunkGenerator.GenerateMeshData(dataToRender);
             }
@@ -78,8 +87,6 @@ namespace HerosJourney.Core.WorldGeneration
                 Debug.LogException(e);
                 return;
             }
-
-            OnNewChunksInitialized?.Invoke();
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)

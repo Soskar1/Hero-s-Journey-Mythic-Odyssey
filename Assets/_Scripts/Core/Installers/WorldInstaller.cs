@@ -49,11 +49,11 @@ namespace HerosJourney.Core.Installers
                 .FromInstance(_terrainGenerator)
                 .AsSingle();
 
-            Container
-                .Bind<IGenerator>()
-                .To<StructureGenerator>()
-                .FromInstance(_structureGenerator)
-                .AsSingle();
+            //Container
+            //    .Bind<IGenerator>()
+            //    .To<StructureGenerator>()
+            //    .FromInstance(_structureGenerator)
+            //    .AsSingle();
 
             Container
                 .BindInterfacesAndSelfTo<ChunkGenerator>()

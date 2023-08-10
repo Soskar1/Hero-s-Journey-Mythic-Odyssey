@@ -18,25 +18,20 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void Dispose() => _taskTokenSource.Cancel();
 
-        public Task GenerateChunkData(WorldData worldData, List<Vector3Int> chunkDataPositionsToCreate)
+        public Task GenerateChunkData(Dictionary<Vector3Int, ChunkData> chunkDataDictionary)
         {
-            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = AllocateMemoryForChunkData(worldData, chunkDataPositionsToCreate);
-            
-            foreach (var data in chunkDataDictionary)
-                worldData.chunkData.Add(data.Key, data.Value);
-
             return Task.Run(() => 
             {
                 foreach (var generator in _generators)
                     foreach (ChunkData chunkData in chunkDataDictionary.Values)
-                        ThreadPool.QueueUserWorkItem((state) => generator.Generate(chunkData));
-                        //generator.Generate(chunkData);
+                        generator.Generate(chunkData);
+                        //ThreadPool.QueueUserWorkItem((state) => generator.Generate(chunkData));
             });
         }
 
-        private ConcurrentDictionary<Vector3Int, ChunkData> AllocateMemoryForChunkData(WorldData worldData, List<Vector3Int> chunkDataPositionsToCreate)
+        public Dictionary<Vector3Int, ChunkData> AllocateMemoryForChunkData(WorldData worldData, List<Vector3Int> chunkDataPositionsToCreate)
         {
-            ConcurrentDictionary<Vector3Int, ChunkData> chunkDataDictionary = new ConcurrentDictionary<Vector3Int, ChunkData>();
+            Dictionary<Vector3Int, ChunkData> chunkDataDictionary = new Dictionary<Vector3Int, ChunkData>();
 
             foreach (Vector3Int position in chunkDataPositionsToCreate)
             {
