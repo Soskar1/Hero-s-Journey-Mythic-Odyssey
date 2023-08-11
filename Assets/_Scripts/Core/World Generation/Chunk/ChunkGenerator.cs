@@ -34,7 +34,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         {
             foreach (var generator in _generators)
                 generator.Generate(chunkData);
-                //ThreadPool.QueueUserWorkItem((state) => generator.Generate(chunkData));
         }
 
         public Task GenerateMeshData(List<ChunkData> chunkDataToRender)

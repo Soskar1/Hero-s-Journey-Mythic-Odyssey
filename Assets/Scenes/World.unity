@@ -1197,7 +1197,7 @@ MonoBehaviour:
   _chunkLength: 16
   _chunkHeight: 128
   _worldSeed: 0
-  _renderDistance: 7
+  _renderDistance: 32
   _terrainGenerator: {fileID: 1992527461}
   _structureGenerator: {fileID: 952000720}
   _world: {fileID: 1530814503}

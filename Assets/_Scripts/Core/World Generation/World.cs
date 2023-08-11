@@ -52,9 +52,6 @@ namespace HerosJourney.Core.WorldGeneration
                 _chunksToRender.TryDequeue(out Chunk chunk);
                 ChunkRenderer renderer = _worldRenderer.RenderChunk(chunk);
                 WorldData.chunkRenderers.Add(chunk.WorldPosition, renderer);
-
-                if (_chunksToRender.IsEmpty)
-                    OnNewChunksInitialized?.Invoke();
             });
         }
 
@@ -80,6 +77,8 @@ namespace HerosJourney.Core.WorldGeneration
                 Debug.LogException(e);
                 return;
             }
+
+            OnNewChunksInitialized?.Invoke();
         }
 
         private WorldGenerationData GetWorldGenerationData(Vector3Int worldPosition)
