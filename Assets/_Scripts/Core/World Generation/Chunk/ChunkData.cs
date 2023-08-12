@@ -6,7 +6,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
     {
-        public Voxel[,,] voxels;
+        public int[,,] voxelId;
         public int[,] groundHeight;
         public StructureData structureData;
 
@@ -20,7 +20,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             ChunkLength = worldData.chunkLength;
             ChunkHeight = worldData.chunkHeight;
             ChunkSeed = worldData.worldSeed + worldPosition.x + worldPosition.y + worldPosition.z;
-            voxels = new Voxel[worldData.chunkLength, worldData.chunkHeight, worldData.chunkLength];
+            voxelId = new int[worldData.chunkLength, worldData.chunkHeight, worldData.chunkLength];
             groundHeight = new int[worldData.chunkLength, worldData.chunkLength];
             WorldPosition = worldPosition;
         }

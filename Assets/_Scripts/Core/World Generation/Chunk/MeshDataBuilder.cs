@@ -6,6 +6,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class MeshDataBuilder
     {
+        private static VoxelDataStorage _voxelDataStorage;
+
         private const float VERTEX_OFFSET = 0.5f;
         private static Direction[] _directions = {
             Direction.up,
@@ -16,6 +18,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             Direction.back
         };
 
+        public static void Initialize(VoxelDataStorage voxelDataStorage) => _voxelDataStorage = voxelDataStorage;
+
         public static MeshData GenerateMeshData(ChunkData chunkData)
         {
             MeshData meshData = new MeshData(true);
@@ -23,7 +27,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             for (int x = 0; x < chunkData.ChunkLength; ++x)
                 for (int y = 0; y < chunkData.ChunkHeight; ++y)
                     for (int z = 0; z < chunkData.ChunkLength; ++z)
-                        GenerateVoxelFaces(chunkData, meshData, chunkData.voxels[x, y, z].data, new Vector3Int(x, y, z));
+                        GenerateVoxelFaces(chunkData, meshData, _voxelDataStorage.Get(chunkData.voxelId[x, y, z]), new Vector3Int(x, y, z));
 
             return meshData;
         }
@@ -36,11 +40,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             foreach (var direction in _directions)
             {
                 Vector3Int neighbourVoxelCoordinates = position + direction.ToVector3Int();
-                Voxel neighbourVoxel = ChunkDataHandler.GetVoxelAt(chunkData, neighbourVoxelCoordinates);
-                VoxelType neighbourVoxelType = VoxelType.Nothing;
-
-                if (neighbourVoxel != null)
-                    neighbourVoxelType = neighbourVoxel.VoxelType;
+                int neighbourVoxelId = ChunkDataHandler.GetVoxelAt(chunkData, neighbourVoxelCoordinates);
+                VoxelType neighbourVoxelType = _voxelDataStorage.Get(neighbourVoxelId).type;
 
                 if (voxelData.type == VoxelType.Liquid && neighbourVoxelType != VoxelType.Air)
                     continue;

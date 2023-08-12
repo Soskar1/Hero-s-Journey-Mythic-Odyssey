@@ -39,7 +39,6 @@ namespace HerosJourney.Core.WorldGeneration
             _worldGenerationSettings = worldGenerationSettings;
         }
 
-        private void Awake() => ChunkDataHandler.Initialize(WorldData);
         private void OnEnable() => _chunkGenerator.ChunkGenerated += AddToRenderQueue;
         private void OnDisable() => _chunkGenerator.ChunkGenerated -= AddToRenderQueue;
         private void AddToRenderQueue(Chunk chunk) => _chunksToRender.Enqueue(chunk);

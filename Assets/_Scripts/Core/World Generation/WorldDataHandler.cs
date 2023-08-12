@@ -29,22 +29,22 @@ namespace HerosJourney.Core.WorldGeneration
             return chunksAroundPoint;
         }
 
-        public static void SetVoxelInWorld(WorldData worldData, Voxel voxel, Vector3Int worldPosition)
+        public static void SetVoxelInWorld(WorldData worldData, int voxelId, Vector3Int worldPosition)
         {
             Vector3Int chunkPosition = GetChunkPosition(worldData, worldPosition);
 
             if (worldData.chunkData.TryGetValue(chunkPosition, out ChunkData chunk))
-                ChunkDataHandler.SetVoxelAt(chunk, voxel, ChunkDataHandler.WorldToLocalPosition(chunk, worldPosition));
+                ChunkDataHandler.SetVoxelAt(chunk, voxelId, ChunkDataHandler.WorldToLocalPosition(chunk, worldPosition));
         }
 
-        public static Voxel GetVoxelInWorld(WorldData worldData, Vector3Int worldPosition)
+        public static int GetVoxelInWorld(WorldData worldData, Vector3Int worldPosition)
         {
             Vector3Int chunkPosition = GetChunkPosition(worldData, worldPosition);
 
             if (worldData.chunkData.TryGetValue(chunkPosition, out ChunkData chunk))
                 return ChunkDataHandler.GetVoxelAt(chunk, ChunkDataHandler.WorldToLocalPosition(chunk, worldPosition));
 
-            return null;
+            return 0;
         }
 
         public static Vector3Int GetChunkPosition(WorldData worldData, Vector3Int worldPosition)

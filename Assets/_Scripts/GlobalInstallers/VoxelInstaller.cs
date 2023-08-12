@@ -16,11 +16,6 @@ namespace HerosJourney.GlobalInstallers
                 .AsSingle()
                 .WithArguments(_voxelData)
                 .NonLazy();
-
-            Container
-                .BindInterfacesAndSelfTo<VoxelStorage>()
-                .AsSingle()
-                .NonLazy();
         }
     }
 }
