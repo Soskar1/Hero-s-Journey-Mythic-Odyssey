@@ -5,12 +5,16 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkDataHandler
     {
+        private static WorldData _worldData;
+
+        public static void Initialize(WorldData worldData) => _worldData = worldData;
+
         public static void SetVoxelAt(ChunkData chunkData, Voxel voxel, Vector3Int localPosition)
         {
             if (IsInBounds(chunkData, localPosition))
                 chunkData.voxels[localPosition.x, localPosition.y, localPosition.z] = voxel;
             else
-                WorldDataHandler.SetVoxelInWorld(chunkData.WorldData, voxel, chunkData.WorldPosition + localPosition);
+                WorldDataHandler.SetVoxelInWorld(_worldData, voxel, chunkData.WorldPosition + localPosition);
         }
 
         public static Voxel GetVoxelAt(ChunkData chunkData, Vector3Int localPosition)
@@ -18,7 +22,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             if (IsInBounds(chunkData, localPosition))
                 return chunkData.voxels[localPosition.x, localPosition.y, localPosition.z];
 
-            return WorldDataHandler.GetVoxelInWorld(chunkData.WorldData, chunkData.WorldPosition + localPosition);
+            return WorldDataHandler.GetVoxelInWorld(_worldData, chunkData.WorldPosition + localPosition);
         }
 
         public static bool IsInBounds(ChunkData chunkData, Vector3Int localPosition)
