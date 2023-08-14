@@ -23,19 +23,26 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         {
             return Task.Run(() =>
             {
-                foreach (Vector3Int pos in chunkDataPositionsToCreate)
+                foreach (var generator in _generators)
                 {
-                    ChunkData chunkData = new ChunkData(worldData, pos);
-                    Generate(chunkData);
-                    worldData.chunkData.Add(pos, chunkData);
+                    foreach (Vector3Int pos in chunkDataPositionsToCreate)
+                    {
+                        ChunkData chunkData;
+
+                        if (!worldData.chunkData.ContainsKey(pos))
+                        {
+                            chunkData = new ChunkData(worldData, pos);
+                            worldData.chunkData.Add(pos, chunkData);
+                        }
+                        else
+                        {
+                            chunkData = worldData.chunkData[pos];
+                        }
+
+                        generator.Generate(chunkData);
+                    }
                 }
             });
-        }
-
-        private void Generate(ChunkData chunkData)
-        {
-            foreach (var generator in _generators)
-                generator.Generate(chunkData);
         }
 
         public Task GenerateMeshData(List<ChunkData> chunkDataToRender)
