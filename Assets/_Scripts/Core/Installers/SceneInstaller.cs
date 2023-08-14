@@ -45,10 +45,6 @@ namespace HerosJourney.Core.Installers
                 .Bind<PlayerSpawner>()
                 .AsSingle()
                 .WithArguments(_spawnPoint);
-
-            Container
-                .BindInterfacesTo<WorldSceneBootstrap>()
-                .AsSingle();
         }
     }
 }
