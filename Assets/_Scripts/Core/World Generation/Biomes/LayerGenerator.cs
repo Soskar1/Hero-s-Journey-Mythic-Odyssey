@@ -1,7 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
-using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration.Terrain
 {
@@ -9,16 +8,8 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
     {
         [SerializeField] private LayerGenerator _next;
         [SerializeField] private VoxelData _voxelData;
-        private VoxelStorage _voxelStorage;
 
-        protected Voxel MainVoxel => _voxelStorage.Get(_voxelData);
-        protected VoxelStorage VoxelStorage => _voxelStorage;
-
-        [Inject]
-        private void Construct(VoxelStorage voxelStorage)
-        {
-            _voxelStorage = voxelStorage;
-        }
+        protected int MainVoxelId => _voxelData.id;
 
         public bool TryGenerateLayer(ChunkData chunkData, Vector3Int localPosition, int surfaceHeightNoise)
         {

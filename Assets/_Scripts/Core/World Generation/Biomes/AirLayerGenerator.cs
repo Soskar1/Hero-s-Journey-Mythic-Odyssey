@@ -9,7 +9,7 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
         {
             if (localPosition.y > surfaceHeightNoise)
             {
-                ChunkDataHandler.SetVoxelAt(chunkData, MainVoxel, localPosition);
+                ChunkDataHandler.SetVoxelAt(chunkData, MainVoxelId, localPosition);
                 return true;
             }
 

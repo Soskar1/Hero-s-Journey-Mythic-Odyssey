@@ -15,5 +15,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             foreach (var voxelData in _voxelData)
                 Add(voxelData.id, voxelData);
         }
+
+        public VoxelType GetVoxelType(int id) => Get(id).type;
     }
 }

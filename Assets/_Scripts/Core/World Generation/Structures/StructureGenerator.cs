@@ -14,16 +14,16 @@ namespace HerosJourney.Core.WorldGeneration.Structures
         [SerializeField] private NoiseSettings _noiseSettings;
         [SerializeField] private StructureGenerationSettings _generationSettings;
         [SerializeField] private TextAsset _tree;
-        private VoxelStorage _voxelStorage;
+        private VoxelDataStorage _voxelDataStorage;
         private StructureStorage _structureStorage;
         private PointSelectionSettings _selectionSettings;
 
         private List<VoxelSaveData> _structureVoxels = new List<VoxelSaveData>();
 
         [Inject]
-        private void Construct(VoxelStorage voxelStorage, StructureStorage structureStorage)
+        private void Construct(VoxelDataStorage voxelDataStorage, StructureStorage structureStorage)
         {
-            _voxelStorage = voxelStorage;
+            _voxelDataStorage = voxelDataStorage;
             _structureStorage = structureStorage;
         }
 
@@ -75,12 +75,12 @@ namespace HerosJourney.Core.WorldGeneration.Structures
                 {
                     tmpPosition += voxel.pos;
 
-                    Voxel currentVoxel = ChunkDataHandler.GetVoxelAt(chunkData, tmpPosition);
-                    if (currentVoxel != null && _generationSettings.voxelsNotToBuildOn.Contains(currentVoxel.data))
+                    int currentVoxelId = ChunkDataHandler.GetVoxelAt(chunkData, tmpPosition);
+                    VoxelData currentVoxelData = _voxelDataStorage.Get(currentVoxelId);
+                    if (currentVoxelId != 0 && _generationSettings.voxelsNotToBuildOn.Contains(currentVoxelData))
                         break;
-
-                    Voxel voxelInstance = _voxelStorage.GetVoxelByID(voxel.id);
-                    ChunkDataHandler.SetVoxelAt(chunkData, voxelInstance, tmpPosition);
+                        
+                    ChunkDataHandler.SetVoxelAt(chunkData, voxel.id, tmpPosition);
                     tmpPosition = localPosition;
                 }
         }
