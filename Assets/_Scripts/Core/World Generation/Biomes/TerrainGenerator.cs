@@ -18,6 +18,8 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
 
         public void Generate(ChunkData chunkData)
         {
+            Noise.SetSeed(_world.WorldData.worldSeed);
+
             for (int x = 0; x < chunkData.ChunkLength; ++x)
                 for (int z = 0; z < chunkData.ChunkLength; ++z)
                     GenerateChunkColumn(chunkData, x, z);
