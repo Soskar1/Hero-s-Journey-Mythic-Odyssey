@@ -9,11 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4b260763ba7648439e6c0773014afb2, type: 3}
+  m_Script: {fileID: 11500000, guid: cc9a6b6cdfe37494b84933a88ce2cfd2, type: 3}
   m_Name: Air
   m_EditorClassIdentifier: 
+  id: 0
   type: 0
   textureData:
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up:
+      x: 0
+      y: 0
+    down:
+      x: 0
+      y: 0
+    side:
+      x: 0
+      y: 0
+  generatesCollider: 0
