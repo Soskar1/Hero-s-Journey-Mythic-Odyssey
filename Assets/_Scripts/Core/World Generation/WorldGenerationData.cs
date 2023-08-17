@@ -21,8 +21,10 @@ namespace HerosJourney.Core.WorldGeneration
 
     public static class WorldGenerationDataHandler
     { 
-        public static Task<WorldGenerationData> GenerateWorldGenerationData(WorldData worldData, Vector3Int worldPosition, byte renderDistance)
+        public static Task<WorldGenerationData> GenerateWorldGenerationData(WorldGenerationSettings settings, Vector3Int worldPosition)
         {
+            WorldData worldData = settings.WorldData;
+
             WorldGenerationData worldGenerationData = new WorldGenerationData();
             worldGenerationData.chunkPositionsToCreate = new NativeList<Vector3Int>(Allocator.Persistent);
             worldGenerationData.chunkPositionsToRemove = new NativeList<Vector3Int>(Allocator.Persistent);
@@ -44,7 +46,7 @@ namespace HerosJourney.Core.WorldGeneration
                     worldPosition = worldPosition,
                     chunkLength = worldData.chunkLength,
                     chunkHeight = worldData.chunkHeight,
-                    renderDistance = renderDistance
+                    renderDistance = settings.RenderDistance
                 };
 
                 JobHandle jobHandle = job.Schedule();
