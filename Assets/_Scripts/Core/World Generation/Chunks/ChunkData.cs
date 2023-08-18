@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
@@ -8,14 +6,12 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public byte ChunkLength { get; private set; }
         public byte ChunkHeight { get; private set; }
-        public Vector3Int WorldPosition { get; private set; }
 
-        public ChunkData(WorldData worldData, Vector3Int worldPosition)
+        public ChunkData(WorldData worldData)
         {
             ChunkLength = worldData.chunkLength;
             ChunkHeight = worldData.chunkHeight;
             voxels = new ushort[worldData.chunkLength * worldData.chunkHeight * worldData.chunkLength];
-            WorldPosition = worldPosition;
         }
     }
 }

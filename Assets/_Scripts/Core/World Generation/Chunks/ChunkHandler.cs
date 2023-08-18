@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
-    public static class ChunkDataHandler
+    public static class ChunkHandler
     {
         public static bool IsInBounds(ChunkData chunkData, Vector3Int localPosition)
         {
@@ -14,13 +14,13 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             return true;
         }
 
-        public static Vector3Int WorldToLocalPosition(ChunkData chunkData, Vector3Int worldPosition)
+        public static Vector3Int WorldToLocalPosition(Chunk chunk, Vector3Int worldPosition)
         {
             return new Vector3Int
             {
-                x = worldPosition.x - chunkData.WorldPosition.x,
-                y = worldPosition.y - chunkData.WorldPosition.y,
-                z = worldPosition.z - chunkData.WorldPosition.z
+                x = worldPosition.x - chunk.worldPosition.x,
+                y = worldPosition.y - chunk.worldPosition.y,
+                z = worldPosition.z - chunk.worldPosition.z
             };
         }
     }
