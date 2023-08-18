@@ -8,10 +8,10 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public ChunkRenderer chunkRenderer;
         public int3 worldPosition;
 
-        public Chunk(int3 worldPosition)
+        public Chunk(WorldData worldData, int3 worldPosition)
         {
             this.worldPosition = worldPosition;
-            chunkData = null;
+            chunkData = new ChunkData(worldData);
             chunkRenderer = null;
         }
     }

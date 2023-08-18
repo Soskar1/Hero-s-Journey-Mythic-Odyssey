@@ -164,6 +164,7 @@ GameObject:
   m_Component:
   - component: {fileID: 519179514}
   - component: {fileID: 519179513}
+  - component: {fileID: 519179515}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -198,6 +199,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519179515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519179512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0d1e4c996324041825316cffdfa56a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chunkPrefab: {fileID: 2858510654094256375, guid: fbd0fe1fb5acaf747a8ed3f3bff5a672, type: 3}
+  _capacity: 4225
 --- !u!1 &541782301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,7 +1380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 7.132051, z: -5.305804}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1524,7 +1539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 7.132051, z: -5.305804}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1741,7 +1756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 7.132051, z: -5.305804}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

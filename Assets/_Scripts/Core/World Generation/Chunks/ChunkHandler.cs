@@ -4,6 +4,15 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkHandler
     {
+        public static void SetVoxelAt(ChunkData chunkData, ushort voxelID, int3 localPosition)
+        {
+            if (IsInBounds(chunkData, localPosition))
+            {
+                int index = LocalPositionToIndex(chunkData, localPosition);
+                chunkData.voxels[index] = voxelID;
+            }
+        }
+
         public static bool IsInBounds(ChunkData chunkData, int3 localPosition)
         {
             if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkLength ||
@@ -22,6 +31,11 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 y = worldPosition.y - chunk.worldPosition.y,
                 z = worldPosition.z - chunk.worldPosition.z
             };
+        }
+
+        private static int LocalPositionToIndex(ChunkData chunkData, int3 localPosition)
+        {
+            return localPosition.x + chunkData.ChunkLength * localPosition.y + chunkData.ChunkHeight * localPosition.z;
         }
     }
 }
