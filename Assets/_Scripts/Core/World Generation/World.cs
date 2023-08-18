@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
 
@@ -11,12 +12,12 @@ namespace HerosJourney.Core.WorldGeneration
         [Inject]
         private void Construct(WorldGenerationSettings settings) => _settings = settings;
 
-        public async void GenerateWorld() => await Task.Run(() => GenerateWorld(Vector3Int.zero));
+        public async void GenerateWorld() => await Task.Run(() => GenerateWorld(int3.zero));
 
-        private async void GenerateWorld(Vector3Int worldPosition)
+        private async void GenerateWorld(int3 worldPosition)
         {
             WorldGenerationData worldGenerationData = await WorldGenerationDataHandler.GenerateWorldGenerationData(_settings, worldPosition);
-
+            Debug.Log("WorldGenerationData generated");
             //TODO: create ChunkData at each nearest chunk position
 
             //TODO: multithreaded chunk generation

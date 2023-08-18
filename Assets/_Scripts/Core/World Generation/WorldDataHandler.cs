@@ -1,12 +1,13 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public static class WorldDataHandler
     {
-        public static Vector3Int GetChunkPosition(byte chunkLength, byte chunkHeight, Vector3Int worldPosition)
+        public static int3 GetChunkPosition(byte chunkLength, byte chunkHeight, int3 worldPosition)
         {
-            return new Vector3Int
+            return new int3
             {
                 x = Mathf.FloorToInt(worldPosition.x / (float)chunkLength) * chunkLength,
                 y = Mathf.FloorToInt(worldPosition.y / (float)chunkHeight) * chunkHeight,
@@ -14,7 +15,7 @@ namespace HerosJourney.Core.WorldGeneration
             };
         }
 
-        public static Vector3Int GetChunkPosition(WorldData worldData, Vector3Int worldPosition)
+        public static int3 GetChunkPosition(WorldData worldData, int3 worldPosition)
         {
             return GetChunkPosition(worldData.chunkLength, worldData.chunkHeight, worldPosition);
         }

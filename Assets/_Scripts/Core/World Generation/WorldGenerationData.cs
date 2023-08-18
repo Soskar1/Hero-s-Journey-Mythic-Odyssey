@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public struct WorldGenerationData
     {
-        public NativeList<Vector3Int> chunkPositionsToCreate;
-        public NativeList<Vector3Int> chunkPositionsToRemove;
+        public NativeList<int3> chunkPositionsToCreate;
+        public NativeList<int3> chunkPositionsToRemove;
 
         public void Dispose()
         {
@@ -21,18 +21,18 @@ namespace HerosJourney.Core.WorldGeneration
 
     public static class WorldGenerationDataHandler
     { 
-        public static Task<WorldGenerationData> GenerateWorldGenerationData(WorldGenerationSettings settings, Vector3Int worldPosition)
+        public static Task<WorldGenerationData> GenerateWorldGenerationData(WorldGenerationSettings settings, int3 worldPosition)
         {
             WorldData worldData = settings.WorldData;
 
             WorldGenerationData worldGenerationData = new WorldGenerationData
             {
-                chunkPositionsToCreate = new NativeList<Vector3Int>(Allocator.Persistent),
-                chunkPositionsToRemove = new NativeList<Vector3Int>(Allocator.Persistent)
+                chunkPositionsToCreate = new NativeList<int3>(Allocator.Persistent),
+                chunkPositionsToRemove = new NativeList<int3>(Allocator.Persistent)
             };
 
-            NativeList<Vector3Int> nearestChunkPositions = new NativeList<Vector3Int>(Allocator.TempJob);
-            NativeList<Vector3Int> existingChunks = new NativeList<Vector3Int>(Allocator.TempJob);
+            NativeList<int3> nearestChunkPositions = new NativeList<int3>(Allocator.TempJob);
+            NativeList<int3> existingChunks = new NativeList<int3>(Allocator.TempJob);
 
             return Task.Run(() =>
             {
@@ -65,13 +65,13 @@ namespace HerosJourney.Core.WorldGeneration
     [BurstCompile]
     public struct GenerateWorldGenerationDataJob : IJob
     {
-        public NativeList<Vector3Int> existingChunkPositions;
+        public NativeList<int3> existingChunkPositions;
 
-        public NativeList<Vector3Int> nearestChunkPositions;
-        public NativeList<Vector3Int> chunkPositionsToCreate;
-        public NativeList<Vector3Int> chunkPositionsToRemove;
+        public NativeList<int3> nearestChunkPositions;
+        public NativeList<int3> chunkPositionsToCreate;
+        public NativeList<int3> chunkPositionsToRemove;
 
-        public Vector3Int worldPosition;
+        public int3 worldPosition;
         public byte chunkLength;
         public byte chunkHeight;
         public byte renderDistance;
@@ -94,7 +94,7 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 for (int z = zStart; z <= zEnd; z += chunkLength)
                 {
-                    Vector3Int chunkPosition = WorldDataHandler.GetChunkPosition(chunkLength, chunkHeight, new Vector3Int(x, worldPosition.y, z));
+                    int3 chunkPosition = WorldDataHandler.GetChunkPosition(chunkLength, chunkHeight, new int3(x, worldPosition.y, z));
                     nearestChunkPositions.Add(chunkPosition);
                 }
             }

@@ -1,10 +1,10 @@
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkHandler
     {
-        public static bool IsInBounds(ChunkData chunkData, Vector3Int localPosition)
+        public static bool IsInBounds(ChunkData chunkData, int3 localPosition)
         {
             if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkLength ||
                 localPosition.y < 0 || localPosition.y >= chunkData.ChunkHeight ||
@@ -14,9 +14,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             return true;
         }
 
-        public static Vector3Int WorldToLocalPosition(Chunk chunk, Vector3Int worldPosition)
+        public static int3 WorldToLocalPosition(Chunk chunk, int3 worldPosition)
         {
-            return new Vector3Int
+            return new int3
             {
                 x = worldPosition.x - chunk.worldPosition.x,
                 y = worldPosition.y - chunk.worldPosition.y,

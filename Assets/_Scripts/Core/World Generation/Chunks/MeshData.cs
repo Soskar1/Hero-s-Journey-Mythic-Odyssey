@@ -1,28 +1,28 @@
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class MeshData
     {
-        public List<Vector3> Vertices { get; private set; }
+        public List<float3> Vertices { get; private set; }
         public List<int> Triangles { get; private set; }
-        public List<Vector3> UVs { get; private set; }
+        public List<float3> UVs { get; private set; }
 
         public MeshData()
         {
-            Vertices = new List<Vector3>();
+            Vertices = new List<float3>();
             Triangles = new List<int>();
-            UVs = new List<Vector3>();
+            UVs = new List<float3>();
         }
 
-        public void AddVertices(Vector3[] positions, bool generatesCollider)
+        public void AddVertices(float3[] vertices)
         {
-            foreach (var vertex in positions)
+            foreach (var vertex in vertices)
                 Vertices.Add(vertex);
         }
 
-        public void CreateQuad(Vector3[] vertices, bool generatesCollider)
+        public void CreateQuad()
         {
             Triangles.Add(Vertices.Count - 4);
             Triangles.Add(Vertices.Count - 3);
@@ -33,10 +33,10 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             Triangles.Add(Vertices.Count - 1);
         }
 
-        public void AddUVCoordinates(Vector2[] uvCoordinates)
+        public void AddUVCoordinates(float2[] uvCoordinates)
         {
             foreach (var uv in uvCoordinates)
-                UVs.Add(uv);
+                UVs.Add(new float3(uv.x, uv.y, 0));
         }
     }
 }

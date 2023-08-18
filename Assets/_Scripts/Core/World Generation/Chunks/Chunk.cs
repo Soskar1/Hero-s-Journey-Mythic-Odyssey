@@ -1,4 +1,4 @@
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
@@ -6,9 +6,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         public ChunkData chunkData;
         public ChunkRenderer chunkRenderer;
-        public Vector3Int worldPosition;
+        public int3 worldPosition;
 
-        public Chunk(Vector3Int worldPosition)
+        public Chunk(int3 worldPosition)
         {
             this.worldPosition = worldPosition;
             chunkData = null;

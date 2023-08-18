@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using HerosJourney.Core.WorldGeneration.Chunks;
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -9,7 +9,7 @@ namespace HerosJourney.Core.WorldGeneration
         public byte chunkLength;
         public byte chunkHeight;
 
-        public Dictionary<Vector3Int, Chunk> existingChunks = new Dictionary<Vector3Int, Chunk>();
+        public Dictionary<int3, Chunk> existingChunks = new Dictionary<int3, Chunk>();
 
         public WorldData(byte chunkLength, byte chunkHeight)
         {
