@@ -1,9 +1,8 @@
 using System;
-using HerosJourney.Utils;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Voxels
 {
     public class VoxelData : ScriptableObject
     {

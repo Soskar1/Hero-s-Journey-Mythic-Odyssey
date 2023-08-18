@@ -25,9 +25,11 @@ namespace HerosJourney.Core.WorldGeneration
         {
             WorldData worldData = settings.WorldData;
 
-            WorldGenerationData worldGenerationData = new WorldGenerationData();
-            worldGenerationData.chunkPositionsToCreate = new NativeList<Vector3Int>(Allocator.Persistent);
-            worldGenerationData.chunkPositionsToRemove = new NativeList<Vector3Int>(Allocator.Persistent);
+            WorldGenerationData worldGenerationData = new WorldGenerationData
+            {
+                chunkPositionsToCreate = new NativeList<Vector3Int>(Allocator.Persistent),
+                chunkPositionsToRemove = new NativeList<Vector3Int>(Allocator.Persistent)
+            };
 
             NativeList<Vector3Int> nearestChunkPositions = new NativeList<Vector3Int>(Allocator.TempJob);
             NativeList<Vector3Int> existingChunks = new NativeList<Vector3Int>(Allocator.TempJob);

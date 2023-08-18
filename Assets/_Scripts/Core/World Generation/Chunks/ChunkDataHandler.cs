@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkDataHandler
     {

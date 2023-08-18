@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration

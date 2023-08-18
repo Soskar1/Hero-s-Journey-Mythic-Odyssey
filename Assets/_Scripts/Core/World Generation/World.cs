@@ -17,8 +17,6 @@ namespace HerosJourney.Core.WorldGeneration
         {
             WorldGenerationData worldGenerationData = await WorldGenerationDataHandler.GenerateWorldGenerationData(_settings, worldPosition);
 
-            Debug.Log("worldGenerationData generated");
-
             //TODO: create ChunkData at each nearest chunk position
 
             //TODO: multithreaded chunk generation
