@@ -6,6 +6,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         public WorldData WorldData { get; }
         public byte RenderDistance => _renderDistance;
+        public int ChunkSize => WorldData.chunkLength * WorldData.chunkLength * WorldData.chunkHeight;
 
         public WorldGenerationSettings(byte chunkLength, byte chunkHeight, byte renderDistance)
         {

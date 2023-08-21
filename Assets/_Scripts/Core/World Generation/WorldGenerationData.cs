@@ -65,6 +65,7 @@ namespace HerosJourney.Core.WorldGeneration
     [BurstCompile]
     public struct GenerateWorldGenerationDataJob : IJob
     {
+        [ReadOnly]
         public NativeList<int3> existingChunkPositions;
 
         public NativeList<int3> nearestChunkPositions;

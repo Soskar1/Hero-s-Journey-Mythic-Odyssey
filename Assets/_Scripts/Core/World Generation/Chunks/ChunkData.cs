@@ -11,7 +11,14 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         {
             ChunkLength = worldData.chunkLength;
             ChunkHeight = worldData.chunkHeight;
-            voxels = new ushort[worldData.chunkLength * worldData.chunkHeight * worldData.chunkLength];
+            voxels = new ushort[ChunkLength * ChunkHeight * ChunkLength];
+        }
+
+        public ChunkData(byte chunkLength, byte chunkHeight)
+        {
+            ChunkLength = chunkLength;
+            ChunkHeight = chunkHeight;
+            voxels = new ushort[ChunkLength * ChunkHeight * ChunkLength];
         }
     }
 }

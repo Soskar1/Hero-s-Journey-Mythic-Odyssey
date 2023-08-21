@@ -966,7 +966,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1339897346
 MonoBehaviour:
@@ -997,7 +997,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 4
+  _renderDistance: 32
+  _terrainNoiseSettings: {fileID: 11400000, guid: 6a02d79f27131564c92ab4d619aec501, type: 2}
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,7 +1075,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1725020457
 PrefabInstance:

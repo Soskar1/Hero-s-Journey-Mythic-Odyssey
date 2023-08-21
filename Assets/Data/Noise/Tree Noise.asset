@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47104f5307ace1c44a05a2639f419ddd, type: 3}
+  m_Script: {fileID: 11500000, guid: 31b56c1b8e4399949822ac41ee9f4498, type: 3}
   m_Name: Tree Noise
   m_EditorClassIdentifier: 
-  octaves: 3
-  persistence: 0.08
-  noiseZoom: 0.005
-  offset: {x: 300, y: 5000}
+  octaves: 0
+  persistence: 0
+  noiseZoom: 0
+  offset:
+    x: 0
+    y: 0

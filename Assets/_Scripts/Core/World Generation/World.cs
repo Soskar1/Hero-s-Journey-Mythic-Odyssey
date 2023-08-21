@@ -1,4 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Terrain;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,11 +11,16 @@ namespace HerosJourney.Core.WorldGeneration
     public class World : MonoBehaviour
     {
         private WorldGenerationSettings _settings;
+        private TerrainGenerator _terrainGenerator;
 
         public WorldData WorldData => _settings.WorldData;
 
         [Inject]
-        private void Construct(WorldGenerationSettings settings) => _settings = settings;
+        private void Construct(WorldGenerationSettings settings, TerrainGenerator terrainGenerator)
+        {
+            _settings = settings;
+            _terrainGenerator = terrainGenerator;
+        }
 
         public async void GenerateWorld() => await Task.Run(() => GenerateWorld(int3.zero));
 
@@ -23,11 +30,7 @@ namespace HerosJourney.Core.WorldGeneration
             
             //TODO: Chunk Unloading
             
-            foreach (var position in worldGenerationData.chunkPositionsToCreate)
-            {
-                Chunk chunk = new Chunk(WorldData, position);
-                WorldData.existingChunks.Add(position, chunk);
-            }
+            Dictionary<int3, ChunkData> generatedChunks = _terrainGenerator.Generate(worldGenerationData.chunkPositionsToCreate);
 
             //TODO: create ChunkData at each nearest chunk position
 
