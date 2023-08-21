@@ -1,19 +1,19 @@
-using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
-    public class MeshData
+    public struct MeshData
     {
-        public List<float3> Vertices { get; private set; }
-        public List<int> Triangles { get; private set; }
-        public List<float3> UVs { get; private set; }
+        public NativeList<float3> Vertices { get; private set; }
+        public NativeList<int> Triangles { get; private set; }
+        public NativeList<float3> UVs { get; private set; }
 
-        public MeshData()
+        public void Initialize()
         {
-            Vertices = new List<float3>();
-            Triangles = new List<int>();
-            UVs = new List<float3>();
+            Vertices = new NativeList<float3>(Allocator.Persistent);
+            Triangles = new NativeList<int>(Allocator.Persistent);
+            UVs = new NativeList<float3>(Allocator.Persistent);
         }
 
         public void AddVertices(float3[] vertices)
@@ -24,13 +24,13 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void CreateQuad()
         {
-            Triangles.Add(Vertices.Count - 4);
-            Triangles.Add(Vertices.Count - 3);
-            Triangles.Add(Vertices.Count - 2);
+            Triangles.Add(Vertices.Length - 4);
+            Triangles.Add(Vertices.Length - 3);
+            Triangles.Add(Vertices.Length - 2);
 
-            Triangles.Add(Vertices.Count - 4);
-            Triangles.Add(Vertices.Count - 2);
-            Triangles.Add(Vertices.Count - 1);
+            Triangles.Add(Vertices.Length - 4);
+            Triangles.Add(Vertices.Length - 2);
+            Triangles.Add(Vertices.Length - 1);
         }
 
         public void AddUVCoordinates(float2[] uvCoordinates)

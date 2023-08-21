@@ -2,6 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Terrain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
@@ -10,6 +11,8 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
+        [SerializeField] private WorldRenderer _worldRenderer;
+
         private WorldGenerationSettings _settings;
         private TerrainGenerator _terrainGenerator;
 
@@ -27,20 +30,27 @@ namespace HerosJourney.Core.WorldGeneration
         private async void GenerateWorld(int3 worldPosition)
         {
             WorldGenerationData worldGenerationData = await WorldGenerationDataHandler.GenerateWorldGenerationData(_settings, worldPosition);
-            
-            //TODO: Chunk Unloading
-            
+
+            UnloadChunks(worldGenerationData.chunkPositionsToRemove);
+
             Dictionary<int3, ChunkData> generatedChunks = _terrainGenerator.Generate(worldGenerationData.chunkPositionsToCreate);
 
-            //TODO: create ChunkData at each nearest chunk position
-
-            //TODO: multithreaded chunk generation
+            //TODO: Add Structure Generation
 
             //TODO: multithreaded MeshData generation
 
             //TODO: chunk render
 
             worldGenerationData.Dispose();
-        }    
+        }
+
+        private void UnloadChunks(NativeList<int3> chunksToRemove)
+        {
+            foreach (var position in chunksToRemove)
+            {
+                _worldRenderer.Enqueue(WorldData.existingChunks[position].renderer);
+                WorldData.existingChunks.Remove(position);
+            }
+        }
     }
 }
