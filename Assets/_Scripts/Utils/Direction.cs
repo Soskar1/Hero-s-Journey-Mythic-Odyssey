@@ -1,4 +1,4 @@
-using UnityEngine;
+using Unity.Mathematics;
 
 namespace HerosJourney.Utils
 {
@@ -14,16 +14,16 @@ namespace HerosJourney.Utils
 
     public static class DirectionExtensions
     {
-        public static Vector3Int ToVector3Int(this Direction direction)
+        public static int3 ToInt3(this Direction direction)
         {
             return direction switch
             {
-                Direction.up => Vector3Int.up,
-                Direction.down => Vector3Int.down,
-                Direction.forward => Vector3Int.forward,
-                Direction.right => Vector3Int.right,
-                Direction.left => Vector3Int.left,
-                Direction.back => Vector3Int.back,
+                Direction.up => new int3(0, 1, 0),
+                Direction.down => new int3(0, -1, 0),
+                Direction.forward => new int3(0, 0, 1),
+                Direction.right => new int3(1, 0, 0),
+                Direction.left => new int3(-1, 0, 0),
+                Direction.back => new int3(0, 0, -1),
                 _ => throw new System.Exception("Invalid input direction")
             };
         }

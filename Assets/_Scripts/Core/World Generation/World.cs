@@ -25,6 +25,8 @@ namespace HerosJourney.Core.WorldGeneration
             _terrainGenerator = terrainGenerator;
         }
 
+        private void Awake() => ChunkHandler.Initialize(WorldData);
+
         public async void GenerateWorld() => await Task.Run(() => GenerateWorld(int3.zero));
 
         private async void GenerateWorld(int3 worldPosition)

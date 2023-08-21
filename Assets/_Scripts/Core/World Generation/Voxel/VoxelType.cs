@@ -4,6 +4,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
     {
         Air,
         Solid,
-        Transparent
+        Transparent,
+        Nothing
     }
 }
