@@ -154,7 +154,7 @@ namespace HerosJourney.Core.WorldGeneration.Terrain
 
         private void SetVoxelAt(ushort voxelID, int3 localPosition)
         {
-            int index = ChunkHandler.LocalPositionToIndex(localPosition);
+            int index = ChunkHandler.LocalPositionToIndex(chunkLength, chunkHeight, localPosition);
             generatedVoxelsID[index] = voxelID;
         }
     }

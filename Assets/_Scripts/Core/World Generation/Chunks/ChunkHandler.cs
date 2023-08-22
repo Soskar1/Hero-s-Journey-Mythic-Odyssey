@@ -4,29 +4,20 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public static class ChunkHandler
     {
-        private static byte _chunkLength;
-        private static byte _chunkHeight;
-
-        public static void Initialize(WorldData worldData)
-        {
-            _chunkHeight = worldData.chunkHeight;
-            _chunkLength = worldData.chunkLength;
-        }
-
         public static void SetVoxelAt(ChunkData chunkData, ushort voxelID, int3 localPosition)
         {
-            if (IsInBounds(localPosition))
+            if (IsInBounds(chunkData, localPosition))
             {
-                int index = LocalPositionToIndex(localPosition);
+                int index = LocalPositionToIndex(chunkData, localPosition);
                 chunkData.voxels[index] = voxelID;
             }
         }
 
-        public static bool IsInBounds(int3 localPosition)
+        public static bool IsInBounds(ChunkData chunkData, int3 localPosition)
         {
-            if (localPosition.x < 0 || localPosition.x >= _chunkLength ||
-                localPosition.y < 0 || localPosition.y >= _chunkHeight ||
-                localPosition.z < 0 || localPosition.z >= _chunkLength)
+            if (localPosition.x < 0 || localPosition.x >= chunkData.ChunkLength ||
+                localPosition.y < 0 || localPosition.y >= chunkData.ChunkHeight ||
+                localPosition.z < 0 || localPosition.z >= chunkData.ChunkLength)
                 return false;
 
             return true;
@@ -42,16 +33,29 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             };
         }
 
-        public static int LocalPositionToIndex(int3 localPosition)
+        public static int LocalPositionToIndex(ChunkData chunkData, int3 localPosition)
         {
-            return localPosition.x + _chunkLength * localPosition.y + _chunkHeight * localPosition.z;
+            return localPosition.x + chunkData.ChunkLength * localPosition.y + chunkData.ChunkHeight * localPosition.z;
         }
 
-        public static int3 IndexToLocalPosition(int index)
+        public static int LocalPositionToIndex(byte chunkLength, byte chunkHeight, int3 localPosition)
         {
-            int x = index % _chunkLength;
-            int y = (index / _chunkLength) % _chunkLength;
-            int z = index / (_chunkLength * _chunkHeight);
+            return localPosition.x + chunkLength * localPosition.y + chunkHeight * localPosition.z;
+        }
+
+        public static int3 IndexToLocalPosition(ChunkData chunkData, int index)
+        {
+            int x = index % chunkData.ChunkLength;
+            int y = (index / chunkData.ChunkLength) % chunkData.ChunkLength;
+            int z = index / (chunkData.ChunkLength * chunkData.ChunkHeight);
+            return new int3(x, y, z);
+        }
+
+        public static int3 IndexToLocalPosition(byte chunkLength, byte chunkHeight, int index)
+        {
+            int x = index % chunkLength;
+            int y = (index / chunkLength) % chunkLength;
+            int z = index / (chunkLength * chunkHeight);
             return new int3(x, y, z);
         }
     }

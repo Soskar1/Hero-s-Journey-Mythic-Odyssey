@@ -15,22 +15,23 @@ namespace HerosJourney.Core.WorldGeneration
 
         private WorldGenerationSettings _settings;
         private TerrainGenerator _terrainGenerator;
+        private MeshDataBuilder _meshDataBuilder;
 
         public WorldData WorldData => _settings.WorldData;
 
         [Inject]
-        private void Construct(WorldGenerationSettings settings, TerrainGenerator terrainGenerator)
+        private void Construct(WorldGenerationSettings settings, TerrainGenerator terrainGenerator, MeshDataBuilder meshDataBuilder)
         {
             _settings = settings;
             _terrainGenerator = terrainGenerator;
+            _meshDataBuilder = meshDataBuilder;
         }
-
-        private void Awake() => ChunkHandler.Initialize(WorldData);
 
         public async void GenerateWorld() => await Task.Run(() => GenerateWorld(int3.zero));
 
         private async void GenerateWorld(int3 worldPosition)
         {
+            Debug.Log("start");
             WorldGenerationData worldGenerationData = await WorldGenerationDataHandler.GenerateWorldGenerationData(_settings, worldPosition);
 
             UnloadChunks(worldGenerationData.chunkPositionsToRemove);
@@ -39,11 +40,17 @@ namespace HerosJourney.Core.WorldGeneration
 
             //TODO: Add Structure Generation
 
-            //TODO: multithreaded MeshData generation
+            
+            List<MeshData> generatedMeshData = new List<MeshData>();
+            foreach (var chunk in generatedChunks.Values)
+                generatedMeshData.Add(_meshDataBuilder.GenerateMeshData(chunk));
+            Debug.Log("end");
 
             //TODO: chunk render
-
             worldGenerationData.Dispose();
+
+            foreach (var meshData in generatedMeshData)
+                meshData.Dispose();
         }
 
         private void UnloadChunks(NativeList<int3> chunksToRemove)

@@ -1,17 +1,16 @@
 using System;
 using Unity.Collections;
-using Zenject;
 
 namespace HerosJourney.Utils
 {
-    public abstract class TSStorage<Key, Value> : IInitializable, IDisposable
+    public abstract class TSStorage<Key, Value> : IDisposable
         where Key : struct, IEquatable<Key>
         where Value : struct
     {
         private NativeHashMap<Key, Value> _storage;
         public NativeHashMap<Key, Value> Storage => _storage;
 
-        public virtual void Initialize() => _storage = new NativeHashMap<Key, Value>();
+        protected void Initialize(int capacity) => _storage = new NativeHashMap<Key, Value>(capacity, Allocator.Persistent);
         public void Dispose() => _storage.Dispose();
 
         protected void Add(Key key, Value value) => _storage.Add(key, value);
