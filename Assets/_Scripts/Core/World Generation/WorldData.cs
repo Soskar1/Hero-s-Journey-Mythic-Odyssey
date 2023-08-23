@@ -16,5 +16,11 @@ namespace HerosJourney.Core.WorldGeneration
             this.chunkLength = chunkLength;
             this.chunkHeight = chunkHeight;
         }
+
+        public void Dispose()
+        {
+            foreach (var chunk in existingChunks.Values)
+                chunk.Dispose();
+        }
     }
 }

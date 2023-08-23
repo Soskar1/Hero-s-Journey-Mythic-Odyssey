@@ -27,9 +27,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         {
             return new int3
             {
-                x = worldPosition.x - chunk.worldPosition.x,
-                y = worldPosition.y - chunk.worldPosition.y,
-                z = worldPosition.z - chunk.worldPosition.z
+                x = worldPosition.x - chunk.WorldPosition.x,
+                y = worldPosition.y - chunk.WorldPosition.y,
+                z = worldPosition.z - chunk.WorldPosition.z
             };
         }
 
@@ -46,7 +46,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public static int3 IndexToLocalPosition(ChunkData chunkData, int index)
         {
             int x = index % chunkData.ChunkLength;
-            int y = (index / chunkData.ChunkLength) % chunkData.ChunkLength;
+            int y = index / chunkData.ChunkLength % chunkData.ChunkLength;
             int z = index / (chunkData.ChunkLength * chunkData.ChunkHeight);
             return new int3(x, y, z);
         }
@@ -54,7 +54,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public static int3 IndexToLocalPosition(byte chunkLength, byte chunkHeight, int index)
         {
             int x = index % chunkLength;
-            int y = (index / chunkLength) % chunkLength;
+            int y = index / chunkLength % chunkLength;
             int z = index / (chunkLength * chunkHeight);
             return new int3(x, y, z);
         }

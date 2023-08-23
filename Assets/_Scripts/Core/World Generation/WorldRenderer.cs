@@ -7,21 +7,8 @@ namespace HerosJourney.Core.WorldGeneration
     public class WorldRenderer : MonoBehaviour
     {
         [SerializeField] private ChunkRenderer _chunkPrefab;
-        [SerializeField] private int _capacity;
 
-        private Queue<ChunkRenderer> _chunkRenderers;
-
-        private void Awake() => _chunkRenderers = new Queue<ChunkRenderer>(_capacity);
-
-        private void Start()
-        {
-            for (int i = 0; i < _capacity; ++i)
-            {
-                ChunkRenderer chunkInstance = Instantiate(_chunkPrefab);
-                chunkInstance.transform.parent = transform;
-                Enqueue(chunkInstance);
-            }
-        }
+        private Queue<ChunkRenderer> _chunkRenderers = new Queue<ChunkRenderer>();
 
         public void Enqueue(ChunkRenderer renderer)
         {
@@ -36,14 +23,14 @@ namespace HerosJourney.Core.WorldGeneration
             if (_chunkRenderers.Count > 0)
             {
                 renderer = _chunkRenderers.Dequeue();
+                renderer.gameObject.SetActive(true);
             }
             else
             {
-                renderer = Instantiate(_chunkPrefab);
+                renderer = Instantiate(_chunkPrefab, transform.position, Quaternion.identity);
                 renderer.transform.parent = transform;
             }
 
-            renderer.gameObject.SetActive(true);
             return renderer;
         }
     }

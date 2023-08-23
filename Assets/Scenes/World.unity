@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chunkPrefab: {fileID: 2858510654094256375, guid: fbd0fe1fb5acaf747a8ed3f3bff5a672, type: 3}
-  _capacity: 4225
 --- !u!1 &541782301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 128
-  _renderDistance: 32
+  _renderDistance: 4
   _terrainNoiseSettings: {fileID: 11400000, guid: 6a02d79f27131564c92ab4d619aec501, type: 2}
   _textureAtlas: {fileID: 2800000, guid: 785e036e911dba346b9dd73cb0074511, type: 3}
   _tileSize: 16
@@ -1406,7 +1405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.475662, z: -7.806386}
+  m_FollowOffset: {x: 0, y: -0.227861, z: -4.832402}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1565,7 +1564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.475662, z: -7.806386}
+  m_FollowOffset: {x: 0, y: -0.227861, z: -4.832402}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1782,7 +1781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.475662, z: -7.806386}
+  m_FollowOffset: {x: 0, y: -0.227861, z: -4.832402}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

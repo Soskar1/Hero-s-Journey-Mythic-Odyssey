@@ -1,18 +1,42 @@
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class Chunk
     {
-        public ChunkData data;
         public ChunkRenderer renderer;
-        public int3 worldPosition;
-
-        public Chunk(WorldData worldData, int3 worldPosition)
+        private ChunkData _data;
+        private MeshData _meshData;
+        private int3 _worldPosition;
+        
+        public Transform Transform
         {
-            this.worldPosition = worldPosition;
-            data = new ChunkData(worldData);
-            renderer = null;
+            get
+            {
+                if (renderer is null)
+                {
+                    Debug.LogError("Cannot return Transform! ChunkRenderer is null!");
+                    return null;
+                }
+
+                return renderer.transform;
+            }
         }
+        public ChunkData Data => _data;
+        public MeshData MeshData => _meshData;
+        public int3 WorldPosition => _worldPosition;
+        public ushort[] Voxels => _data.voxels;
+
+        public Chunk(ChunkData data, MeshData meshData, int3 worldPosition)
+        {
+            _data = data;
+            _meshData = meshData;
+            _worldPosition = worldPosition;
+        }
+        
+        public void Render() => renderer.RenderMesh(_meshData);
+
+        public void Dispose() => _meshData.Dispose();
     }
 }

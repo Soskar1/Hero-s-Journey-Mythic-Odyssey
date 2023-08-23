@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Terrain;
+using HerosJourney.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Collections;
@@ -27,38 +28,61 @@ namespace HerosJourney.Core.WorldGeneration
             _meshDataBuilder = meshDataBuilder;
         }
 
-        public async void GenerateWorld() => await Task.Run(() => GenerateWorld(int3.zero));
+        private void OnDisable() => WorldData.Dispose();
 
-        private async void GenerateWorld(int3 worldPosition)
+        public async void GenerateWorld() => await GenerateWorld(int3.zero);
+
+        private async Task GenerateWorld(int3 worldPosition)
         {
-            Debug.Log("start");
             WorldGenerationData worldGenerationData = await WorldGenerationDataHandler.GenerateWorldGenerationData(_settings, worldPosition);
 
             UnloadChunks(worldGenerationData.chunkPositionsToRemove);
 
-            Dictionary<int3, ChunkData> generatedChunks = _terrainGenerator.Generate(worldGenerationData.chunkPositionsToCreate);
+            Dictionary<int3, ChunkData> generatedChunkData = _terrainGenerator.Generate(worldGenerationData.chunkPositionsToCreate);
 
             //TODO: Add Structure Generation
 
-            
-            List<MeshData> generatedMeshData = new List<MeshData>();
-            foreach (var chunk in generatedChunks.Values)
-                generatedMeshData.Add(_meshDataBuilder.GenerateMeshData(chunk));
-            Debug.Log("end");
+            List<Chunk> chunks = GenerateMeshData(generatedChunkData);
 
-            //TODO: chunk render
+            RenderChunks(chunks);
+
             worldGenerationData.Dispose();
+        }
 
-            foreach (var meshData in generatedMeshData)
-                meshData.Dispose();
+        private List<Chunk> GenerateMeshData(Dictionary<int3, ChunkData> generatedChunkData)
+        {
+            List<Chunk> chunks = new List<Chunk>();
+
+            foreach (var chunkData in generatedChunkData)
+            {
+                MeshData meshData = _meshDataBuilder.GenerateMeshData(chunkData.Value);
+                Chunk chunk = new Chunk(chunkData.Value, meshData, chunkData.Key);
+                chunks.Add(chunk);
+                WorldData.existingChunks.Add(chunk.WorldPosition, chunk);
+            }
+            
+            return chunks;
         }
 
         private void UnloadChunks(NativeList<int3> chunksToRemove)
         {
             foreach (var position in chunksToRemove)
             {
-                _worldRenderer.Enqueue(WorldData.existingChunks[position].renderer);
+                Chunk chunk = WorldData.existingChunks[position];
+                _worldRenderer.Enqueue(chunk.renderer);
+                chunk.Dispose();
                 WorldData.existingChunks.Remove(position);
+            }
+        }
+
+        private void RenderChunks(List<Chunk> generatedChunks)
+        {
+            foreach (var chunk in generatedChunks)
+            {
+                ChunkRenderer renderer = _worldRenderer.Dequeue();
+                chunk.renderer = renderer;
+                chunk.Transform.position = chunk.WorldPosition.ToVector3();
+                chunk.Render();
             }
         }
     }
