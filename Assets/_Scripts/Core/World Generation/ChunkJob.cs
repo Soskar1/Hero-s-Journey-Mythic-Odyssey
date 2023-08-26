@@ -15,7 +15,7 @@ namespace HerosJourney.Core.WorldGeneration
             public NativeList<int> triangles;
         }
 
-        public struct BlockData
+        public struct VoxelGeometry
         {
             public NativeArray<int3> vertices;
             public NativeArray<int> triangles;
@@ -23,47 +23,53 @@ namespace HerosJourney.Core.WorldGeneration
 
         public struct ChunkData
         {
-            public NativeArray<Block> blocks;
+            public NativeArray<VoxelType> voxels;
+            public byte length;
+            public byte height;
         }
 
         [WriteOnly] public MeshData meshData;
         [ReadOnly] public ChunkData chunkData;
-        [ReadOnly] public BlockData blockData;
+        [ReadOnly] public VoxelGeometry voxelGeometry;
 
         private int vCount;
 
         public void Execute()
         {
-            for (int x = 0; x < 16; ++x)
+            for (int x = 0; x < chunkData.length; ++x)
             {
-                for (int z = 0; z < 16; ++z)
+                for (int z = 0; z < chunkData.length; ++z)
                 {
-                    for (int y = 0; y < 128; ++y)
+                    for (int y = 0; y < chunkData.height; ++y)
                     {
-                        if (chunkData.blocks[BlockExtensions.GetBlockIndex(new int3(x, y, z))].IsEmpty())
+                        if (chunkData.voxels[VoxelExtensions.GetVoxelIndex(new int3(x, y, z))].IsEmpty())
                             continue;
 
                         for (int i = 0; i < 6; ++i)
                         {
                             var direction = (Direction) i;
-                            int3 position = new int3(x, y, z);
-                            int3 neigbourPosition = position + direction.ToInt3();
-                            if (Check(neigbourPosition))
-                                CreateFace(direction, position);
+                            int3 localPosition = new int3(x, y, z);
+                            int3 neigbourPosition = localPosition + direction.ToInt3();
+                            
+                            if (!IsInBounds(neigbourPosition) || chunkData.voxels[VoxelExtensions.GetVoxelIndex(neigbourPosition)].IsEmpty())
+                                CreateFace(direction, localPosition);
                         }
                     }
                 }
             }
         }
 
-        private void CreateFace(Direction direction, int3 position)
+        private void CreateFace(Direction direction, int3 localPosition)
         {
-            var vertices = GetFaceVertices(direction, 1, position);
-            
+            var vertices = GetFaceVertices(direction, 1, localPosition);
             meshData.vertices.AddRange(vertices);
-
             vertices.Dispose();
 
+            AddTriangles();
+        }
+
+        private void AddTriangles()
+        {
             vCount += 4;
 
             meshData.triangles.Add(vCount - 4);
@@ -74,26 +80,24 @@ namespace HerosJourney.Core.WorldGeneration
             meshData.triangles.Add(vCount - 4 + 3);
         }
 
-        private bool Check(int3 position)
+        private bool IsInBounds(int3 localPosition)
         {
-            if (position.x >= 16 || position.z >= 16
-             || position.x < 0 || position.z < 0 || position.y < 0)
-             return true;
-
-            if (position.y >= 128)
+            if (localPosition.x < 0 || localPosition.x >= chunkData.length ||
+                localPosition.y < 0 || localPosition.y >= chunkData.height ||
+                localPosition.z < 0 || localPosition.z >= chunkData.length)
                 return false;
 
-            return chunkData.blocks[BlockExtensions.GetBlockIndex(position)].IsEmpty();
+            return true;
         }
 
-        private NativeArray<int3> GetFaceVertices(Direction direction, int scale, int3 position)
+        private NativeArray<int3> GetFaceVertices(Direction direction, int scale, int3 localPosition)
         {
             var faceVertices = new NativeArray<int3>(4, Allocator.Temp);
 
             for (int i = 0; i < faceVertices.Length; ++i)
             {
-                var index = blockData.triangles[(int)direction * 4 + i];
-                faceVertices[i] = blockData.vertices[index] * scale + position;
+                var index = voxelGeometry.triangles[(int)direction * 4 + i];
+                faceVertices[i] = voxelGeometry.vertices[index] * scale + localPosition;
             }
 
             return faceVertices;

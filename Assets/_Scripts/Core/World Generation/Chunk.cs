@@ -8,6 +8,8 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class Chunk : MonoBehaviour
     {
+        [SerializeField] private byte _chunkLength;
+        [SerializeField] private byte _chunkHeight;
         [SerializeField] private MeshFilter _meshFilter;
         private Mesh _mesh;
 
@@ -17,19 +19,19 @@ namespace HerosJourney.Core.WorldGeneration
         {
             var position = transform.position;
 
-            var blocks = new NativeArray<Block>(32768, Allocator.TempJob);
+            var blocks = new NativeArray<VoxelType>(32768, Allocator.TempJob);
 
-            for (int x = 0; x < 16; ++x)
+            for (int x = 0; x < _chunkLength; ++x)
             {
-                for (int z = 0; z < 16; ++z)
+                for (int z = 0; z < _chunkLength; ++z)
                 {
-                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * 128);
+                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * _chunkHeight);
 
                     for (int i = 0; i < y; ++i)
-                        blocks[BlockExtensions.GetBlockIndex(new int3(x, i, z))] = Block.Stone;
+                        blocks[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Stone;
 
-                    for (int i = y; i < 128; ++i)
-                        blocks[BlockExtensions.GetBlockIndex(new int3(x, i, z))] = Block.Air;
+                    for (int i = y; i < _chunkHeight; ++i)
+                        blocks[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Air;
                 }
             }
 
@@ -39,18 +41,20 @@ namespace HerosJourney.Core.WorldGeneration
             };
 
             var chunkData = new ChunkJob.ChunkData {
-                blocks = blocks
+                voxels = blocks,
+                height = _chunkHeight,
+                length = _chunkLength
             };
 
-            var blockData = new ChunkJob.BlockData {
-                vertices = BlockData.vertices,
-                triangles = BlockData.triangles
+            var blockData = new ChunkJob.VoxelGeometry {
+                vertices = VoxelGeometry.vertices,
+                triangles = VoxelGeometry.triangles
             };
 
             var job = new ChunkJob {
                 meshData = meshData,
                 chunkData = chunkData,
-                blockData = blockData
+                voxelGeometry = blockData
             };
 
             JobHandle jobHandle = job.Schedule();

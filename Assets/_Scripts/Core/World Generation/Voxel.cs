@@ -3,14 +3,14 @@ using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public enum Block : ushort
+    public enum VoxelType : ushort
     {
         Null = 0x0000,
         Air = 0x0001,
         Stone = 0x0002
     }
 
-    public struct BlockData
+    public struct VoxelGeometry
     {
         [ReadOnly]
         public static readonly NativeArray<int3> vertices = new NativeArray<int3>(8, Allocator.Persistent)
@@ -35,12 +35,18 @@ namespace HerosJourney.Core.WorldGeneration
             [16] = 5, [17] = 4, [18] = 1, [19] = 0,
             [20] = 3, [21] = 2, [22] = 7, [23] = 6
         };
+
+        public static void Dispose()
+        {
+            vertices.Dispose();
+            triangles.Dispose();
+        }
     }
 
-    public static class BlockExtensions
+    public static class VoxelExtensions
     {
-        public static int GetBlockIndex(int3 position) => position.x + position.y * 16 + position.z * 16 * 128;
+        public static int GetVoxelIndex(int3 position) => position.x + position.y * 16 + position.z * 16 * 128;
 
-        public static bool IsEmpty(this Block block) => block == Block.Air;
+        public static bool IsEmpty(this VoxelType voxelType) => voxelType == VoxelType.Air;
     }
 }
