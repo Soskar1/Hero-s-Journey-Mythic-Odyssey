@@ -521,8 +521,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd6d1a1258e2694bbcfda31ed0d5869, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunkLength: 16
-  _chunkHeight: 32
   _meshFilter: {fileID: 762370149}
 --- !u!1 &791969268
 GameObject:
@@ -952,6 +950,7 @@ GameObject:
   - component: {fileID: 1339897345}
   - component: {fileID: 1339897344}
   - component: {fileID: 1339897346}
+  - component: {fileID: 1339897347}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -974,6 +973,7 @@ MonoBehaviour:
   _scriptableObjectInstallers: []
   _monoInstallers:
   - {fileID: 1339897346}
+  - {fileID: 1339897347}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -1021,6 +1021,20 @@ MonoBehaviour:
   _playerFacade: {fileID: 7791523651829349505, guid: f5ba191bbd313bb42a14023e3c904d33, type: 3}
   _spawnPoint: {fileID: 1725020458}
   _camera: {fileID: 7829133392477162704}
+--- !u!114 &1339897347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339897343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3952212a58132b41a55c2c4d5c9d885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chunkLength: 16
+  _chunkHeight: 128
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1403,7 +1417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 6.081935, z: -6.531574}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1562,7 +1576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 6.081935, z: -6.531574}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1779,7 +1793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
+  m_FollowOffset: {x: 0, y: 6.081935, z: -6.531574}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

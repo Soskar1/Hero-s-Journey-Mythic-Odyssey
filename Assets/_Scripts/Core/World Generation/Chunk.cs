@@ -3,15 +3,22 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
+using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration
 {
     public class Chunk : MonoBehaviour
     {
-        [SerializeField] private byte _chunkLength;
-        [SerializeField] private byte _chunkHeight;
         [SerializeField] private MeshFilter _meshFilter;
         private Mesh _mesh;
+
+        private WorldData _worldData;
+
+        [Inject]
+        private void Construct(WorldData worldData)
+        {
+            _worldData = worldData;
+        }
 
         private void Awake() => _mesh = _meshFilter.mesh;
 
@@ -21,16 +28,16 @@ namespace HerosJourney.Core.WorldGeneration
 
             var blocks = new NativeArray<VoxelType>(32768, Allocator.TempJob);
 
-            for (int x = 0; x < _chunkLength; ++x)
+            for (int x = 0; x < _worldData.ChunkLength; ++x)
             {
-                for (int z = 0; z < _chunkLength; ++z)
+                for (int z = 0; z < _worldData.ChunkLength; ++z)
                 {
-                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * _chunkHeight);
+                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * _worldData.ChunkHeight);
 
                     for (int i = 0; i < y; ++i)
                         blocks[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Stone;
 
-                    for (int i = y; i < _chunkHeight; ++i)
+                    for (int i = y; i < _worldData.ChunkHeight; ++i)
                         blocks[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Air;
                 }
             }
@@ -42,8 +49,8 @@ namespace HerosJourney.Core.WorldGeneration
 
             var chunkData = new ChunkJob.ChunkData {
                 voxels = blocks,
-                height = _chunkHeight,
-                length = _chunkLength
+                height = _worldData.ChunkHeight,
+                length = _worldData.ChunkLength
             };
 
             var blockData = new ChunkJob.VoxelGeometry {
