@@ -1,5 +1,3 @@
-using Unity.Collections;
-using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
@@ -11,12 +9,14 @@ namespace HerosJourney.Core.WorldGeneration
         [SerializeField] private ChunkRenderer _chunk;
         private WorldData _worldData;
         private TerrainGenerator _terrainGenerator;
+        private MeshDataBuilder _meshDataBuilder;
 
         [Inject]
-        private void Construct(WorldData worldData, TerrainGenerator terrainGenerator)
+        private void Construct(WorldData worldData, TerrainGenerator terrainGenerator, MeshDataBuilder meshDataBuilder)
         {
             _worldData = worldData;
             _terrainGenerator = terrainGenerator;
+            _meshDataBuilder = meshDataBuilder;
         }
 
         private void OnDisable() => VoxelGeometry.Dispose();
@@ -28,32 +28,7 @@ namespace HerosJourney.Core.WorldGeneration
             ChunkData chunkData = new ChunkData(_worldData, position);
             _terrainGenerator.Generate(chunkData);
 
-            MeshData meshData = new MeshData
-            {
-                vertices = new NativeList<int3>(Allocator.TempJob),
-                triangles = new NativeList<int>(Allocator.TempJob),
-            };
-
-            var TSchunkData = new TSChunkData(chunkData);
-
-            var voxelGeometry = new ChunkJob.VoxelGeometry
-            {
-                vertices = VoxelGeometry.vertices,
-                triangles = VoxelGeometry.triangles,
-            };
-
-            ChunkJob job = new ChunkJob
-            {
-                meshData = meshData,
-                voxelGeometry = voxelGeometry,
-                chunkData = TSchunkData
-            };
-
-            JobHandle jobHandle = job.Schedule();
-            jobHandle.Complete();
-
-            TSchunkData.Dispose();
-
+            MeshData meshData = _meshDataBuilder.GenerateMeshData(chunkData);
             _chunk.Render(meshData);
         }
     }

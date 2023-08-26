@@ -13,6 +13,7 @@ namespace HerosJourney.Core.Installers
         {
             BindWorldData();
             BindGenerators();
+            BindMeshDataBuilder();
         }
 
         private void BindWorldData()
@@ -27,6 +28,13 @@ namespace HerosJourney.Core.Installers
         {
             Container
                 .Bind<TerrainGenerator>()
+                .AsSingle();
+        }
+
+        private void BindMeshDataBuilder()
+        {
+            Container
+                .Bind<MeshDataBuilder>()
                 .AsSingle();
         }
     }

@@ -7,7 +7,7 @@ using Unity.Mathematics;
 namespace HerosJourney.Core.WorldGeneration
 {
     [BurstCompile(CompileSynchronously = true)]
-    public struct ChunkJob : IJob
+    public struct MeshGenerationJob : IJob
     {
         public struct VoxelGeometry
         {
