@@ -21,6 +21,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         private int vCount;
         private const int _FACES_ = 6;
+        private const int _SIZE_ = 1;
 
         public void Execute()
         {
@@ -39,7 +40,7 @@ namespace HerosJourney.Core.WorldGeneration
                             int3 localPosition = new int3(x, y, z);
                             int3 neigbourPosition = localPosition + direction.ToInt3();
                             
-                            if (!IsInBounds(neigbourPosition) || chunkData.voxels[VoxelExtensions.GetVoxelIndex(neigbourPosition)].IsEmpty())
+                            if (IsInBounds(neigbourPosition) && chunkData.voxels[VoxelExtensions.GetVoxelIndex(neigbourPosition)].IsEmpty())
                                 CreateFace(direction, localPosition);
                         }
                     }
@@ -49,7 +50,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         private void CreateFace(Direction direction, int3 localPosition)
         {
-            var vertices = GetFaceVertices(direction, 1, localPosition);
+            var vertices = GetFaceVertices(direction, _SIZE_, localPosition);
             meshData.vertices.AddRange(vertices);
             vertices.Dispose();
 
