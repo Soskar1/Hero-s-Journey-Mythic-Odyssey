@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     [BurstCompile(CompileSynchronously = true)]
     public struct MeshGenerationJob : IJob

@@ -1,3 +1,5 @@
+using HerosJourney.Core.WorldGeneration.Chunks;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
@@ -7,6 +9,7 @@ namespace HerosJourney.Core.WorldGeneration
     public class World : MonoBehaviour
     {
         [SerializeField] private ChunkRenderer _chunk;
+        [SerializeField] private List<int3> _chunkDataPositionsToCreate;
         private WorldData _worldData;
         private TerrainGenerator _terrainGenerator;
         private MeshDataBuilder _meshDataBuilder;
@@ -25,11 +28,19 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(int3 position)
         {
-            ChunkData chunkData = new ChunkData(_worldData, position);
-            _terrainGenerator.Generate(chunkData);
+            List<ChunkData> generatedChunkData = _terrainGenerator.Generate(_worldData, _chunkDataPositionsToCreate);
 
-            MeshData meshData = _meshDataBuilder.GenerateMeshData(chunkData);
-            _chunk.Render(meshData);
+            _meshDataBuilder.ScheduleMeshGenerationJob(generatedChunkData);
+            Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Complete();
+
+            foreach (var meshData in generatedMeshData)
+                RenderChunk(meshData.Key, meshData.Value);
+        }
+
+        private void RenderChunk(int3 position, MeshData meshData)
+        {
+            ChunkRenderer chunkInstance = Instantiate(_chunk, new Vector3(position.x, position.y, position.z), Quaternion.identity);
+            chunkInstance.Render(meshData);
         }
     }
 }

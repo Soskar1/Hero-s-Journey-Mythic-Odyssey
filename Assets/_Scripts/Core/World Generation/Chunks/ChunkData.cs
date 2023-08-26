@@ -2,7 +2,7 @@ using System;
 using Unity.Collections;
 using Unity.Mathematics;
 
-namespace HerosJourney.Core.WorldGeneration
+namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
     {

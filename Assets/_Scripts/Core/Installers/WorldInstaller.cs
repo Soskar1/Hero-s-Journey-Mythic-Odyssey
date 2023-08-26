@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration;
+using HerosJourney.Core.WorldGeneration.Chunks;
 using UnityEngine;
 using Zenject;
 
@@ -34,7 +35,7 @@ namespace HerosJourney.Core.Installers
         private void BindMeshDataBuilder()
         {
             Container
-                .Bind<MeshDataBuilder>()
+                .BindInterfacesAndSelfTo<MeshDataBuilder>()
                 .AsSingle();
         }
     }
