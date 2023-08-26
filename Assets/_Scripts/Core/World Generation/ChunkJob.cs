@@ -9,12 +9,6 @@ namespace HerosJourney.Core.WorldGeneration
     [BurstCompile(CompileSynchronously = true)]
     public struct ChunkJob : IJob
     {
-        public struct MeshData
-        {
-            public NativeList<int3> vertices;
-            public NativeList<int> triangles;
-        }
-
         public struct VoxelGeometry
         {
             public NativeArray<int3> vertices;
