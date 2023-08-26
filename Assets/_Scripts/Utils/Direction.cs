@@ -4,12 +4,12 @@ namespace HerosJourney.Utils
 {
     public enum Direction
     {
-        up,
-        down,
-        right,
-        left,
         forward,
-        back
+        right,
+        back,
+        left,
+        up,
+        down
     }
 
     public static class DirectionExtensions
