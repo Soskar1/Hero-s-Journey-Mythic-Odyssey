@@ -1,6 +1,4 @@
 using HerosJourney.Core.WorldGeneration;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -14,6 +12,7 @@ namespace HerosJourney.Core.Installers
         public override void InstallBindings()
         {
             BindWorldData();
+            BindGenerators();
         }
 
         private void BindWorldData()
@@ -22,6 +21,13 @@ namespace HerosJourney.Core.Installers
                 .Bind<WorldData>()
                 .AsSingle()
                 .WithArguments(_chunkLength, _chunkHeight);
+        }
+
+        private void BindGenerators()
+        {
+            Container
+                .Bind<TerrainGenerator>()
+                .AsSingle();
         }
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using Unity.Collections;
+using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration
 {
@@ -6,19 +8,21 @@ namespace HerosJourney.Core.WorldGeneration
     {
         private VoxelType[] _voxels;
 
-        public byte Lenght { get; private set; }
+        public byte Length { get; private set; }
         public byte Height { get; private set; }
         public VoxelType[] Voxels => _voxels;
+        public int3 WorldPosition { get; private set; }
 
-        public ChunkData(WorldData worldData)
+        public ChunkData(WorldData worldData, int3 worldPosition)
         {
-            Lenght = worldData.ChunkLength;
+            Length = worldData.ChunkLength;
             Height = worldData.ChunkHeight;
-            _voxels = new VoxelType[Lenght * Lenght * Height];
+            _voxels = new VoxelType[Length * Length * Height];
+            WorldPosition = worldPosition;
         }
     }
 
-    public struct TSChunkData
+    public struct TSChunkData : IDisposable
     {
         public NativeArray<VoxelType> voxels;
         public byte Length { get; private set; }
@@ -27,8 +31,10 @@ namespace HerosJourney.Core.WorldGeneration
         public TSChunkData(ChunkData chunkData)
         {
             voxels = new NativeArray<VoxelType>(chunkData.Voxels, Allocator.TempJob);
-            Length = chunkData.Lenght;
+            Length = chunkData.Length;
             Height = chunkData.Height;
         }
+
+        public void Dispose() => voxels.Dispose();
     }
 }

@@ -10,11 +10,13 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private ChunkRenderer _chunk;
         private WorldData _worldData;
+        private TerrainGenerator _terrainGenerator;
 
         [Inject]
-        private void Construct(WorldData worldData)
+        private void Construct(WorldData worldData, TerrainGenerator terrainGenerator)
         {
             _worldData = worldData;
+            _terrainGenerator = terrainGenerator;
         }
 
         private void OnDisable() => VoxelGeometry.Dispose();
@@ -23,21 +25,8 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(int3 position)
         {
-            ChunkData chunkData = new ChunkData(_worldData);
-
-            for (int x = 0; x < _worldData.ChunkLength; ++x)
-            {
-                for (int z = 0; z < _worldData.ChunkLength; ++z)
-                {
-                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * _worldData.ChunkHeight);
-
-                    for (int i = 0; i < y; ++i)
-                        chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Stone;
-
-                    for (int i = y; i < _worldData.ChunkHeight; ++i)
-                        chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Air;
-                }
-            }
+            ChunkData chunkData = new ChunkData(_worldData, position);
+            _terrainGenerator.Generate(chunkData);
 
             MeshData meshData = new MeshData
             {
@@ -63,7 +52,7 @@ namespace HerosJourney.Core.WorldGeneration
             JobHandle jobHandle = job.Schedule();
             jobHandle.Complete();
 
-            TSchunkData.voxels.Dispose();
+            TSchunkData.Dispose();
 
             _chunk.Render(meshData);
         }
