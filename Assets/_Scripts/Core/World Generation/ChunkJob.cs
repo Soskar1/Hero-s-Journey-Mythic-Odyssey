@@ -38,7 +38,7 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 for (int z = 0; z < 16; ++z)
                 {
-                    for (int y = 0; y < 16; ++y)
+                    for (int y = 0; y < 128; ++y)
                     {
                         if (chunkData.blocks[BlockExtensions.GetBlockIndex(new int3(x, y, z))].IsEmpty())
                             continue;
@@ -80,7 +80,7 @@ namespace HerosJourney.Core.WorldGeneration
              || position.x < 0 || position.z < 0 || position.y < 0)
              return true;
 
-            if (position.y >= 16)
+            if (position.y >= 128)
                 return false;
 
             return chunkData.blocks[BlockExtensions.GetBlockIndex(position)].IsEmpty();

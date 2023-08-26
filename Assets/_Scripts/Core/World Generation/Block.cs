@@ -39,7 +39,7 @@ namespace HerosJourney.Core.WorldGeneration
 
     public static class BlockExtensions
     {
-        public static int GetBlockIndex(int3 position) => position.x + position.z * 16 + position.y * 16 * 16;
+        public static int GetBlockIndex(int3 position) => position.x + position.y * 16 + position.z * 16 * 128;
 
         public static bool IsEmpty(this Block block) => block == Block.Air;
     }

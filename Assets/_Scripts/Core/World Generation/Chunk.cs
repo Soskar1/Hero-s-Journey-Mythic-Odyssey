@@ -17,23 +17,19 @@ namespace HerosJourney.Core.WorldGeneration
         {
             var position = transform.position;
 
-            var blocks = new NativeArray<Block>(4096, Allocator.TempJob);
+            var blocks = new NativeArray<Block>(32768, Allocator.TempJob);
 
             for (int x = 0; x < 16; ++x)
             {
                 for (int z = 0; z < 16; ++z)
                 {
-                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * 16);
+                    var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * 128);
 
                     for (int i = 0; i < y; ++i)
-                    {
                         blocks[BlockExtensions.GetBlockIndex(new int3(x, i, z))] = Block.Stone;
-                    }
 
-                    for (int i = y; i < 16; ++i)
-                    {
+                    for (int i = y; i < 128; ++i)
                         blocks[BlockExtensions.GetBlockIndex(new int3(x, i, z))] = Block.Air;
-                    }
                 }
             }
 
