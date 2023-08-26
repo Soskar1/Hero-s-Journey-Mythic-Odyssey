@@ -15,31 +15,25 @@ namespace HerosJourney.Core.WorldGeneration
             public NativeArray<int> triangles;
         }
 
-        public struct ChunkData
-        {
-            public NativeArray<VoxelType> voxels;
-            public byte length;
-            public byte height;
-        }
-
         [WriteOnly] public MeshData meshData;
-        [ReadOnly] public ChunkData chunkData;
+        [ReadOnly] public TSChunkData chunkData;
         [ReadOnly] public VoxelGeometry voxelGeometry;
 
         private int vCount;
+        private const int _FACES_ = 6;
 
         public void Execute()
         {
-            for (int x = 0; x < chunkData.length; ++x)
+            for (int x = 0; x < chunkData.Length; ++x)
             {
-                for (int z = 0; z < chunkData.length; ++z)
+                for (int z = 0; z < chunkData.Length; ++z)
                 {
-                    for (int y = 0; y < chunkData.height; ++y)
+                    for (int y = 0; y < chunkData.Height; ++y)
                     {
                         if (chunkData.voxels[VoxelExtensions.GetVoxelIndex(new int3(x, y, z))].IsEmpty())
                             continue;
 
-                        for (int i = 0; i < 6; ++i)
+                        for (int i = 0; i < _FACES_; ++i)
                         {
                             var direction = (Direction) i;
                             int3 localPosition = new int3(x, y, z);
@@ -76,9 +70,9 @@ namespace HerosJourney.Core.WorldGeneration
 
         private bool IsInBounds(int3 localPosition)
         {
-            if (localPosition.x < 0 || localPosition.x >= chunkData.length ||
-                localPosition.y < 0 || localPosition.y >= chunkData.height ||
-                localPosition.z < 0 || localPosition.z >= chunkData.length)
+            if (localPosition.x < 0 || localPosition.x >= chunkData.Length ||
+                localPosition.y < 0 || localPosition.y >= chunkData.Height ||
+                localPosition.z < 0 || localPosition.z >= chunkData.Length)
                 return false;
 
             return true;

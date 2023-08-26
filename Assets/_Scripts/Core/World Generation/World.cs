@@ -23,7 +23,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(int3 position)
         {
-            var voxels = new NativeArray<VoxelType>(32768, Allocator.TempJob);
+            ChunkData chunkData = new ChunkData(_worldData);
 
             for (int x = 0; x < _worldData.ChunkLength; ++x)
             {
@@ -32,10 +32,10 @@ namespace HerosJourney.Core.WorldGeneration
                     var y = Mathf.FloorToInt(Mathf.PerlinNoise((position.x + x) * 0.15f, (position.z + z) * 0.15f) * _worldData.ChunkHeight);
 
                     for (int i = 0; i < y; ++i)
-                        voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Stone;
+                        chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Stone;
 
                     for (int i = y; i < _worldData.ChunkHeight; ++i)
-                        voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Air;
+                        chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Air;
                 }
             }
 
@@ -45,12 +45,7 @@ namespace HerosJourney.Core.WorldGeneration
                 triangles = new NativeList<int>(Allocator.TempJob),
             };
 
-            var chunkData = new ChunkJob.ChunkData
-            {
-                voxels = voxels,
-                height = _worldData.ChunkHeight,
-                length = _worldData.ChunkLength
-            };
+            var TSchunkData = new TSChunkData(chunkData);
 
             var voxelGeometry = new ChunkJob.VoxelGeometry
             {
@@ -62,13 +57,13 @@ namespace HerosJourney.Core.WorldGeneration
             {
                 meshData = meshData,
                 voxelGeometry = voxelGeometry,
-                chunkData = chunkData
+                chunkData = TSchunkData
             };
 
             JobHandle jobHandle = job.Schedule();
             jobHandle.Complete();
 
-            voxels.Dispose();
+            TSchunkData.voxels.Dispose();
 
             _chunk.Render(meshData);
         }
