@@ -22,10 +22,10 @@ namespace HerosJourney.Core.WorldGeneration
                         var y = Mathf.FloorToInt(Mathf.PerlinNoise((chunkData.WorldPosition.x + x) * 0.005f, (chunkData.WorldPosition.z + z) * 0.005f) * chunkData.Height);
 
                         for (int i = 0; i < y; ++i)
-                            chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Stone;
+                            chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Solid;
 
                         for (int i = y; i < chunkData.Height; ++i)
-                            chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Air;
+                            chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Transparent;
                     }
                 }
 

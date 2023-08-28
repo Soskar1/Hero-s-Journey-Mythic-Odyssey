@@ -181,6 +181,82 @@ MonoBehaviour:
   - x: 16
     y: 0
     z: -16
+  - x: 0
+    y: 0
+    z: 32
+  - x: 16
+    y: 0
+    z: 32
+  - x: 32
+    y: 0
+    z: 32
+  - x: 32
+    y: 0
+    z: 16
+  - x: 32
+    y: 0
+    z: 0
+  - x: 32
+    y: 0
+    z: -16
+  - x: 32
+    y: 0
+    z: -32
+  - x: 16
+    y: 0
+    z: -32
+  - x: 0
+    y: 0
+    z: -32
+  - x: -16
+    y: 0
+    z: -32
+  - x: -32
+    y: 0
+    z: -32
+  - x: -32
+    y: 0
+    z: -16
+  - x: -32
+    y: 0
+    z: 0
+  - x: -32
+    y: 0
+    z: 16
+  - x: -32
+    y: 0
+    z: 32
+  - x: -16
+    y: 0
+    z: 32
+  _chunkRendererPositionsToCreate:
+  - x: 0
+    y: 0
+    z: 0
+  - x: 16
+    y: 0
+    z: 0
+  - x: 16
+    y: 0
+    z: 16
+  - x: 0
+    y: 0
+    z: 16
+  - x: -16
+    y: 0
+    z: 16
+  - x: -16
+    y: 0
+    z: 0
+  - x: -16
+    y: 0
+    z: -16
+  - x: 0
+    y: 0
+    z: -16
+  - x: 16
+    y: 0
+    z: -16
 --- !u!4 &243429650
 Transform:
   m_ObjectHideFlags: 0
@@ -1393,7 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.265372, z: -7.930757}
+  m_FollowOffset: {x: 0, y: 1.821884, z: -8.368626}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1552,7 +1628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.265372, z: -7.930757}
+  m_FollowOffset: {x: 0, y: 1.821884, z: -8.368626}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1769,7 +1845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 4.265372, z: -7.930757}
+  m_FollowOffset: {x: 0, y: 1.821884, z: -8.368626}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

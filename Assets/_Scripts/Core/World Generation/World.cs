@@ -10,6 +10,7 @@ namespace HerosJourney.Core.WorldGeneration
     {
         [SerializeField] private ChunkRenderer _chunk;
         [SerializeField] private List<int3> _chunkDataPositionsToCreate;
+        [SerializeField] private List<int3> _chunkRendererPositionsToCreate;
         private WorldData _worldData;
         private TerrainGenerator _terrainGenerator;
         private MeshDataBuilder _meshDataBuilder;
@@ -29,8 +30,11 @@ namespace HerosJourney.Core.WorldGeneration
         public void GenerateChunks(int3 position)
         {
             List<ChunkData> generatedChunkData = _terrainGenerator.Generate(_worldData, _chunkDataPositionsToCreate);
+            
+            foreach (var chunkData in generatedChunkData)
+                _worldData.ExistingChunks.Add(chunkData.WorldPosition, chunkData);
 
-            _meshDataBuilder.ScheduleMeshGenerationJob(generatedChunkData);
+            _meshDataBuilder.ScheduleMeshGenerationJob(_worldData, _chunkRendererPositionsToCreate);
             Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Complete();
 
             foreach (var meshData in generatedMeshData)

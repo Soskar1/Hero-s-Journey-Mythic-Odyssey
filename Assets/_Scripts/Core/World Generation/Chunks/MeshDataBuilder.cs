@@ -15,19 +15,33 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public MeshDataBuilder() => _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
         public void Dispose() => _scheduledJobs.Dispose();
 
-        public void ScheduleMeshGenerationJob(List<ChunkData> generatedChunkData)
+        public void ScheduleMeshGenerationJob(WorldData worldData, List<int3> chunkRenderersToCreate)
         {
             _generatedMeshData.Clear();
 
-            foreach (ChunkData chunkData in generatedChunkData)
+            foreach (int3 position in chunkRenderersToCreate)
             {
+                ChunkData chunkData = worldData.ExistingChunks[position];
+
                 MeshData meshData = new MeshData
                 {
                     vertices = new NativeList<int3>(Allocator.TempJob),
                     triangles = new NativeList<int>(Allocator.TempJob),
                 };
 
-                var TSchunkData = new TSChunkData(chunkData);
+                TSChunkData TSchunkData = chunkData;
+                TSChunkData TSforwardChunk = worldData.ExistingChunks[position + new int3(0, 0, chunkData.Length)];
+                TSChunkData TSrightChunk = worldData.ExistingChunks[position + new int3(chunkData.Length, 0, 0)];
+                TSChunkData TSbackChunk = worldData.ExistingChunks[position + new int3(0, 0, -chunkData.Length)];
+                TSChunkData TSleftChunk = worldData.ExistingChunks[position + new int3(-chunkData.Length, 0, 0)];
+
+                var neighbourChunks = new MeshGenerationJob.NeighbourChunks
+                {
+                    forwardChunk = TSforwardChunk,
+                    rightChunk = TSrightChunk,
+                    leftChunk = TSleftChunk,
+                    backChunk = TSbackChunk
+                };
 
                 var voxelGeometry = new MeshGenerationJob.VoxelGeometry
                 {
@@ -39,13 +53,19 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 {
                     meshData = meshData,
                     voxelGeometry = voxelGeometry,
-                    chunkData = TSchunkData
+                    chunkData = TSchunkData,
+                    neighbourChunks = neighbourChunks
                 };
 
                 JobHandle jobHandle = job.Schedule();
                 _generatedMeshData.Add(chunkData.WorldPosition, meshData);
                 _scheduledJobs.Add(jobHandle);
+                
                 _toDispose.Add(TSchunkData);
+                _toDispose.Add(TSforwardChunk);
+                _toDispose.Add(TSrightChunk);
+                _toDispose.Add(TSbackChunk);
+                _toDispose.Add(TSleftChunk);
             }
         }
 

@@ -6,8 +6,8 @@ namespace HerosJourney.Core.WorldGeneration
     public enum VoxelType : ushort
     {
         Null = 0x0000,
-        Air = 0x0001,
-        Stone = 0x0002
+        Transparent = 0x0001,
+        Solid = 0x0002
     }
 
     public struct VoxelGeometry
@@ -47,6 +47,6 @@ namespace HerosJourney.Core.WorldGeneration
     {
         public static int GetVoxelIndex(int3 position) => position.x + position.y * 16 + position.z * 16 * 128;
 
-        public static bool IsEmpty(this VoxelType voxelType) => voxelType == VoxelType.Air;
+        public static bool IsEmpty(this VoxelType voxelType) => voxelType == VoxelType.Transparent;
     }
 }
