@@ -9,10 +9,17 @@ namespace HerosJourney.Core.Installers
 {
     public class WorldInstaller : MonoInstaller
     {
+        [Header("Terrain Generator")]
         [SerializeField] private NoiseSettings _terrainNoiseSettings;
         [SerializeField] private VoxelData _air;
         [SerializeField] private VoxelData _dirt;
         [SerializeField] private VoxelData _grass;
+
+        [Header("Mesh Data Builder")]
+        [SerializeField] private Texture2D _textureAtlas;
+        [SerializeField] private int _tileSize;
+
+        [Header("World Data")]
         [SerializeField] private byte _chunkLength;
         [SerializeField] private byte _chunkHeight;
 
@@ -43,7 +50,8 @@ namespace HerosJourney.Core.Installers
         {
             Container
                 .BindInterfacesAndSelfTo<MeshDataBuilder>()
-                .AsSingle();
+                .AsSingle()
+                .WithArguments(_textureAtlas, _tileSize);
         }
     }
 }

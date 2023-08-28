@@ -25,8 +25,6 @@ namespace HerosJourney.Core.WorldGeneration
             _meshDataBuilder = meshDataBuilder;
         }
 
-        private void OnDisable() => VoxelGeometry.Dispose();
-
         public void GenerateChunks() => GenerateChunks(int3.zero);
 
         public void GenerateChunks(int3 position)

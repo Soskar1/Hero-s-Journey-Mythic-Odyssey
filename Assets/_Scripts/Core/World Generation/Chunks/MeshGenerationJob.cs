@@ -33,22 +33,24 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             }
         }
 
-        public struct VoxelGeometry
+        public struct TextureData
         {
-            public NativeArray<int3> vertices;
-            public NativeArray<int> triangles;
+            public int tileSize;
+            public float xStep;
+            public float yStep;
         }
 
         [WriteOnly] public MeshData meshData;
         [ReadOnly] public TSChunkData chunkData;
-        [ReadOnly] public VoxelGeometry voxelGeometry;
         [ReadOnly] public NeighbourChunks neighbourChunks;
+        [ReadOnly] public TextureData textureData;
         [ReadOnly] public NativeHashMap<int, TSVoxelData> storage;
 
         private int vCount;
         private const int _FACES_ = 6;
-        private const int _SCALE_ = 1;
         private const int _VERTEX_COUNT_ = 4;
+        private const float _VERTEX_OFFSET_ = 0.5f;
+        private const float _TEXTURE_OFFSET_ = 0.001f;
 
         public void Execute()
         {
@@ -72,11 +74,21 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                             var neighbourVoxelData = GetVoxelAt(neighbourPosition);
 
                             if (neighbourVoxelData.type.IsEmpty())
-                                CreateFace(direction, localPosition);
+                                CreateFace(voxelData, direction, localPosition);
                         }
                     }
                 }
             }
+        }
+
+        private void CreateFace(TSVoxelData voxelData, Direction direction, int3 localPosition)
+        {
+            var vertices = GetFaceVertices(direction, localPosition);
+            meshData.vertices.AddRange(vertices);
+            vertices.Dispose();
+
+            AddTriangles();
+            AssignUVs(voxelData, direction);
         }
 
         private TSVoxelData GetVoxelData(TSChunkData chunkData, int3 localPosition)
@@ -123,28 +135,57 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             };
         }
 
-        private void CreateFace(Direction direction, int3 localPosition)
+        private NativeArray<float3> GetFaceVertices(Direction direction, int3 localPosition)
         {
-            var vertices = GetFaceVertices(direction, localPosition);
-            meshData.vertices.AddRange(vertices);
-            vertices.Dispose();
+            var faceVertices = new NativeArray<float3>(_VERTEX_COUNT_, Allocator.Temp);
 
-            AddTriangles();
-        }
-
-        private NativeArray<int3> GetFaceVertices(Direction direction, int3 localPosition)
-        {
-            var faceVertices = new NativeArray<int3>(_VERTEX_COUNT_, Allocator.Temp);
-
-            for (int i = 0; i < faceVertices.Length; ++i)
+            switch (direction)
             {
-                var index = voxelGeometry.triangles[(int)direction * _VERTEX_COUNT_ + i];
-                faceVertices[i] = voxelGeometry.vertices[index] * _SCALE_ + localPosition;
-            }
+                case Direction.up:
+                    faceVertices[0] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[1] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[2] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[3] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    break;
 
+                case Direction.down:
+                    faceVertices[0] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[1] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[2] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[3] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    break;
+
+                case Direction.right:
+                    faceVertices[0] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[1] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[2] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[3] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    break;
+
+                case Direction.left:
+                    faceVertices[0] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[1] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[2] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[3] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    break;
+
+                case Direction.forward:
+                    faceVertices[0] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[1] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[2] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    faceVertices[3] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z + _VERTEX_OFFSET_);
+                    break;
+
+                case Direction.back:
+                    faceVertices[0] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[1] = new float3(localPosition.x - _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[2] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y + _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    faceVertices[3] = new float3(localPosition.x + _VERTEX_OFFSET_, localPosition.y - _VERTEX_OFFSET_, localPosition.z - _VERTEX_OFFSET_);
+                    break;
+            }
             return faceVertices;
         }
-
+        
         private void AddTriangles()
         {
             vCount += 4;
@@ -155,6 +196,35 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             meshData.triangles.Add(vCount - 4);
             meshData.triangles.Add(vCount - 4 + 2);
             meshData.triangles.Add(vCount - 4 + 3);
+        }
+
+        private void AssignUVs(TSVoxelData voxelData, Direction direction)
+        {
+            if (voxelData.type.IsEmpty())
+                return;
+
+            switch (direction)
+            {
+                case Direction.up:
+                    AddUVs(voxelData.textureData.up);
+                    break;
+
+                case Direction.down:
+                    AddUVs(voxelData.textureData.down);
+                    break;
+
+                default:
+                    AddUVs(voxelData.textureData.side);
+                    break;
+            }
+        }
+
+        private void AddUVs(int2 textureCoordinates)
+        {
+            meshData.uvs.Add(new float2(textureData.xStep * textureCoordinates.x + _TEXTURE_OFFSET_, textureData.yStep * textureCoordinates.y + _TEXTURE_OFFSET_));
+            meshData.uvs.Add(new float2(textureData.xStep * textureCoordinates.x + _TEXTURE_OFFSET_, textureData.yStep * textureCoordinates.y + textureData.yStep - _TEXTURE_OFFSET_));
+            meshData.uvs.Add(new float2(textureData.xStep * textureCoordinates.x + textureData.xStep - _TEXTURE_OFFSET_, textureData.yStep * textureCoordinates.y + textureData.yStep - _TEXTURE_OFFSET_));
+            meshData.uvs.Add(new float2(textureData.xStep * textureCoordinates.x + textureData.xStep - _TEXTURE_OFFSET_, textureData.yStep * textureCoordinates.y + _TEXTURE_OFFSET_));
         }
     }
 }

@@ -4,21 +4,29 @@ using HerosJourney.Core.WorldGeneration.Voxels;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class MeshDataBuilder : IDisposable
     {
         private readonly VoxelDataTSStorage _storage;
+        private readonly int _tileSize;
+        private readonly float _xStep;
+        private readonly float _yStep;
 
         private NativeList<JobHandle> _scheduledJobs;
         private Dictionary<int3, MeshData> _generatedMeshData = new Dictionary<int3, MeshData>();
         private List<IDisposable> _toDispose = new List<IDisposable>();
 
-        public MeshDataBuilder(VoxelDataTSStorage storage) 
+        public MeshDataBuilder(VoxelDataTSStorage storage, Texture2D textureAtlas, int tileSize) 
         {
             _storage = storage;
             _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
+
+            _tileSize = tileSize;
+            _xStep = _tileSize / (float)textureAtlas.width;
+            _yStep = _tileSize / (float)textureAtlas.height;
         }
 
         public void Dispose() => _scheduledJobs.Dispose();
@@ -33,8 +41,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
                 MeshData meshData = new MeshData
                 {
-                    vertices = new NativeList<int3>(Allocator.TempJob),
+                    vertices = new NativeList<float3>(Allocator.TempJob),
                     triangles = new NativeList<int>(Allocator.TempJob),
+                    uvs = new NativeList<float2>(Allocator.TempJob)
                 };
 
                 TSChunkData TSchunkData = chunkData;
@@ -52,16 +61,17 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                     backChunk = TSbackChunk
                 };
 
-                var voxelGeometry = new MeshGenerationJob.VoxelGeometry
+                var textureData = new MeshGenerationJob.TextureData
                 {
-                    vertices = VoxelGeometry.vertices,
-                    triangles = VoxelGeometry.triangles,
+                    tileSize = _tileSize,
+                    xStep = _xStep,
+                    yStep = _yStep
                 };
 
                 MeshGenerationJob job = new MeshGenerationJob
                 {
                     meshData = meshData,
-                    voxelGeometry = voxelGeometry,
+                    textureData = textureData,
                     chunkData = TSchunkData,
                     neighbourChunks = neighbourChunks,
                     storage = _storage.Copy

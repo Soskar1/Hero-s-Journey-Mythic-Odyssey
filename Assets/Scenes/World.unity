@@ -1105,6 +1105,8 @@ MonoBehaviour:
   _air: {fileID: 11400000, guid: 1b5202608daf3f4419d89bee76379fba, type: 2}
   _dirt: {fileID: 11400000, guid: 71ff359277f07094ead5f371a4fea571, type: 2}
   _grass: {fileID: 11400000, guid: 8fbc37ad17d74ee4898b8cf8df1499e2, type: 2}
+  _textureAtlas: {fileID: 2800000, guid: 785e036e911dba346b9dd73cb0074511, type: 3}
+  _tileSize: 16
   _chunkLength: 16
   _chunkHeight: 128
 --- !u!114 &1339897348

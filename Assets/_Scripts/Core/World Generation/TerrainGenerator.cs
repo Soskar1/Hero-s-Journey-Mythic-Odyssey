@@ -40,18 +40,18 @@ namespace HerosJourney.Core.WorldGeneration
                     for (int z = 0; z < chunkData.Length; ++z)
                     {
                         float noiseValue = _noise.OctavePerlinNoise(chunkData.WorldPosition.x + x, chunkData.WorldPosition.z + z);
-                        float groundHeight = noiseValue * chunkData.Height;
+                        float groundHeight = Mathf.FloorToInt(noiseValue * chunkData.Height);
 
-                        Debug.Log($"{noiseValue}: {groundHeight}");
-
-                        for (int i = 0; i < chunkData.Height; ++i)
+                        for (int y = 0; y < chunkData.Height; ++y)
                         {
-                            if (i < groundHeight)
-                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = _dirtID;
-                            else if (i == groundHeight)
-                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = _grassID;
+                            int3 localPosition = new int3(x, y, z);
+
+                            if (y < groundHeight)
+                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(localPosition)] = _dirtID;
+                            else if (y == groundHeight)
+                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(localPosition)] = _grassID;
                             else
-                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = _airID;
+                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(localPosition)] = _airID;
                         }
                     }
                 }
