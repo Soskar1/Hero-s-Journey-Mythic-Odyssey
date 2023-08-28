@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc9a6b6cdfe37494b84933a88ce2cfd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c5fdb04768fb724f940233daac8d1ab, type: 3}
   m_Name: Wood
   m_EditorClassIdentifier: 
-  id: 6
-  type: 1
+  id: 5
+  type: 2
   textureData:
     up:
       x: 0
@@ -24,4 +24,4 @@ MonoBehaviour:
     side:
       x: 0
       y: 5
-  generatesCollider: 1
+  generatesCollider: 0

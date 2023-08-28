@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using HerosJourney.Core.WorldGeneration.Chunks;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Mathematics;
 
 namespace HerosJourney.Core.WorldGeneration
@@ -17,15 +15,6 @@ namespace HerosJourney.Core.WorldGeneration
             ChunkLength = chunkLength;
             ChunkHeight = chunkHeight;
             ExistingChunks = new Dictionary<int3, ChunkData>();
-        }
-
-        public UnsafeHashMap<int3, TSChunkData> GetTSExistingChunks()
-        {
-            UnsafeHashMap<int3, TSChunkData> tsExistingChunks = new UnsafeHashMap<int3, TSChunkData>(ExistingChunks.Count, Allocator.TempJob);
-            foreach (var chunk in ExistingChunks)
-                tsExistingChunks.Add(chunk.Key, chunk.Value);
-
-            return tsExistingChunks;
         }
     }
 }

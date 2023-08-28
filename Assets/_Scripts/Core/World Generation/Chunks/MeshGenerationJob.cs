@@ -1,3 +1,4 @@
+using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Utils;
 using Unity.Burst;
 using Unity.Collections;

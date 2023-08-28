@@ -1,4 +1,5 @@
 using System;
+using HerosJourney.Core.WorldGeneration.Voxels;
 using Unity.Collections;
 using Unity.Mathematics;
 

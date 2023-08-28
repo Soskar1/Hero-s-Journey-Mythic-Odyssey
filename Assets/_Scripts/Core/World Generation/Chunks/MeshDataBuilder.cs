@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HerosJourney.Core.WorldGeneration.Voxels;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -30,6 +31,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 };
 
                 TSChunkData TSchunkData = chunkData;
+                worldData.ExistingChunks.TryGetValue(chunkData.WorldPosition + new int3(-chunkData.Length, 0, 0), out ChunkData leftChunk);
                 TSChunkData TSforwardChunk = worldData.ExistingChunks[position + new int3(0, 0, chunkData.Length)];
                 TSChunkData TSrightChunk = worldData.ExistingChunks[position + new int3(chunkData.Length, 0, 0)];
                 TSChunkData TSbackChunk = worldData.ExistingChunks[position + new int3(0, 0, -chunkData.Length)];

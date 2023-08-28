@@ -1,4 +1,5 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;

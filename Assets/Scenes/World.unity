@@ -1002,6 +1002,7 @@ GameObject:
   - component: {fileID: 1339897345}
   - component: {fileID: 1339897344}
   - component: {fileID: 1339897346}
+  - component: {fileID: 1339897348}
   - component: {fileID: 1339897347}
   m_Layer: 0
   m_Name: SceneContext
@@ -1025,6 +1026,7 @@ MonoBehaviour:
   _scriptableObjectInstallers: []
   _monoInstallers:
   - {fileID: 1339897346}
+  - {fileID: 1339897348}
   - {fileID: 1339897347}
   _installerPrefabs: []
   _autoRun: 1
@@ -1087,6 +1089,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chunkLength: 16
   _chunkHeight: 128
+--- !u!114 &1339897348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339897343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6624af27125edf428e06eb282909132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _voxelData:
+  - {fileID: 11400000, guid: 1b5202608daf3f4419d89bee76379fba, type: 2}
+  - {fileID: 11400000, guid: 71ff359277f07094ead5f371a4fea571, type: 2}
+  - {fileID: 11400000, guid: 8fbc37ad17d74ee4898b8cf8df1499e2, type: 2}
+  - {fileID: 11400000, guid: 80aebb5da66ce2843b9763afc5508758, type: 2}
+  - {fileID: 11400000, guid: 9f1f7dc131d33b343b75aa169623b81d, type: 2}
+  - {fileID: 11400000, guid: fc1fcad6b60ab2c4e93dd07736ba74bd, type: 2}
+  - {fileID: 11400000, guid: 085abdc5c01f5d34194201d63ff709b0, type: 2}
 --- !u!1 &1474499906
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,7 +1491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 1.821884, z: -8.368626}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1628,7 +1650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 1.821884, z: -8.368626}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1845,7 +1867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 1.821884, z: -8.368626}
+  m_FollowOffset: {x: 0, y: 2.5, z: -8.5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
