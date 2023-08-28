@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration;
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Noises;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using UnityEngine;
 using Zenject;
@@ -8,6 +9,7 @@ namespace HerosJourney.Core.Installers
 {
     public class WorldInstaller : MonoInstaller
     {
+        [SerializeField] private NoiseSettings _terrainNoiseSettings;
         [SerializeField] private VoxelData _air;
         [SerializeField] private VoxelData _dirt;
         [SerializeField] private VoxelData _grass;
@@ -32,9 +34,9 @@ namespace HerosJourney.Core.Installers
         private void BindGenerators()
         {
             Container
-                .Bind<TerrainGenerator>()
+                .BindInterfacesAndSelfTo<TerrainGenerator>()
                 .AsSingle()
-                .WithArguments(_air.id, _dirt.id, _grass.id);
+                .WithArguments(_terrainNoiseSettings, _air.id, _dirt.id, _grass.id);
         }
 
         private void BindMeshDataBuilder()

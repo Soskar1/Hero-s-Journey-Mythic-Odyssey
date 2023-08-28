@@ -31,10 +31,7 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(int3 position)
         {
-            List<ChunkData> generatedChunkData = _terrainGenerator.Generate(_chunkDataPositionsToCreate);
-            
-            foreach (var chunkData in generatedChunkData)
-                _worldData.ExistingChunks.Add(chunkData.WorldPosition, chunkData);
+            _terrainGenerator.Generate(_chunkDataPositionsToCreate);
 
             _meshDataBuilder.ScheduleMeshGenerationJob(_worldData, _chunkRendererPositionsToCreate);
             Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Complete();

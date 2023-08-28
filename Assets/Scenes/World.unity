@@ -1101,6 +1101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3952212a58132b41a55c2c4d5c9d885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _terrainNoiseSettings: {fileID: 11400000, guid: ed9d5b3e82a5f26489d3cd58613475cf, type: 2}
   _air: {fileID: 11400000, guid: 1b5202608daf3f4419d89bee76379fba, type: 2}
   _dirt: {fileID: 11400000, guid: 71ff359277f07094ead5f371a4fea571, type: 2}
   _grass: {fileID: 11400000, guid: 8fbc37ad17d74ee4898b8cf8df1499e2, type: 2}

@@ -1,30 +1,36 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
+using HerosJourney.Core.WorldGeneration.Noises;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public class TerrainGenerator
+    public class TerrainGenerator : IInitializable
     {
         private readonly WorldData _worldData;
+        private readonly TSNoiseSettings _noiseSettings;
         private readonly ushort _airID;
         private readonly ushort _dirtID;
         private readonly ushort _grassID;
 
-        public TerrainGenerator(WorldData worldData, ushort airID, ushort dirtID, ushort grassID)
+        private Noise _noise;
+
+        public TerrainGenerator(WorldData worldData, NoiseSettings noiseSettings, ushort airID, ushort dirtID, ushort grassID)
         {
             _worldData = worldData;
+            _noiseSettings = noiseSettings;
             _airID = airID;
             _dirtID = dirtID;
             _grassID = grassID;
         }
 
-        public List<ChunkData> Generate(List<int3> chunkDataPositionsToCreate)
-        {
-            List<ChunkData> generatedChunkData = new List<ChunkData>();
+        public void Initialize() => _noise = new Noise(_noiseSettings);
 
+        public void Generate(List<int3> chunkDataPositionsToCreate)
+        {
             foreach (var position in chunkDataPositionsToCreate)
             {
                 ChunkData chunkData = new ChunkData(_worldData, position);
@@ -33,7 +39,10 @@ namespace HerosJourney.Core.WorldGeneration
                 {
                     for (int z = 0; z < chunkData.Length; ++z)
                     {
-                        var groundHeight = Mathf.FloorToInt(Mathf.PerlinNoise((chunkData.WorldPosition.x + x) * 0.005f, (chunkData.WorldPosition.z + z) * 0.005f) * chunkData.Height);
+                        float noiseValue = _noise.OctavePerlinNoise(chunkData.WorldPosition.x + x, chunkData.WorldPosition.z + z);
+                        float groundHeight = noiseValue * chunkData.Height;
+
+                        Debug.Log($"{noiseValue}: {groundHeight}");
 
                         for (int i = 0; i < chunkData.Height; ++i)
                         {
@@ -47,10 +56,8 @@ namespace HerosJourney.Core.WorldGeneration
                     }
                 }
 
-                generatedChunkData.Add(chunkData);
+                _worldData.ExistingChunks.Add(position, chunkData);
             }
-
-            return generatedChunkData;
         }
     }
 }
