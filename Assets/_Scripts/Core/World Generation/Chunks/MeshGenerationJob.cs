@@ -43,6 +43,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         [ReadOnly] public TSChunkData chunkData;
         [ReadOnly] public VoxelGeometry voxelGeometry;
         [ReadOnly] public NeighbourChunks neighbourChunks;
+        [ReadOnly] public NativeHashMap<int, TSVoxelData> storage;
 
         private int vCount;
         private const int _FACES_ = 6;
@@ -57,17 +58,20 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 {
                     for (int y = 0; y < chunkData.Height; ++y)
                     {
-                        if (chunkData.voxels[VoxelExtensions.GetVoxelIndex(new int3(x, y, z))].IsEmpty())
+                        int3 localPosition = new int3(x, y, z);
+                        var voxelData = GetVoxelData(chunkData, localPosition);
+
+                        if (voxelData.type.IsEmpty())
                             continue;
 
                         for (int i = 0; i < _FACES_; ++i)
                         {
                             var direction = (Direction) i;
-                            int3 localPosition = new int3(x, y, z);
+                            
                             int3 neighbourPosition = localPosition + direction.ToInt3();
-                            VoxelType neighbourVoxelType = GetVoxelAt(neighbourPosition);
+                            var neighbourVoxelData = GetVoxelAt(neighbourPosition);
 
-                            if (neighbourVoxelType == VoxelType.Transparent)
+                            if (neighbourVoxelData.type.IsEmpty())
                                 CreateFace(direction, localPosition);
                         }
                     }
@@ -75,25 +79,28 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             }
         }
 
-        private VoxelType GetVoxelAt(int3 localPosition)
+        private TSVoxelData GetVoxelData(TSChunkData chunkData, int3 localPosition)
+        {
+            int index = VoxelExtensions.GetVoxelIndex(localPosition);
+            ushort voxelID = chunkData.voxels[index];
+            return storage[voxelID];
+        }
+
+        private TSVoxelData GetVoxelAt(int3 localPosition)
         {
             if (ChunkExtensions.IsInBounds(chunkData, localPosition))
-            {
-                int index = VoxelExtensions.GetVoxelIndex(localPosition);
-                return chunkData.voxels[index];
-            }
+                return GetVoxelData(chunkData, localPosition);
 
             return GetVoxelAtNeighbourChunks(chunkData.WorldPosition + localPosition);
         }
 
-        private VoxelType GetVoxelAtNeighbourChunks(int3 worldPosition)
+        private TSVoxelData GetVoxelAtNeighbourChunks(int3 worldPosition)
         {
             int3 chunkPosition = GetChunkPosition(worldPosition);
             TSChunkData neighbourChunk = neighbourChunks.GetNeighbourChunkAtPosition(chunkPosition);
             
             int3 localPosition = WorldToLocalPosition(neighbourChunk, worldPosition);
-            int index = VoxelExtensions.GetVoxelIndex(localPosition);
-            return neighbourChunk.voxels[index];
+            return GetVoxelData(neighbourChunk, localPosition);
         }
 
         private int3 GetChunkPosition(int3 worldPosition)

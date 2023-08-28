@@ -1,5 +1,4 @@
 using System;
-using HerosJourney.Core.WorldGeneration.Voxels;
 using Unity.Collections;
 using Unity.Mathematics;
 
@@ -7,32 +6,32 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class ChunkData
     {
-        private VoxelType[] _voxels;
+        private ushort[] _voxels;
 
         public byte Length { get; private set; }
         public byte Height { get; private set; }
-        public VoxelType[] Voxels => _voxels;
+        public ushort[] Voxels => _voxels;
         public int3 WorldPosition { get; private set; }
 
         public ChunkData(WorldData worldData, int3 worldPosition)
         {
             Length = worldData.ChunkLength;
             Height = worldData.ChunkHeight;
-            _voxels = new VoxelType[Length * Length * Height];
+            _voxels = new ushort[Length * Length * Height];
             WorldPosition = worldPosition;
         }
     }
 
     public struct TSChunkData : IDisposable
     {
-        public NativeArray<VoxelType> voxels;
+        public NativeArray<ushort> voxels;
         public byte Length { get; private set; }
         public byte Height { get; private set; }
         public int3 WorldPosition { get; private set; }
 
         public TSChunkData(ChunkData chunkData)
         {
-            voxels = new NativeArray<VoxelType>(chunkData.Voxels, Allocator.TempJob);
+            voxels = new NativeArray<ushort>(chunkData.Voxels, Allocator.TempJob);
             Length = chunkData.Length;
             Height = chunkData.Height;
             WorldPosition = chunkData.WorldPosition;

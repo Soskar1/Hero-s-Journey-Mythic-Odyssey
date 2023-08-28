@@ -9,11 +9,18 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class MeshDataBuilder : IDisposable
     {
+        private readonly VoxelDataTSStorage _storage;
+
         private NativeList<JobHandle> _scheduledJobs;
         private Dictionary<int3, MeshData> _generatedMeshData = new Dictionary<int3, MeshData>();
         private List<IDisposable> _toDispose = new List<IDisposable>();
 
-        public MeshDataBuilder() => _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
+        public MeshDataBuilder(VoxelDataTSStorage storage) 
+        {
+            _storage = storage;
+            _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
+        }
+
         public void Dispose() => _scheduledJobs.Dispose();
 
         public void ScheduleMeshGenerationJob(WorldData worldData, List<int3> chunkRenderersToCreate)
@@ -56,7 +63,8 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                     meshData = meshData,
                     voxelGeometry = voxelGeometry,
                     chunkData = TSchunkData,
-                    neighbourChunks = neighbourChunks
+                    neighbourChunks = neighbourChunks,
+                    storage = _storage.Copy
                 };
 
                 JobHandle jobHandle = job.Schedule();

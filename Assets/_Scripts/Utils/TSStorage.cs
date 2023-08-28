@@ -8,7 +8,7 @@ namespace HerosJourney.Utils
         where Value : struct
     {
         private NativeHashMap<Key, Value> _storage;
-        public NativeHashMap<Key, Value> Storage => _storage;
+        public NativeHashMap<Key, Value> Copy => _storage;
 
         protected void Initialize(int capacity) => _storage = new NativeHashMap<Key, Value>(capacity, Allocator.Persistent);
         public void Dispose() => _storage.Dispose();

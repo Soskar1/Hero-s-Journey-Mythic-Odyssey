@@ -8,6 +8,17 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class TerrainGenerator
     {
+        private readonly ushort _airID;
+        private readonly ushort _dirtID;
+        private readonly ushort _grassID;
+
+        public TerrainGenerator(ushort airID, ushort dirtID, ushort grassID)
+        {
+            _airID = airID;
+            _dirtID = dirtID;
+            _grassID = grassID;
+        }
+
         public List<ChunkData> Generate(WorldData worldData, List<int3> chunkDataPositionsToCreate)
         {
             List<ChunkData> generatedChunkData = new List<ChunkData>();
@@ -20,13 +31,17 @@ namespace HerosJourney.Core.WorldGeneration
                 {
                     for (int z = 0; z < chunkData.Length; ++z)
                     {
-                        var y = Mathf.FloorToInt(Mathf.PerlinNoise((chunkData.WorldPosition.x + x) * 0.005f, (chunkData.WorldPosition.z + z) * 0.005f) * chunkData.Height);
+                        var groundHeight = Mathf.FloorToInt(Mathf.PerlinNoise((chunkData.WorldPosition.x + x) * 0.005f, (chunkData.WorldPosition.z + z) * 0.005f) * chunkData.Height);
 
-                        for (int i = 0; i < y; ++i)
-                            chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Solid;
-
-                        for (int i = y; i < chunkData.Height; ++i)
-                            chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = VoxelType.Transparent;
+                        for (int i = 0; i < chunkData.Height; ++i)
+                        {
+                            if (i < groundHeight)
+                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = _dirtID;
+                            else if (i == groundHeight)
+                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = _grassID;
+                            else
+                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(new int3(x, i, z))] = _airID;
+                        }
                     }
                 }
 
