@@ -15,8 +15,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _mesh.vertices = meshData.vertices.ToArray().Select(vertex => new Vector3(vertex.x, vertex.y, vertex.z)).ToArray();
             _mesh.SetIndices(meshData.triangles.AsArray(), MeshTopology.Triangles, 0);
 
-            meshData.vertices.Dispose();
-            meshData.triangles.Dispose();
+            meshData.Dispose();
 
             _mesh.RecalculateNormals();
             _mesh.RecalculateBounds();

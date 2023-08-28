@@ -8,24 +8,26 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class TerrainGenerator
     {
+        private readonly WorldData _worldData;
         private readonly ushort _airID;
         private readonly ushort _dirtID;
         private readonly ushort _grassID;
 
-        public TerrainGenerator(ushort airID, ushort dirtID, ushort grassID)
+        public TerrainGenerator(WorldData worldData, ushort airID, ushort dirtID, ushort grassID)
         {
+            _worldData = worldData;
             _airID = airID;
             _dirtID = dirtID;
             _grassID = grassID;
         }
 
-        public List<ChunkData> Generate(WorldData worldData, List<int3> chunkDataPositionsToCreate)
+        public List<ChunkData> Generate(List<int3> chunkDataPositionsToCreate)
         {
             List<ChunkData> generatedChunkData = new List<ChunkData>();
 
             foreach (var position in chunkDataPositionsToCreate)
             {
-                ChunkData chunkData = new ChunkData(worldData, position);
+                ChunkData chunkData = new ChunkData(_worldData, position);
 
                 for (int x = 0; x < chunkData.Length; ++x)
                 {

@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Voxels;
+using HerosJourney.Utils;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class World : MonoBehaviour
     {
-        [SerializeField] private ChunkRenderer _chunk;
+        [SerializeField] private WorldRenderer _worldRenderer;
         [SerializeField] private List<int3> _chunkDataPositionsToCreate;
         [SerializeField] private List<int3> _chunkRendererPositionsToCreate;
         private WorldData _worldData;
@@ -30,22 +31,25 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks(int3 position)
         {
-            List<ChunkData> generatedChunkData = _terrainGenerator.Generate(_worldData, _chunkDataPositionsToCreate);
+            List<ChunkData> generatedChunkData = _terrainGenerator.Generate(_chunkDataPositionsToCreate);
             
             foreach (var chunkData in generatedChunkData)
                 _worldData.ExistingChunks.Add(chunkData.WorldPosition, chunkData);
 
             _meshDataBuilder.ScheduleMeshGenerationJob(_worldData, _chunkRendererPositionsToCreate);
             Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Complete();
-
-            foreach (var meshData in generatedMeshData)
-                RenderChunk(meshData.Key, meshData.Value);
+            RenderChunks(generatedMeshData);
         }
 
-        private void RenderChunk(int3 position, MeshData meshData)
+        private void RenderChunks(Dictionary<int3, MeshData> generatedMeshData)
         {
-            ChunkRenderer chunkInstance = Instantiate(_chunk, new Vector3(position.x, position.y, position.z), Quaternion.identity);
-            chunkInstance.Render(meshData);
+            foreach (var meshData in generatedMeshData)
+            {
+                ChunkRenderer renderer = _worldRenderer.Dequeue();
+                renderer.transform.position = meshData.Key.ToVector3();
+                renderer.gameObject.SetActive(true);
+                renderer.Render(meshData.Value);
+            }
         }
     }
 }
