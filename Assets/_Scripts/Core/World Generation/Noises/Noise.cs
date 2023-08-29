@@ -5,9 +5,9 @@ namespace HerosJourney.Core.WorldGeneration
 {
     public class Noise
     {
-        private readonly TSNoiseSettings _noiseSettings;
+        private readonly ThreadSafeNoiseSettings _noiseSettings;
 
-        public Noise(TSNoiseSettings noiseSettings) => _noiseSettings = noiseSettings;
+        public Noise(ThreadSafeNoiseSettings noiseSettings) => _noiseSettings = noiseSettings;
 
         public float OctavePerlinNoise(float x, float y)
         {

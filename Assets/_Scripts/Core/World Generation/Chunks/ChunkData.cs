@@ -22,14 +22,14 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         }
     }
 
-    public struct TSChunkData : IDisposable
+    public struct ThreadSafeChunkData : IDisposable
     {
         public NativeArray<ushort> voxels;
         public byte Length { get; private set; }
         public byte Height { get; private set; }
         public int3 WorldPosition { get; private set; }
 
-        public TSChunkData(ChunkData chunkData)
+        public ThreadSafeChunkData(ChunkData chunkData)
         {
             voxels = new NativeArray<ushort>(chunkData.Voxels, Allocator.TempJob);
             Length = chunkData.Length;
@@ -39,6 +39,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void Dispose() => voxels.Dispose();
 
-        public static implicit operator TSChunkData(ChunkData chunkData) => new TSChunkData(chunkData);
+        public static implicit operator ThreadSafeChunkData(ChunkData chunkData) => new ThreadSafeChunkData(chunkData);
     }
 }

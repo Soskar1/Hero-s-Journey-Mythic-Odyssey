@@ -13,14 +13,14 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
         public bool generatesCollider;
     }
 
-    public struct TSVoxelData
+    public struct ThreadSafeVoxelData
     {
         public ushort id;
         public VoxelType type;
         public TextureData textureData;
         public bool generatesCollider;
 
-        public TSVoxelData(VoxelData voxelData)
+        public ThreadSafeVoxelData(VoxelData voxelData)
         {
             id = voxelData.id;
             type = voxelData.type;
@@ -28,7 +28,7 @@ namespace HerosJourney.Core.WorldGeneration.Voxels
             generatesCollider = voxelData.generatesCollider;
         }
 
-        public static implicit operator TSVoxelData(VoxelData voxelData) => new TSVoxelData(voxelData);
+        public static implicit operator ThreadSafeVoxelData(VoxelData voxelData) => new ThreadSafeVoxelData(voxelData);
     }
 
     [Serializable]

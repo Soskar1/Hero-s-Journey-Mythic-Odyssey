@@ -3,7 +3,7 @@ using Unity.Collections;
 
 namespace HerosJourney.Utils
 {
-    public abstract class TSStorage<Key, Value> : IDisposable
+    public abstract class ThreadSafeStorage<Key, Value> : IDisposable
         where Key : struct, IEquatable<Key>
         where Value : struct
     {

@@ -12,14 +12,14 @@ namespace HerosJourney.Core.WorldGeneration.Noises
         public float2 offset;
     }
 
-    public struct TSNoiseSettings
+    public struct ThreadSafeNoiseSettings
     {
         public int octaves;
         public float persistence;
         public float noiseZoom;
         public float2 offset;
 
-        public TSNoiseSettings(NoiseSettings noiseSettings)
+        public ThreadSafeNoiseSettings(NoiseSettings noiseSettings)
         {
             octaves = noiseSettings.octaves;
             persistence = noiseSettings.persistence;
@@ -27,6 +27,6 @@ namespace HerosJourney.Core.WorldGeneration.Noises
             offset = noiseSettings.offset;
         }
 
-        public static implicit operator TSNoiseSettings(NoiseSettings noiseSettings) => new TSNoiseSettings(noiseSettings);
+        public static implicit operator ThreadSafeNoiseSettings(NoiseSettings noiseSettings) => new ThreadSafeNoiseSettings(noiseSettings);
     }
 }

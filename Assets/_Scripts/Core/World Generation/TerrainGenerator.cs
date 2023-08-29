@@ -11,7 +11,7 @@ namespace HerosJourney.Core.WorldGeneration
     public class TerrainGenerator : IInitializable
     {
         private readonly WorldData _worldData;
-        private readonly TSNoiseSettings _noiseSettings;
+        private readonly ThreadSafeNoiseSettings _noiseSettings;
         private readonly ushort _airID;
         private readonly ushort _dirtID;
         private readonly ushort _grassID;

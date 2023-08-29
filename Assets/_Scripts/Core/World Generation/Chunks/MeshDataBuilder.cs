@@ -10,7 +10,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 {
     public class MeshDataBuilder : IDisposable
     {
-        private readonly VoxelDataTSStorage _storage;
+        private readonly VoxelDataThreadSafeStorage _storage;
         private readonly int _tileSize;
         private readonly float _xStep;
         private readonly float _yStep;
@@ -19,7 +19,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         private Dictionary<int3, MeshData> _generatedMeshData = new Dictionary<int3, MeshData>();
         private List<IDisposable> _toDispose = new List<IDisposable>();
 
-        public MeshDataBuilder(VoxelDataTSStorage storage, Texture2D textureAtlas, int tileSize) 
+        public MeshDataBuilder(VoxelDataThreadSafeStorage storage, Texture2D textureAtlas, int tileSize) 
         {
             _storage = storage;
             _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
@@ -46,19 +46,19 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                     uvs = new NativeList<float2>(Allocator.TempJob)
                 };
 
-                TSChunkData TSchunkData = chunkData;
+                ThreadSafeChunkData ThreadSafechunkData = chunkData;
                 worldData.ExistingChunks.TryGetValue(chunkData.WorldPosition + new int3(-chunkData.Length, 0, 0), out ChunkData leftChunk);
-                TSChunkData TSforwardChunk = worldData.ExistingChunks[position + new int3(0, 0, chunkData.Length)];
-                TSChunkData TSrightChunk = worldData.ExistingChunks[position + new int3(chunkData.Length, 0, 0)];
-                TSChunkData TSbackChunk = worldData.ExistingChunks[position + new int3(0, 0, -chunkData.Length)];
-                TSChunkData TSleftChunk = worldData.ExistingChunks[position + new int3(-chunkData.Length, 0, 0)];
+                ThreadSafeChunkData ThreadSafeforwardChunk = worldData.ExistingChunks[position + new int3(0, 0, chunkData.Length)];
+                ThreadSafeChunkData ThreadSaferightChunk = worldData.ExistingChunks[position + new int3(chunkData.Length, 0, 0)];
+                ThreadSafeChunkData ThreadSafebackChunk = worldData.ExistingChunks[position + new int3(0, 0, -chunkData.Length)];
+                ThreadSafeChunkData ThreadSafeleftChunk = worldData.ExistingChunks[position + new int3(-chunkData.Length, 0, 0)];
 
                 var neighbourChunks = new MeshGenerationJob.NeighbourChunks
                 {
-                    forwardChunk = TSforwardChunk,
-                    rightChunk = TSrightChunk,
-                    leftChunk = TSleftChunk,
-                    backChunk = TSbackChunk
+                    forwardChunk = ThreadSafeforwardChunk,
+                    rightChunk = ThreadSaferightChunk,
+                    leftChunk = ThreadSafeleftChunk,
+                    backChunk = ThreadSafebackChunk
                 };
 
                 var textureData = new MeshGenerationJob.TextureData
@@ -72,7 +72,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 {
                     meshData = meshData,
                     textureData = textureData,
-                    chunkData = TSchunkData,
+                    chunkData = ThreadSafechunkData,
                     neighbourChunks = neighbourChunks,
                     storage = _storage.Copy
                 };
@@ -81,11 +81,11 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 _generatedMeshData.Add(chunkData.WorldPosition, meshData);
                 _scheduledJobs.Add(jobHandle);
                 
-                _toDispose.Add(TSchunkData);
-                _toDispose.Add(TSforwardChunk);
-                _toDispose.Add(TSrightChunk);
-                _toDispose.Add(TSbackChunk);
-                _toDispose.Add(TSleftChunk);
+                _toDispose.Add(ThreadSafechunkData);
+                _toDispose.Add(ThreadSafeforwardChunk);
+                _toDispose.Add(ThreadSaferightChunk);
+                _toDispose.Add(ThreadSafebackChunk);
+                _toDispose.Add(ThreadSafeleftChunk);
             }
         }
 

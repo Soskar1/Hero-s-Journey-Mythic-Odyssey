@@ -17,7 +17,7 @@ namespace HerosJourney.Core.Installers
         private void BindVoxelData()
         {
             Container
-                .BindInterfacesAndSelfTo<VoxelDataTSStorage>()
+                .BindInterfacesAndSelfTo<VoxelDataThreadSafeStorage>()
                 .AsSingle()
                 .WithArguments(_voxelData);
         }

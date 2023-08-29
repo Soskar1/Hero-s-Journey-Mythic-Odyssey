@@ -13,12 +13,12 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
     {
         public struct NeighbourChunks
         {
-            public TSChunkData forwardChunk;
-            public TSChunkData rightChunk;
-            public TSChunkData backChunk;
-            public TSChunkData leftChunk;
+            public ThreadSafeChunkData forwardChunk;
+            public ThreadSafeChunkData rightChunk;
+            public ThreadSafeChunkData backChunk;
+            public ThreadSafeChunkData leftChunk;
 
-            public TSChunkData GetNeighbourChunkAtPosition(int3 position)
+            public ThreadSafeChunkData GetNeighbourChunkAtPosition(int3 position)
             {
                 if (math.all(position == forwardChunk.WorldPosition))
                     return forwardChunk;
@@ -41,10 +41,10 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         }
 
         [WriteOnly] public MeshData meshData;
-        [ReadOnly] public TSChunkData chunkData;
+        [ReadOnly] public ThreadSafeChunkData chunkData;
         [ReadOnly] public NeighbourChunks neighbourChunks;
         [ReadOnly] public TextureData textureData;
-        [ReadOnly] public NativeHashMap<int, TSVoxelData> storage;
+        [ReadOnly] public NativeHashMap<int, ThreadSafeVoxelData> storage;
 
         private int vCount;
         private const int _FACES_ = 6;
@@ -81,7 +81,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             }
         }
 
-        private void CreateFace(TSVoxelData voxelData, Direction direction, int3 localPosition)
+        private void CreateFace(ThreadSafeVoxelData voxelData, Direction direction, int3 localPosition)
         {
             var vertices = GetFaceVertices(direction, localPosition);
             meshData.vertices.AddRange(vertices);
@@ -91,14 +91,14 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             AssignUVs(voxelData, direction);
         }
 
-        private TSVoxelData GetVoxelData(TSChunkData chunkData, int3 localPosition)
+        private ThreadSafeVoxelData GetVoxelData(ThreadSafeChunkData chunkData, int3 localPosition)
         {
             int index = VoxelExtensions.GetVoxelIndex(localPosition);
             ushort voxelID = chunkData.voxels[index];
             return storage[voxelID];
         }
 
-        private TSVoxelData GetVoxelAt(int3 localPosition)
+        private ThreadSafeVoxelData GetVoxelAt(int3 localPosition)
         {
             if (ChunkExtensions.IsInBounds(chunkData, localPosition))
                 return GetVoxelData(chunkData, localPosition);
@@ -106,10 +106,10 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             return GetVoxelAtNeighbourChunks(chunkData.WorldPosition + localPosition);
         }
 
-        private TSVoxelData GetVoxelAtNeighbourChunks(int3 worldPosition)
+        private ThreadSafeVoxelData GetVoxelAtNeighbourChunks(int3 worldPosition)
         {
             int3 chunkPosition = GetChunkPosition(worldPosition);
-            TSChunkData neighbourChunk = neighbourChunks.GetNeighbourChunkAtPosition(chunkPosition);
+            ThreadSafeChunkData neighbourChunk = neighbourChunks.GetNeighbourChunkAtPosition(chunkPosition);
             
             int3 localPosition = WorldToLocalPosition(neighbourChunk, worldPosition);
             return GetVoxelData(neighbourChunk, localPosition);
@@ -125,7 +125,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             };
         }
 
-        private int3 WorldToLocalPosition(TSChunkData chunkData, int3 worldPosition)
+        private int3 WorldToLocalPosition(ThreadSafeChunkData chunkData, int3 worldPosition)
         {
             return new int3
             {
@@ -198,7 +198,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             meshData.triangles.Add(vCount - 4 + 3);
         }
 
-        private void AssignUVs(TSVoxelData voxelData, Direction direction)
+        private void AssignUVs(ThreadSafeVoxelData voxelData, Direction direction)
         {
             if (voxelData.type.IsEmpty())
                 return;

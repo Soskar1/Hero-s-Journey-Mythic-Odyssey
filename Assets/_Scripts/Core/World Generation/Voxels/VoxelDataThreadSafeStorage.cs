@@ -4,11 +4,11 @@ using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration.Voxels
 {
-    public class VoxelDataTSStorage : TSStorage<int, TSVoxelData>, IInitializable
+    public class VoxelDataThreadSafeStorage : ThreadSafeStorage<int, ThreadSafeVoxelData>, IInitializable
     {
         private List<VoxelData> _voxelData;
 
-        public VoxelDataTSStorage(List<VoxelData> voxelData) => _voxelData = voxelData;
+        public VoxelDataThreadSafeStorage(List<VoxelData> voxelData) => _voxelData = voxelData;
 
         public void Initialize()
         {
