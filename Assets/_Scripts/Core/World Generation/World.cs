@@ -1,7 +1,7 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
-using HerosJourney.Core.WorldGeneration.Voxels;
 using HerosJourney.Utils;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
@@ -11,8 +11,7 @@ namespace HerosJourney.Core.WorldGeneration
     public class World : MonoBehaviour
     {
         [SerializeField] private WorldRenderer _worldRenderer;
-        [SerializeField] private List<int3> _chunkDataPositionsToCreate;
-        [SerializeField] private List<int3> _chunkRendererPositionsToCreate;
+        [SerializeField] private int _renderDistance;
         private WorldData _worldData;
         private TerrainGenerator _terrainGenerator;
         private MeshDataBuilder _meshDataBuilder;
@@ -27,11 +26,12 @@ namespace HerosJourney.Core.WorldGeneration
 
         public void GenerateChunks() => GenerateChunks(int3.zero);
 
-        public void GenerateChunks(int3 position)
+        public async void GenerateChunks(int3 worldPosition)
         {
-            _terrainGenerator.Generate(_chunkDataPositionsToCreate);
+            WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition));
+            _terrainGenerator.Generate(worldGenerationData.chunkDataToCreate);
 
-            _meshDataBuilder.ScheduleMeshGenerationJob(_worldData, _chunkRendererPositionsToCreate);
+            _meshDataBuilder.ScheduleMeshGenerationJob(_worldData, worldGenerationData.chunkRenderersToCreate);
             Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Complete();
             RenderChunks(generatedMeshData);
         }
@@ -45,6 +45,18 @@ namespace HerosJourney.Core.WorldGeneration
                 renderer.gameObject.SetActive(true);
                 renderer.Render(meshData.Value);
             }
+        }
+
+        private WorldGenerationData GetWorldGenerationData(int3 worldPosition)
+        {
+            List<int3> nearestChunkData = WorldDataExtensions.GetChunksAroundPoint(_worldData, worldPosition, _renderDistance + 1);
+            List<int3> nearestChunkRenderers = WorldDataExtensions.GetChunksAroundPoint(_worldData, worldPosition, _renderDistance);
+
+            return new WorldGenerationData
+            {
+                chunkDataToCreate = nearestChunkData,
+                chunkRenderersToCreate = nearestChunkRenderers
+            };
         }
     }
 }
