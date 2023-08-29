@@ -1,22 +1,23 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
-using HerosJourney.Core.WorldGeneration.Voxels;
+using System;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEngine;
 using Zenject;
 
 namespace HerosJourney.Core.WorldGeneration
 {
-    public class TerrainGenerator : IInitializable
+    public class TerrainGenerator : IInitializable, IDisposable
     {
         private readonly WorldData _worldData;
         private readonly ThreadSafeNoiseSettings _noiseSettings;
         private readonly ushort _airID;
         private readonly ushort _dirtID;
         private readonly ushort _grassID;
-
-        private Noise _noise;
+        private List<ThreadSafeChunkData> _generatedChunkData = new List<ThreadSafeChunkData>();
+        private NativeList<JobHandle> _scheduledJobs;
 
         public TerrainGenerator(WorldData worldData, NoiseSettings noiseSettings, ushort airID, ushort dirtID, ushort grassID)
         {
@@ -27,37 +28,49 @@ namespace HerosJourney.Core.WorldGeneration
             _grassID = grassID;
         }
 
-        public void Initialize() => _noise = new Noise(_noiseSettings);
+        public void Initialize() => _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
+        public void Dispose() => _scheduledJobs.Dispose();
 
         public void Generate(List<int3> chunkDataPositionsToCreate)
         {
+            Schedule(chunkDataPositionsToCreate);
+            Complete();
+        }
+
+        private void Schedule(List<int3> chunkDataPositionsToCreate)
+        {
             foreach (var position in chunkDataPositionsToCreate)
             {
-                ChunkData chunkData = new ChunkData(_worldData, position);
+                ThreadSafeChunkData threadSafeChunkData = new ThreadSafeChunkData(_worldData, position);
 
-                for (int x = 0; x < chunkData.Length; ++x)
+                TerrainGenerationJob job = new TerrainGenerationJob
                 {
-                    for (int z = 0; z < chunkData.Length; ++z)
-                    {
-                        float noiseValue = _noise.OctavePerlinNoise(chunkData.WorldPosition.x + x, chunkData.WorldPosition.z + z);
-                        float groundHeight = Mathf.FloorToInt(noiseValue * chunkData.Height);
+                    chunkData = threadSafeChunkData,
+                    noiseSettings = _noiseSettings,
+                    dirtID = _dirtID,
+                    grassID = _grassID,
+                    airID = _airID
+                };
 
-                        for (int y = 0; y < chunkData.Height; ++y)
-                        {
-                            int3 localPosition = new int3(x, y, z);
+                JobHandle jobHandle = job.Schedule();
+                _scheduledJobs.Add(jobHandle);
 
-                            if (y < groundHeight)
-                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(localPosition)] = _dirtID;
-                            else if (y == groundHeight)
-                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(localPosition)] = _grassID;
-                            else
-                                chunkData.Voxels[VoxelExtensions.GetVoxelIndex(localPosition)] = _airID;
-                        }
-                    }
-                }
-
-                _worldData.ExistingChunks.Add(position, chunkData);
+                _generatedChunkData.Add(threadSafeChunkData);
             }
+        }
+
+        private void Complete()
+        {
+            JobHandle.CompleteAll(_scheduledJobs);
+
+            foreach (var chunkData in _generatedChunkData)
+            {
+                _worldData.ExistingChunks.Add(chunkData.WorldPosition, chunkData);
+                chunkData.Dispose();
+            }
+
+            _generatedChunkData.Clear();
+            _scheduledJobs.Clear();
         }
     }
 }

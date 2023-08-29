@@ -20,6 +20,17 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _voxels = new ushort[Length * Length * Height];
             WorldPosition = worldPosition;
         }
+
+        public ChunkData(ThreadSafeChunkData chunkData)
+        {
+            Length = chunkData.Length;
+            Height = chunkData.Height;
+            _voxels = new ushort[Length * Length * Height];
+            chunkData.voxels.CopyTo(_voxels);
+            WorldPosition = chunkData.WorldPosition;
+        }
+
+        public static implicit operator ChunkData(ThreadSafeChunkData chunkData) => new ChunkData(chunkData);
     }
 
     public struct ThreadSafeChunkData : IDisposable
@@ -28,6 +39,14 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public byte Length { get; private set; }
         public byte Height { get; private set; }
         public int3 WorldPosition { get; private set; }
+
+        public ThreadSafeChunkData(WorldData worldData, int3 worldPosition)
+        {
+            Length = worldData.ChunkLength;
+            Height = worldData.ChunkHeight;
+            voxels = new NativeArray<ushort>(Length * Length * Height, Allocator.TempJob);
+            WorldPosition = worldPosition;
+        }
 
         public ThreadSafeChunkData(ChunkData chunkData)
         {

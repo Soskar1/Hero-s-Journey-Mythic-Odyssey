@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _worldRenderer: {fileID: 243429651}
-  _renderDistance: 6
+  _renderDistance: 32
 --- !u!4 &243429650
 Transform:
   m_ObjectHideFlags: 0
@@ -1408,7 +1408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.497838, z: -3.024008}
+  m_FollowOffset: {x: 0, y: 3.075237, z: -8.425868}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1567,7 +1567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.497838, z: -3.024008}
+  m_FollowOffset: {x: 0, y: 3.075237, z: -8.425868}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1784,7 +1784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: -0.497838, z: -3.024008}
+  m_FollowOffset: {x: 0, y: 3.075237, z: -8.425868}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0

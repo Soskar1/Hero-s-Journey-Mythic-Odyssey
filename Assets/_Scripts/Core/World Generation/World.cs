@@ -31,8 +31,7 @@ namespace HerosJourney.Core.WorldGeneration
             WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition));
             _terrainGenerator.Generate(worldGenerationData.chunkDataToCreate);
 
-            _meshDataBuilder.ScheduleMeshGenerationJob(_worldData, worldGenerationData.chunkRenderersToCreate);
-            Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Complete();
+            Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Generate(worldGenerationData.chunkRenderersToCreate);
             RenderChunks(generatedMeshData);
         }
 
