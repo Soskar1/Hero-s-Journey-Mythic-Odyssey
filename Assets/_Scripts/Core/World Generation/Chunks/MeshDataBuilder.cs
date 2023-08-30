@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HerosJourney.Core.WorldGeneration.Voxels;
 using Unity.Collections;
 using Unity.Jobs;
@@ -18,7 +19,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         private readonly float _yStep;
 
         private NativeList<JobHandle> _scheduledJobs;
-        private Dictionary<int3, MeshData> _generatedMeshData = new Dictionary<int3, MeshData>();
+        private Dictionary<int3, ThreadSafeMeshData> _generatedThreadSafeMeshData = new Dictionary<int3, ThreadSafeMeshData>();
         private List<IDisposable> _toDispose = new List<IDisposable>();
 
         public MeshDataBuilder(WorldData worldData, VoxelDataThreadSafeStorage storage, Texture2D textureAtlas, int tileSize) 
@@ -33,21 +34,24 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
         public void Initialize() => _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
         public void Dispose() => _scheduledJobs.Dispose();
 
-        public Dictionary<int3, MeshData> Generate(List<int3> chunkRenderersToCreate)
-        {
-            Schedule(chunkRenderersToCreate);
-            return Complete();
+        public Task<Dictionary<int3, MeshData>> Generate(List<int3> chunkRenderersToCreate)
+        {   
+            return Task.Run(() =>
+            {
+                Schedule(chunkRenderersToCreate);
+                return Complete();
+            });
         }
 
         private void Schedule(List<int3> chunkRenderersToCreate)
         {
-            _generatedMeshData.Clear();
+            _generatedThreadSafeMeshData.Clear();
 
             foreach (int3 position in chunkRenderersToCreate)
             {
                 ChunkData chunkData = _worldData.ExistingChunks[position];
 
-                MeshData meshData = new MeshData
+                ThreadSafeMeshData meshData = new ThreadSafeMeshData
                 {
                     vertices = new NativeList<float3>(Allocator.TempJob),
                     triangles = new NativeList<int>(Allocator.TempJob),
@@ -55,7 +59,6 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 };
 
                 ThreadSafeChunkData ThreadSafechunkData = chunkData;
-                _worldData.ExistingChunks.TryGetValue(chunkData.WorldPosition + new int3(-chunkData.Length, 0, 0), out ChunkData leftChunk);
                 ThreadSafeChunkData ThreadSafeforwardChunk = _worldData.ExistingChunks[position + new int3(0, 0, chunkData.Length)];
                 ThreadSafeChunkData ThreadSaferightChunk = _worldData.ExistingChunks[position + new int3(chunkData.Length, 0, 0)];
                 ThreadSafeChunkData ThreadSafebackChunk = _worldData.ExistingChunks[position + new int3(0, 0, -chunkData.Length)];
@@ -86,7 +89,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
                 };
 
                 JobHandle jobHandle = job.Schedule();
-                _generatedMeshData.Add(chunkData.WorldPosition, meshData);
+                _generatedThreadSafeMeshData.Add(chunkData.WorldPosition, meshData);
                 _scheduledJobs.Add(jobHandle);
                 
                 _toDispose.Add(ThreadSafechunkData);
@@ -99,7 +102,14 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         private Dictionary<int3, MeshData> Complete()
         {
+            Dictionary<int3, MeshData> generatedMeshData = new Dictionary<int3, MeshData>();
             JobHandle.CompleteAll(_scheduledJobs.AsArray());
+
+            foreach (var meshData in _generatedThreadSafeMeshData)
+            {
+                generatedMeshData.Add(meshData.Key, meshData.Value);
+                meshData.Value.Dispose();
+            }
 
             foreach (var data in _toDispose)
                 data.Dispose();
@@ -107,7 +117,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             _toDispose.Clear();
             _scheduledJobs.Clear();
 
-            return _generatedMeshData;
+            return generatedMeshData;
         }
     }
 }

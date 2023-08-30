@@ -40,7 +40,7 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
             public float yStep;
         }
 
-        [WriteOnly] public MeshData meshData;
+        [WriteOnly] public ThreadSafeMeshData meshData;
         [ReadOnly] public ThreadSafeChunkData chunkData;
         [ReadOnly] public NeighbourChunks neighbourChunks;
         [ReadOnly] public TextureData textureData;

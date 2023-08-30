@@ -12,11 +12,9 @@ namespace HerosJourney.Core.WorldGeneration.Chunks
 
         public void Render(MeshData meshData)
         {
-            _mesh.vertices = meshData.vertices.ToArray().Select(vertex => new Vector3(vertex.x, vertex.y, vertex.z)).ToArray();
-            _mesh.SetIndices(meshData.triangles.AsArray(), MeshTopology.Triangles, 0);
-            _mesh.SetUVs(0, meshData.uvs.AsArray());
-
-            meshData.Dispose();
+            _mesh.vertices = meshData.Vertices.Select(vertex => new Vector3(vertex.x, vertex.y, vertex.z)).ToArray();
+            _mesh.SetIndices(meshData.Triangles, MeshTopology.Triangles, 0);
+            _mesh.SetUVs(0, meshData.UVs.Select(uv => new Vector2(uv.x, uv.y)).ToArray());
 
             _mesh.RecalculateNormals();
             _mesh.RecalculateBounds();

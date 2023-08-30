@@ -1,5 +1,6 @@
 using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Mathematics;
@@ -29,20 +30,22 @@ namespace HerosJourney.Core.WorldGeneration
         public async void GenerateChunks(int3 worldPosition)
         {
             WorldGenerationData worldGenerationData = await Task.Run(() => GetWorldGenerationData(worldPosition));
-            _terrainGenerator.Generate(worldGenerationData.chunkDataToCreate);
 
-            Dictionary<int3, MeshData> generatedMeshData = _meshDataBuilder.Generate(worldGenerationData.chunkRenderersToCreate);
-            RenderChunks(generatedMeshData);
+            await _terrainGenerator.Generate(worldGenerationData.chunkDataToCreate);
+            Dictionary<int3, MeshData> generatedMeshData = await _meshDataBuilder.Generate(worldGenerationData.chunkRenderersToCreate);
+            StartCoroutine(RenderChunks(generatedMeshData));
         }
 
-        private void RenderChunks(Dictionary<int3, MeshData> generatedMeshData)
+        private IEnumerator RenderChunks(Dictionary<int3, MeshData> generatedThreadSafeMeshData)
         {
-            foreach (var meshData in generatedMeshData)
+            foreach (var meshData in generatedThreadSafeMeshData)
             {
                 ChunkRenderer renderer = _worldRenderer.Dequeue();
                 renderer.transform.position = meshData.Key.ToVector3();
                 renderer.gameObject.SetActive(true);
                 renderer.Render(meshData.Value);
+
+                yield return null;
             }
         }
 

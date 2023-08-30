@@ -2,6 +2,7 @@ using HerosJourney.Core.WorldGeneration.Chunks;
 using HerosJourney.Core.WorldGeneration.Noises;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -31,10 +32,13 @@ namespace HerosJourney.Core.WorldGeneration
         public void Initialize() => _scheduledJobs = new NativeList<JobHandle>(Allocator.Persistent);
         public void Dispose() => _scheduledJobs.Dispose();
 
-        public void Generate(List<int3> chunkDataPositionsToCreate)
+        public Task Generate(List<int3> chunkDataPositionsToCreate)
         {
-            Schedule(chunkDataPositionsToCreate);
-            Complete();
+            return Task.Run(() =>
+            {
+                Schedule(chunkDataPositionsToCreate);
+                Complete();
+            });
         }
 
         private void Schedule(List<int3> chunkDataPositionsToCreate)
